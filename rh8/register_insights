@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# TF POS Linux insights registration.
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+# install insights rpm.
+yum -y remove redhat-access-insights
+yum -y install insights-client
+[ $? -ne 0 ] && echo "Could not install insights client." && exit 2
+
+# make config changes to conf.
+sed -i 's/\#authmethod=BASIC/authmethod=BASIC/g' /etc/insights-client/insights-client.conf
+sed -i 's/\#username=/username=tflinuxpos/g' /etc/insights-client/insights-client.conf
+sed -i 's/\#password=/password=erpoithxciujhnbmxhgkvhasw/g' /etc/insights-client/insights-client.conf
+[ $? -ne 0 ] && echo "Could not update conf file." && exit 3
+
+# register.
+insights-client --unregister
+insights-client --register
+[ $? -ne 0 ] && echo "Could not register." && exit 4
+
+# move off redhat.repo if exists.
+[ -f /etc/yum/repos.d/redhat.repo ] && mv /etc/yum.repos.d/redhat.repo ~
+
+# remove subscription manager if there.
+yum -y remove subscription-manager
+
+exit 0

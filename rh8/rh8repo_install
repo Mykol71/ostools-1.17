@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# TF POS rti yum repo file install.
+
+# verify root
+ID=`/usr/bin/id -u`
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+# disable and remove subscription manager if there.
+[ -f /etc/yum/pluginconf.d/subscription-manager ] && sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/subscription-manager.conf
+yum -y remove subscription-manager
+
+# move off redhat.repo if there.
+[ -f /etc/yum.repos.d/redhat.repo ] && mv /etc/yum.repos.d/redhat.repo ~
+
+# create rti repos file
+cat > /etc/yum.repos.d/rtirepos.repo <<EOF
+[RTIRepo]
+name=RTIRepo
+enabled=1
+gpgcheck=1
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-7-server-rpms/
+EOF
+[ $? -ne 0 ] && echo "Could not create rtirepo file." && exit 3
+
+# update system
+yum -y update
+[ $? -ne 0 ] && echo "Could not install updates." && exit 4
+
+exit 0
