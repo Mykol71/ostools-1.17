@@ -7,7 +7,6 @@ ID=`/usr/bin/id -u`
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
 # install insights rpm.
-yum -y remove redhat-access-insights
 yum -y install insights-client
 [ $? -ne 0 ] && echo "Could not install insights client." && exit 2
 
