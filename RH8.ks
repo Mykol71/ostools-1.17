@@ -27,7 +27,7 @@ lang en_US.UTF-8
 
 # Network information
 network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=auto --activate
-network  --bootproto=dhcp --device=enp0s31f6 --onboot=off --ipv6=auto
+#network  --bootproto=dhcp --device=enp0s31f6 --onboot=off --ipv6=auto
 network  --hostname=rhel8-rti
 
 # Use CDROM installation media
@@ -38,7 +38,7 @@ firstboot --enable
 
 ignoredisk --only-use=nvme0n1
 # Partition clearing information
-clearpart --none --initlabel
+clearpart --all --initlabel
 # Disk partitioning information
 part /usr2 --fstype="xfs" --ondisk=nvme0n1 --size=102400
 part /usr2_mir --fstype="xfs" --ondisk=nvme0n1 --size=102400
