@@ -1,12 +1,10 @@
 #version=RHEL8
 # Use graphical install
 text
-
 auth --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
 bootloader --append=""
-#repo --name="AppStream" --baseurl=file:///run/install/sources/mount-0000-cdrom/AppStream
 repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
 
 %packages
@@ -21,7 +19,6 @@ openscap-scanner
 pcsc-lite
 scap-security-guide
 net-tools
-
 %end
 
 # Keyboard layouts
@@ -31,11 +28,8 @@ lang en_US.UTF-8
 
 # Network information
 network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=auto --activate
-#network  --bootproto=dhcp --device=enp0s31f6 --onboot=off --ipv6=auto
 network  --hostname=rhel8-rti
 
-# Use CDROM installation media
-#cdrom
 url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
 # Run the Setup Agent on first boot
@@ -46,8 +40,8 @@ ignoredisk --only-use=nvme0n1
 zerombr
 clearpart --all --initlabel
 # Disk partitioning information
-part /usr2 --fstype="xfs" --ondisk=nvme0n1 --size=102400
-part /usr2_mir --fstype="xfs" --ondisk=nvme0n1 --size=102400
+part /usr2 --fstype="xfs" --ondisk=nvme0n1 --size=204800
+#part /usr2_mir --fstype="xfs" --ondisk=nvme0n1 --size=204800
 part /home --fstype="xfs" --ondisk=nvme0n1 --size=51630
 part swap --fstype="swap" --ondisk=nvme0n1 --size=12039
 part /boot --fstype="xfs" --ondisk=nvme0n1 --size=1024
@@ -63,8 +57,8 @@ rootpw --iscrypted $2b$10$jBk4hLcfILSSTDA5m7EjduMFKYKjBLfCppM4QUsWZF/JbXVmxpqbi
 user --groups=wheel --name=tfsupport --password=$6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdmTdy4k2BTMv9Sw.mQOhrgtvMD5e8oo7t3uCtX2T005e/afw46a6TkODKkP8b9SrUgSAnjKxxfi1 --iscrypted --gecos="tfsupport"
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
-
 %end
+
 %addon org_fedora_oscap
     content-type = scap-security-guide
     datastream-id = scap_org.open-scap_datastream_from_xccdf_ssg-rhel8-xccdf-1.2.xml
