@@ -24,7 +24,4 @@ insights-client --register
 # move off redhat.repo if exists.
 [ -f /etc/yum/repos.d/redhat.repo ] && mv /etc/yum.repos.d/redhat.repo ~
 
-# remove subscription manager if there.
-yum -y remove subscription-manager
-
 exit 0
