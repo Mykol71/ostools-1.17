@@ -58,7 +58,8 @@ part / --fstype="xfs" --ondisk=nvme0n1 --size=71680
 timezone America/Winnipeg --isUtc --nontp
 
 # Root password
-rootpw --iscrypted $6$AVmkgYT45RqfKjna$SEKy20dsIglzxXwyDs1vV.IfEvRtSNxJhWu5aqtKIhgJi2J/Mw9fqczbkVKiKjlJRx8pBdPYTGEyPwVPCJLbs.
+#rootpw --iscrypted $6$AVmkgYT45RqfKjna$SEKy20dsIglzxXwyDs1vV.IfEvRtSNxJhWu5aqtKIhgJi2J/Mw9fqczbkVKiKjlJRx8pBdPYTGEyPwVPCJLbs.
+rootpw --iscrypted $2b$10$jBk4hLcfILSSTDA5m7EjduMFKYKjBLfCppM4QUsWZF/JbXVmxpqbi
 user --groups=wheel --name=tfsupport --password=$6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdmTdy4k2BTMv9Sw.mQOhrgtvMD5e8oo7t3uCtX2T005e/afw46a6TkODKkP8b9SrUgSAnjKxxfi1 --iscrypted --gecos="tfsupport"
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
