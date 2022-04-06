@@ -2,6 +2,10 @@
 # Use graphical install
 text
 
+auth --passalgo=sha512 --useshadow
+selinux --permissive
+reboot
+bootloader --append=""
 #repo --name="AppStream" --baseurl=file:///run/install/sources/mount-0000-cdrom/AppStream
 repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
 
@@ -31,13 +35,15 @@ network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=auto --activate
 network  --hostname=rhel8-rti
 
 # Use CDROM installation media
-cdrom
+#cdrom
+url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
 # Run the Setup Agent on first boot
-firstboot --enable
+firstboot --disable
 
 ignoredisk --only-use=nvme0n1
 # Partition clearing information
+zerombr
 clearpart --all --initlabel
 # Disk partitioning information
 part /usr2 --fstype="xfs" --ondisk=nvme0n1 --size=102400
