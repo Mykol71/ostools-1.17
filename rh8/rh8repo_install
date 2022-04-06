@@ -14,14 +14,14 @@ ID=`/usr/bin/id -u`
 
 # create rti repos file
 cat > /etc/yum.repos.d/rtirepos.repo <<EOF
-[RTIRepo Base OS]
+[RTIRepoBaseOS]
 name=RTIRepoBaseOS
 enabled=1
 gpgcheck=1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 
-[RTIRepo App Stream]
+[RTIRepoAppStream]
 name=RTIRepoAppStream
 enabled=1
 gpgcheck=1

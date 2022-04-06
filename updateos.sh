@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BACKEND="http://rtihardware.homelinux.com/ostools/ostools-1.17"
+BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 OS="$1"
 
 [ "$1" == "" ] && echo "Specify OS." && exit 1
