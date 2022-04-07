@@ -1,5 +1,8 @@
 #!/bin/bash
 
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 OS="$1"
 
