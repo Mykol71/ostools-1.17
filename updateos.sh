@@ -3,8 +3,8 @@
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 OS="$1"
 
-[ "$1" == "" ] && echo "Specify OS." && exit 1
-[ "$2" == "" ] && echo "Specify script name, or \"stage\"." && exit 1
+[ "$1" == "" ] && echo "Specify OS from:" && echo `curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | sed 's/\///g'` && exit 1
+[ "$2" == "" ] && echo "Specify script name or group from:" && echo `curl -ls $BACKEND/$OS/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/` && exit 1
 
 if [ "$2" == "stage" ]
 then
