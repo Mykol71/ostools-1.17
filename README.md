@@ -25,3 +25,10 @@ Contrib Info -
 - If a script is updated, the changes are automatically available on the next run of the script, everywhere.
 - If a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
 -  
+
+To Do -
+
+- add logging.
+- add ostools legacy deps.
+- consider installing as an rpm?
+-  
