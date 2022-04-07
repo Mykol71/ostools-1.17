@@ -14,7 +14,7 @@ do
   timestamp=`date +%Y%m%d%H%M%S`
   curl -s $BACKEND/$OS/stage/$script -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
-  /tmp/.${script}.${timestamp}.tmp 2>/dev/null
+  /tmp/.${script}.${timestamp}.tmp
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
   echo "Success."
   echo ""
@@ -24,7 +24,7 @@ else
 echo "Running $2 ..."
   curl -s $BACKEND/$OS/$2 -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
-  /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 2>/dev/null
+  /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
   echo "Success."
   echo ""

@@ -19,6 +19,7 @@ pcsc-lite
 scap-security-guide
 net-tools
 java
+perl
 %end
 
 # Keyboard layouts
