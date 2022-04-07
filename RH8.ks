@@ -73,8 +73,7 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
 %post
-cd /tmp
+cd /usr/local/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos.sh updateos.sh
-chmod +x /tmp/updateos.sh
-/tmp/updateos.sh rh8 stage
+chmod +x /usr/local/bin/updateos.sh
 %end
