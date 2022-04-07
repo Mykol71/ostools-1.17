@@ -1,7 +1,6 @@
 #version=RHEL8
-# Use graphical install
 text
-auth --passalgo=sha512 --useshadow
+authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
 bootloader --append=""
@@ -19,6 +18,7 @@ openscap-scanner
 pcsc-lite
 scap-security-guide
 net-tools
+java
 %end
 
 # Keyboard layouts
@@ -70,4 +70,10 @@ user --groups=wheel --name=tfsupport --password=$6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdm
 pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
+
+%post
+curl -O http://rhel8repo.centralus.cloudapp.com/ostools-1.17/updateos.sh updateos.sh
+chmod +x ./updateos.sh
+./updateos.sh rh8 stage
 %end
