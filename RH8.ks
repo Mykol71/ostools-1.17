@@ -21,6 +21,8 @@ net-tools
 java
 perl
 wget
+sendmail
+mailx
 %end
 
 # Keyboard layouts
