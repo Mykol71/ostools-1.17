@@ -8,7 +8,7 @@ IP=`ip address | grep inet | grep -v inet6 | grep -v 127.0.0.1 | cut -d" " -f6 |
 
 hostnamectl set-hostname $hostname
 hostnamectl status
-sed -i '/$IP/d' /etc/hosts 
+sed -i "/$IP/d" /etc/hosts 
 echo "$IP          $hostname">>/etc/hosts
 
 exit 0
