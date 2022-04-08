@@ -16,7 +16,7 @@ echo ------ >>/tmp/updateos.log
 echo "" >>/tmp/updateos.log
 for script in `curl -ls $BACKEND/$OS/stage/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
 do
-  echo "Running $script ..." | tee -a /tmp/updateos.log
+  echo "----> Running $script ..." | tee -a /tmp/updateos.log
   timestamp=`date +%Y%m%d%H%M%S`
   curl -s $BACKEND/$OS/stage/$script -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
@@ -27,7 +27,7 @@ do
   rm -f /tmp/.${script}.${timestamp}.tmp
 done
 else
-echo "Running $2 ..." | tee -a /tmp/updateos.log
+echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   curl -s $BACKEND/$OS/$2 -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
   /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
@@ -36,7 +36,7 @@ echo "Running $2 ..." | tee -a /tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
 echo `date` >>/tmp/updateos.log
-echo ------ >>/tmp/updateos.log
+echo "------" >>/tmp/updateos.log
 echo "" >>/tmp/updateos.log
 fi
 exit 0
