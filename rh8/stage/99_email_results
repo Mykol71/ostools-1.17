@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mail -s "Staging results for `hostname`." mgreen@mykol.com </tmp/updateos.log
