@@ -21,8 +21,9 @@ net-tools
 java
 perl
 wget
-sendmail
+postfix
 mailx
+procmail
 %end
 
 # Keyboard layouts
@@ -32,7 +33,7 @@ lang en_US.UTF-8
 
 # Network information
 network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=auto --activate
-network  --hostname=rhel8-rti
+network  --hostname=rhel8-rti.teleflora.com
 
 url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
@@ -83,4 +84,6 @@ chmod +x /usr/bin/updateos.sh
 mkdir /usr/java
 mkdir /usr2/bbx
 mkdir /usr2/bbx/log
+systemctl start postfix
+systemctl enable postfix
 %end
