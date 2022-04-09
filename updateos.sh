@@ -34,11 +34,13 @@ done
 else
 echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   echo `date` >>/tmp/updateos.log
+  echo "------" >>/tmp/updateos.log
   curl -s $BACKEND/$OS/$2 -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
   /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
   echo "Success." | tee -a /tmp/updateos.log
+  echo "------" >>/tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
 fi
