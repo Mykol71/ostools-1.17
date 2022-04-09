@@ -2,6 +2,4 @@
 
 hostnamectl status >>/tmp/updateos.log
 echo `date` >>/tmp/updateos.log
-echo "-----" >>/tmp/updateos.log
-echo "" >>/tmp/updateos.log
 mail -s "Staging results for `hostname`." mgreen@mykol.com </tmp/updateos.log

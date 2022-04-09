@@ -11,6 +11,7 @@ OS="$1"
 
 if [ "$2" == "stage" ]
 then
+echo ------ >>/tmp/updateos.log
 echo `date` >>/tmp/updateos.log
 echo ------ >>/tmp/updateos.log
 echo "" >>/tmp/updateos.log
@@ -26,8 +27,13 @@ do
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
 done
+  echo ------ >>/tmp/updateos.log
+  echo `date` >>/tmp/updateos.log
+  echo "------" >>/tmp/updateos.log
+  echo "" >>/tmp/updateos.log
 else
 echo "----> Running $2 ..." | tee -a /tmp/updateos.log
+  echo `date` >>/tmp/updateos.log
   curl -s $BACKEND/$OS/$2 -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
   /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
@@ -35,8 +41,5 @@ echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   echo "Success." | tee -a /tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
-echo `date` >>/tmp/updateos.log
-echo "------" >>/tmp/updateos.log
-echo "" >>/tmp/updateos.log
 fi
 exit 0
