@@ -24,6 +24,7 @@ wget
 postfix
 mailx
 procmail
+bind-utils
 %end
 
 # Keyboard layouts
