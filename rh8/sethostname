@@ -6,7 +6,7 @@ IP=`ip address | grep inet | grep -v inet6 | grep -v 127.0.0.1 | cut -d" " -f6 |
 
 [ "$hostname" == "" ] && echo "No hostname provided." && exit 1
 
-hostnamectl set-hostname $hostname
+hostnamectl set-hostname $hostname.teleflora.com
 sed -i "/$IP/d" /etc/hosts 
 sed -i "/\:\:/d" /etc/hosts 
 echo "$IP          $hostname $hostname.teleflora.com">>/etc/hosts
