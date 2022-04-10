@@ -6,8 +6,8 @@ ID=$(/usr/bin/id -u)
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 OS="$1"
 
-[ "$1" == "" ] && echo "Specify OS from:" && echo `curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | sed 's/\///g'` && exit 1
-[ "$2" == "" ] && echo "Specify script name or group from:" && echo `curl -ls $BACKEND/$OS/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/` && exit 1
+[ "$1" == "" ] && echo "Specify OS from:" | tee -a /tmp/updateos.log && echo "------" | tee -a /tmp/updateos.log  && echo `curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | sed 's/\///g'` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
+[ "$2" == "" ] && echo "Specify script name or group from:" | tee -a /tmp/updateos.log  && echo "------" | tee -a /tmp/updatesos.log && echo `curl -ls $BACKEND/$OS/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
 
 if [ "$2" == "stage" ]
 then
@@ -15,6 +15,8 @@ echo ------ >>/tmp/updateos.log
 echo `date` >>/tmp/updateos.log
 echo ------ >>/tmp/updateos.log
 echo "" >>/tmp/updateos.log
+echo "Staging for $OS...." | tee -a /tmp/updateos.log
+echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
 for script in `curl -ls $BACKEND/$OS/stage/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
 do
   echo "----> Running $script ..." | tee -a /tmp/updateos.log

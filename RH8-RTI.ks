@@ -85,6 +85,7 @@ chmod +x /usr/bin/updateos.sh
 mkdir /usr/java
 mkdir /usr2/bbx
 mkdir /usr2/bbx/log
+mkdir /usr2/bbx/config
 systemctl start postfix
 systemctl enable postfix
 %end
