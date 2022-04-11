@@ -29,10 +29,6 @@ do
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
 done
-  echo ------ >>/tmp/updateos.log
-  echo `date` >>/tmp/updateos.log
-  echo "------" >>/tmp/updateos.log
-  echo "" >>/tmp/updateos.log
 else
 echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   echo `date` >>/tmp/updateos.log
