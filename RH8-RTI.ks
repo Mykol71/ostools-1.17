@@ -88,5 +88,5 @@ mkdir /usr2/bbx/log
 mkdir /usr2/bbx/config
 systemctl start postfix
 systemctl enable postfix
-/usr/bin/updateos.sh rh8 stage
+/usr/bin/updateos.sh rh8 stage rh8-rti-999
 %end

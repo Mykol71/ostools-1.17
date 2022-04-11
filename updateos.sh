@@ -23,7 +23,7 @@ do
   timestamp=`date +%Y%m%d%H%M%S`
   curl -s $BACKEND/$OS/stage/$script -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
-  /tmp/.${script}.${timestamp}.tmp | tee -a /tmp/updateos.log
+  /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
   echo "Success." | tee -a /tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
