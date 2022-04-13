@@ -19,4 +19,5 @@ echo "Installing RTI...."
 mount -o loop /tmp/RTI-16.1.5-Linux.iso /mnt
 cd /mnt
 ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+cd /tmp
 umount /mnt
