@@ -84,11 +84,6 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 cd /usr/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos.sh updateos.sh
 chmod +x /usr/bin/updateos.sh
-mkdir /usr/java
-mkdir /usr2/bbx
-mkdir /usr2/bbx/bin
-mkdir /usr2/bbx/log
-mkdir /usr2/bbx/config
 systemctl start postfix
 systemctl enable postfix
 %end
