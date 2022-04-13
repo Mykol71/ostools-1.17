@@ -1,0 +1,5 @@
+#!/bin/bash
+
+wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+chmod +x /tmp/KcsSetup.sh
+/tmp/KcsSetup.sh

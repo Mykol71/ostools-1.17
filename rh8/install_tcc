@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd /usr2/bbx/bin
+wget http://rtihardware.homelinux.com/support/tcc/tcc-latest_linux.tar.gz
+tar xvfz ./tcc-latest_linux.tar.gz
+rm -f ./tcc
+rm -f ./tcc_tws
+ln -s ./tcc2_rhel7 ./tcc
+ln -s ./tcc_rhel7 ./tcc_tws

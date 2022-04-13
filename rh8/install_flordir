@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd /tmp
+wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
+wget http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
+chmod +x ./applypatch.pl
+./applypatch.pl ./rti-edir-tel-latest.patch

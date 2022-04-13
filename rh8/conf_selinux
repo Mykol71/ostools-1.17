@@ -1,0 +1,4 @@
+#!/bin/bash
+
+setenforce 0
+sed -i 's/ENFORCING/PERMISSIVE/g' /etc/selinux/config

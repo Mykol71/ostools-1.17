@@ -1,0 +1,8 @@
+#!/bin/bash
+
+systemctl stop firewalld
+systemctl disable firewalld
+yum -y remove firewalld
+yum -y install iptables
+systemctl start iptables
+systemctl enable iptables
