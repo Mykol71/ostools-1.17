@@ -1,6 +1,6 @@
 #!/bin/bash
 
 cd /tmp
-[! -f /tmp/KcsSetup.sh ] && wget http://rtihardware.homelinux.com/support/KcsSetup.sh
+[ ! -f /tmp/KcsSetup.sh ] && wget http://rtihardware.homelinux.com/support/KcsSetup.sh
 chmod +x /tmp/KcsSetup.sh
 /tmp/KcsSetup.sh
