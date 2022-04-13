@@ -25,6 +25,8 @@ postfix
 mailx
 procmail
 bind-utils
+ksh
+expect
 %end
 
 # Keyboard layouts
