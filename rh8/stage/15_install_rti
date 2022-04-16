@@ -5,6 +5,8 @@ cd /tmp
 [ ! -f /tmp/multiserver.pwd ] && wget http://rtihardware.homelinux.com/t1800/multiserver.pwd
 [ ! -f /tmp/librxtxSerial.so ] && wget http://rtihardware.homelinux.com/ostools/librxtxSerial.so
 
+[ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" >/etc/profile.d/term.sh && chmod +x /etc/profile.d/term.sh
+
 echo "Adding multiserver.pwd fix....."
 cp -f /tmp/multiserver.pwd /usr2/bbx/config/
 
