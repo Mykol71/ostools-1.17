@@ -27,6 +27,11 @@ procmail
 bind-utils
 ksh
 expect
+-firewalld
+-chronyd
+iptables
+ntpd
+telnet
 %end
 
 # Keyboard layouts
@@ -57,7 +62,9 @@ part /boot/efi --fstype="efi" --ondisk=nvme0n1 --size=600 --fsoptions="umask=007
 part / --fstype="xfs" --ondisk=nvme0n1 --size=71680
 
 # System timezone
-timezone America/Winnipeg --isUtc --nontp
+timezone America/Winnipeg --isUtc
+
+unsupported_hardware
 
 # Root password
 rootpw --iscrypted $2b$10$jBk4hLcfILSSTDA5m7EjduMFKYKjBLfCppM4QUsWZF/JbXVmxpqbi
