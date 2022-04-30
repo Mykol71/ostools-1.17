@@ -3,4 +3,4 @@
 [ ! -f /tmp/ostools-1.16-latest.tar.gz ] && curl -O http://rtihardware.homelinux.com/ostools/ostools-1.16-latest.tar.gz /tmp/ostools-1.16-latest.tar.gz
 cd /tmp
 tar xvfz ./ostools-1.16-latest.tar.gz
-./bin/install-ostools.pl --noharden-linux /tmp/ostools-1.16-latest.tar.gz
+./bin/install-ostools.pl ./ostools-1.16-latest.tar.gz
