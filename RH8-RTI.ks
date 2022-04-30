@@ -38,6 +38,8 @@ iptables
 ntpstat
 telnet
 fetchmail
+rsyslog
+auditd
 %end
 
 # Keyboard layouts
