@@ -1,5 +1,0 @@
-#!/bin/bash
-
-sed -i '/GRUB_CMDLINE_LINUX/d' /etc/sysconfig/grub
-echo "GRUB_CMDLINE_LINUX=\"video=640x480\"" >> /etc/sysconfig/grub
-grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
