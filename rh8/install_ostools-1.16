@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ ! -f /tmp/ostools-1.16-latest.tar.gz ] && curl -O http://rtihardware.homelinux.com/ostools/ostools-1.16-latest.tar.gz /tmp/ostools-1.16-latest.tar.gz
 cd /tmp
+[ ! -f /tmp/ostools-1.16-latest.tar.gz ] && wget http://rtihardware.homelinux.com/ostools/ostools-1.16-latest.tar.gz
 tar xvfz ./ostools-1.16-latest.tar.gz
 ./bin/install-ostools.pl --noharden-linux /tmp/ostools-1.16-latest.tar.gz
