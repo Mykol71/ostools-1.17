@@ -60,11 +60,9 @@ zerombr
 clearpart --all --initlabel
 # Disk partitioning information
 part /usr2 --fstype="xfs" --ondisk=sda --grow
-#part /usr2_mir --fstype="xfs" --ondisk=sda --size=204800
 part swap --fstype="swap" --ondisk=sda --recommended
-part /boot --fstype="xfs" --ondisk=sda --size=31024
 part /boot/efi --fstype="efi" --ondisk=sda --size=600 --fsoptions="umask=0077,shortname=tflinux"
-part / --fstype="xfs" --ondisk=sda --size=71680
+part / --fstype="xfs" --ondisk=sda --size=31024
 
 # System timezone
 timezone America/Winnipeg --isUtc
