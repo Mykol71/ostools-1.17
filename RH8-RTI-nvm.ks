@@ -38,7 +38,6 @@ iptables
 ntpstat
 telnet
 fetchmail
-auditd
 rsyslog
 %end
 
