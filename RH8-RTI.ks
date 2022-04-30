@@ -3,8 +3,9 @@ text
 authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
-bootloader --append=""
+bootloader --append="video=640x480"
 repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
+repo --name="BaseOS" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
 %packages
 @^minimal-environment
@@ -28,10 +29,15 @@ bind-utils
 ksh
 expect
 -firewalld
--chronyd
 iptables
-ntpd
+iptables-services
+samba
+cups
+chrony
+iptables
+ntpstat
 telnet
+fetchmail
 %end
 
 # Keyboard layouts
@@ -48,26 +54,24 @@ url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos
 # Run the Setup Agent on first boot
 firstboot --disable
 
-ignoredisk --only-use=nvme0n1
+ignoredisk --only-use=sda
 # Partition clearing information
 zerombr
 clearpart --all --initlabel
 # Disk partitioning information
-part /usr2 --fstype="xfs" --ondisk=nvme0n1 --size=204800
-#part /usr2_mir --fstype="xfs" --ondisk=nvme0n1 --size=204800
-part /home --fstype="xfs" --ondisk=nvme0n1 --size=51630
-part swap --fstype="swap" --ondisk=nvme0n1 --size=12039
-part /boot --fstype="xfs" --ondisk=nvme0n1 --size=1024
-part /boot/efi --fstype="efi" --ondisk=nvme0n1 --size=600 --fsoptions="umask=0077,shortname=winnt"
-part / --fstype="xfs" --ondisk=nvme0n1 --size=71680
+part /usr2 --fstype="xfs" --ondisk=sda --grow
+#part /usr2_mir --fstype="xfs" --ondisk=sda --size=204800
+part swap --fstype="swap" --ondisk=sda --recommended
+part /boot --fstype="xfs" --ondisk=sda --size=31024
+part /boot/efi --fstype="efi" --ondisk=sda --size=600 --fsoptions="umask=0077,shortname=tflinux"
+part / --fstype="xfs" --ondisk=sda --size=71680
 
 # System timezone
 timezone America/Winnipeg --isUtc
 
-unsupported_hardware
-
 # Root password
-rootpw --iscrypted $2b$10$jBk4hLcfILSSTDA5m7EjduMFKYKjBLfCppM4QUsWZF/JbXVmxpqbi
+#rootpw --iscrypted $2b$10$jBk4hLcfILSSTDA5m7EjduMFKYKjBLfCppM4QUsWZF/JbXVmxpqbi
+rootpw --iscrypted $6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdmTdy4k2BTMv9Sw.mQOhrgtvMD5e8oo7t3uCtX2T005e/afw46a6TkODKkP8b9SrUgSAnjKxxfi1
 user --groups=wheel --name=tfsupport --password=$6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdmTdy4k2BTMv9Sw.mQOhrgtvMD5e8oo7t3uCtX2T005e/afw46a6TkODKkP8b9SrUgSAnjKxxfi1 --iscrypted --gecos="tfsupport"
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
@@ -92,5 +96,11 @@ cd /usr/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
 systemctl start postfix
+systemctl start smb
+systemctl start cups
+systemctl start iptables
 systemctl enable postfix
+systemctl enable smb
+systemctl enable cups
+systemctl enable iptables
 %end
