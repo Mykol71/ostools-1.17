@@ -103,4 +103,5 @@ systemctl enable postfix
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
+ln -s /usr/bin/python2.7 /usr/bin/python
 %end
