@@ -39,6 +39,7 @@ ntpstat
 telnet
 fetchmail
 rsyslog
+python2
 %end
 
 # Keyboard layouts
