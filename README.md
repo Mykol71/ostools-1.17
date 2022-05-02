@@ -3,7 +3,6 @@
 
 Functionality -
 ---------------
-
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
 - After the system has been kickstarted using the ks file, updateos will be availible to all users. (in the /usr/bin folder).
@@ -18,9 +17,9 @@ Functionality -
 - Logging for updateos.sh is in /tmp/updateos.sh.log.
 
 
+
 Contrib Info -
 --------------
-
 - programs should exit 0 if success and non-0 if fail.
 - already installed treat as success.
 - programs in staging folders should not require user input. Staging should be a silent install.
@@ -29,6 +28,7 @@ Contrib Info -
 - it's ok to install dependent rpms, but hopefully not necessary.
 - if a new script is added, it is automatically available to all installations of ostools-1.17.
 - if a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
+
 
 
 Staging Instructions -
@@ -72,23 +72,28 @@ Information -
 - system is registered with redhat insights.
 - system is registered to the TF RH8 repo for patches.
 - ostools 1.16 is installed.
+- ostools 1.16 is ostools 1.15 with RH8 support.
+- ostools 1.17 is this.
+- there is also an -nvm.ks version of the kickstart file for nvm ssd support.
 ** take note that $updateos and $updateos.pl are both on the system and do different things. 
      Make sure, on step 6 above, you execute $updateos **
 
 /usr/bin/updateos syntax -
 --------------------------
-$updateos {os version} {script name or "stage"}
-$updateos only will display a list of possible os versions.
-$updateos {os version} only will display a list of possible scripts.
+- $updateos {os version} {script name or "stage"}
+- $updateos only will display a list of possible os versions.
+- $updateos {os version} only will display a list of possible scripts.
+
 
 
 To Do -
 -------
-- documentation.
+- add help access for each script.
 - genericize OS to folder name.
 - genericize stage to any subfolder name.
 - add logging function to updateos.
-- add ostools 1.16 hardening.
+- add a cacheing situation for making the commands available without network.
 -   
 
-# mgreen@teleflora.com
+
+mgreen@teleflora.com
