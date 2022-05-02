@@ -86,14 +86,16 @@ Information -
 
 
 
-To Do -
+TO DO -
 -------
 - add help access for each script.
 - genericize OS to folder name.
 - genericize stage to any subfolder name.
 - add logging function to updateos.
 - add a cacheing situation for making the commands available without network.
--   
+- add ostools 1.16 to git.
+- move ostools 1.16 download package to repo server.
+-    
 
 
 mgreen@teleflora.com
