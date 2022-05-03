@@ -104,6 +104,10 @@ systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
 ln -s /usr/bin/python2.7 /usr/bin/python
-echo "Staging for Teleflora RTI...the system will reboot after..."
-/usr/bin/updateos rh8 stage
+exec < /dev/tty6 > /dev/tty6
+chvt6
+clear
+echo "Installing Teleflora RTI POS..."
+/usr/bin/updateos rh8 stage rh8-rti
+chvt1
 %end
