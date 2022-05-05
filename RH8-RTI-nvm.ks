@@ -40,6 +40,7 @@ telnet
 fetchmail
 rsyslog
 python2
+apcupsd
 %end
 
 # Keyboard layouts
