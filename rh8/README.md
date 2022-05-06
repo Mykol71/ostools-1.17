@@ -1,7 +1,7 @@
 TO DO -
 -------
 
-- tfremote access fix.
++ tfremote access fix.
 - update RTI iso.
 + console screen reso. remove irroneous nomodeset.
 - build custom iso.
