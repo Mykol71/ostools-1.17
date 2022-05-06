@@ -1,4 +1,0 @@
-#!/bin/bash
-
-/usr2/ostools/bin/updateos.pl --configure-grub2
-grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
