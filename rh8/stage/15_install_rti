@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /tmp
-[ ! -f /tmp/RTI-16.1.5-Linux.iso ] && wget http://rtihardware.homelinux.com/t1800/RTI-16.1.5-Linux.iso.gz
+[ ! -f /tmp/RTI-16.3.8-Linux.iso ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/RTI-16.3.8-Linux.iso.gz
 [ ! -f /tmp/multiserver.pwd ] && wget http://rtihardware.homelinux.com/t1800/multiserver.pwd
 [ ! -f /tmp/librxtxSerial.so ] && wget http://rtihardware.homelinux.com/ostools/librxtxSerial.so
 
@@ -17,9 +17,9 @@ chmod 666 /usr2/basis/lib/librxtxSerial.so
 chown root:root /usr2/basis/lib/librxtxSerial.so
 
 echo "Installing RTI...."
-[ ! -f ./RTI-16.1.5-Linux.iso ] && gunzip xvfz ./RTI-16.1.5-Linux.iso.gz
-mount -o loop /tmp/RTI-16.1.5-Linux.iso /mnt
+[ ! -f ./RTI-16.3.8-Linux.iso ] && gunzip xvfz ./RTI-16.3.8-Linux.iso.gz
+mount -o loop /tmp/RTI-16.3.8-Linux.iso /mnt
 cd /mnt
-./install_rti-16.1.5.pl --nobbxt /usr2/bbx
+./install_rti-16.3.8.pl --nobbxt /usr2/bbx
 cd /tmp
 umount /mnt

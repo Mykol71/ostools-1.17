@@ -3,6 +3,7 @@
 useradd tfsupport
 useradd rti
 useradd odbc
+useradd delivery
 
 cd /tmp
 [ ! -f /tmp/tfsupport-authorized_keys ] && wget http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys

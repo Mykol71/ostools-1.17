@@ -10,4 +10,5 @@ TO DO -
 - rh8 tcc after provided.
 + download rti iso bug.
 + find a upsd rpm for rh8 and publish in our repo.
++ 640x480 reso.
 -  
