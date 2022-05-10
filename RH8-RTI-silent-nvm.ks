@@ -91,7 +91,7 @@ pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
-%post --interpreter=/usr/bin/bash
+%post
 cd /usr/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
