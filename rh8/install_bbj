@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd /tmp
-[ ! -f ./update_bbj_19.pl ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/update_bbj_19.pl
-perl ./update_bbj_18.pl

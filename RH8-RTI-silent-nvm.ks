@@ -40,6 +40,7 @@ telnet
 fetchmail
 rsyslog
 python2
+rear
 %end
 
 # Keyboard layouts
