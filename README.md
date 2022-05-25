@@ -37,6 +37,8 @@ Staging Instructions -
 Repos -
 -------
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
+http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
+http://rhel8repo.centralus.cloudapp.azure.com/support/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 
@@ -53,7 +55,7 @@ inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI.ks
 and, remove the "quiet" at the end.
 then ctl-x to continue the boot process.
 
-5. After the OS installs, login as tfsupport - T3l3fl0r4#
+5. After the OS installs, login as tfsupport - (normal daisy tfsupport password)
 
 6. execute the following command:
 $sudo updateos rh8 stage {desired hostname}
@@ -90,10 +92,9 @@ TO DO -
 -------
 - add help access for each script.
 + add logging function to updateos.
-- add a cacheing situation for making the commands available without network?
+? add a cacheing situation for making the commands available without network.
 + add ostools 1.16 to git.
 + move ostools 1.16 download package to repo server.
-- add rear support/integration. (Relax and Recover)    
 - 
 
 
