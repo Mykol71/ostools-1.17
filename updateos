@@ -28,6 +28,7 @@ do
   echo "Success." | tee -a /tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
+  reboot
 done
 else
 echo "----> Running $2 ..." | tee -a /tmp/updateos.log

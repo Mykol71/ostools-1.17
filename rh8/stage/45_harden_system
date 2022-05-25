@@ -15,6 +15,7 @@
 /usr2/ostools/bin/updateos.pl --samba-gen-conf
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 /usr2/ostools/bin/updateos.pl --audit-system-configure
+/usr2/ostools/bin/updateos.pl --motd
 
 systemctl restart iptables
 systemctl restart sshd

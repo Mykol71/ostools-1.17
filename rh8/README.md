@@ -11,7 +11,7 @@ TO DO -
 + download rti iso bug.
 + find a upsd rpm for rh8 and publish in our repo.
 + 640x480 reso.
-- rti background program start up issue. (installing bbj18, bbj19, then java, fixes but adds wasted time.)
++ rti background program start up issue. (installing bbj18, bbj19, then java, fixes but adds wasted time.)
 - backspace issues from ssh connection. (scoansi term type not found.)
 - update cloud backup server.
 - update cloud app service.
