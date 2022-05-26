@@ -105,5 +105,6 @@ systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
 ln -s /usr/bin/python2.7 /usr/bin/python
-openvt -s -w -- /usr/bin/updateos rh8 stage rh8-rti
+openvt -s -w -- clear && echo "Teleflora RTI Staging......this will take a bit." 
+/usr/bin/updateos rh8 stage rh8-rti-staged 
 %end

@@ -106,5 +106,5 @@ systemctl enable cups
 systemctl enable iptables
 ln -s /usr/bin/python2.7 /usr/bin/python
 echo "Staging for Teleflora RTI...the system will reboot after..."
-/usr/bin/updateos rh8 stage
+/usr/bin/updateos rh8 stage rh8-rti-staged
 %end
