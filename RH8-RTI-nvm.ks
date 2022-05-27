@@ -41,6 +41,7 @@ fetchmail
 rsyslog
 python2
 rear
+java
 %end
 
 # Keyboard layouts
