@@ -50,7 +50,7 @@ keyboard --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=auto --activate
+network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=no --activate
 network  --hostname=rhel8-rti.teleflora.com
 
 url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
