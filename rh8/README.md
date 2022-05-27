@@ -30,4 +30,7 @@ TO DO -
 - document how to create usb media.
 - test kaseya processes.
 - make backups and os migrations "sendgrid aware".
--  
+- add os media isos to repo server.
+- update os media to default to local boot.
+- check for cloud backup customer and if so ask if data should be restored.
+-   
