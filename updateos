@@ -15,7 +15,7 @@ echo ------ >>/tmp/updateos.log
 echo `date` >>/tmp/updateos.log
 echo ------ >>/tmp/updateos.log
 echo "" >>/tmp/updateos.log
-echo "Staging for $OS...." | tee -a /tmp/updateos.log
+echo "Staging for RTI $OS...." | tee -a /tmp/updateos.log
 echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
 for script in `curl -ls $BACKEND/$OS/stage/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
 do

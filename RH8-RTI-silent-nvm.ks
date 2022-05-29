@@ -106,8 +106,5 @@ systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
 ln -s /usr/bin/python2.7 /usr/bin/python
-exec < /dev/tty2 > /dev/tty2
-chvt 2
-set -x
-/usr/bin/updateos rh8 stage rh8-rti >/dev/tty2 2>&1 
+/usr/bin/updateos rh8 stage rh8-rti >/dev/tty1 2>&1 
 %end
