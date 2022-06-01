@@ -93,7 +93,7 @@ pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 %end
 
-%post
+%post --log=ks-post.log
 cd /usr/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
@@ -106,5 +106,5 @@ systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
 ln -s /usr/bin/python2.7 /usr/bin/python
-/usr/bin/updateos rh8 stage rh8-rti >/dev/tty1 2>&1 
+openvt -s -w -- /usr/bin/updateos rh8 stage rh8-rti
 %end
