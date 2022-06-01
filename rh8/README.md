@@ -16,10 +16,10 @@ TO DO -
 - update cloud backup server.
 - update cloud app service.
 - test backups.
-- logging to anaconda console during %post section of kickstart. 
++ logging to anaconda console during %post section of kickstart. 
 - update ostools version info in 1.16. (for logging etc.)
 + errors logged to console.
-- rear support/integration. (Relax and Recover)
++ rear support/integration. (Relax and Recover)
 ? bacula support/rear integration.
 - check on adding usb stick to machine internal. (for future use.)
 - build qa vms.
@@ -28,9 +28,9 @@ TO DO -
 - merge in server-to-server tfrsync.pl fixes to ostools-1.16 repo.
 ? add trendmicro installation.
 - document how to create usb media.
-- test kaseya processes.
++ test kaseya processes.
 - make backups and os migrations "sendgrid aware".
 - add os media isos to repo server.
 - update os media to default to local boot.
-- check for cloud backup customer and if so ask if data should be restored.
--   
+? check for cloud backup customer and if so ask if data should be restored.
+- display issue for silent install when registering with insights.  
