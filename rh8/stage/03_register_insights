@@ -7,7 +7,7 @@ ID=`/usr/bin/id -u`
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
 # install insights rpm.
-yum -y install insights-client >/dev/null 2>&1
+yum -y install insights-client
 [ $? -ne 0 ] && echo "Could not install insights client." && exit 2
 
 # make config changes to conf.
@@ -17,7 +17,7 @@ sed -i 's/\#password=/password=erpoithxciujhnbmxhgkvhasw/g' /etc/insights-client
 [ $? -ne 0 ] && echo "Could not update conf file." && exit 3
 
 # register.
-insights-client --unregister
+#insights-client --unregister
 insights-client --register
 [ $? -ne 0 ] && echo "Could not register." && exit 4
 
