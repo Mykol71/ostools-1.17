@@ -42,6 +42,7 @@ rsyslog
 python2
 rear
 java
+sed
 %end
 
 # Keyboard layouts
