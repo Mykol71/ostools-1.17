@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo -n "Username: "
-read username
-
-useradd $username
