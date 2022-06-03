@@ -43,6 +43,8 @@ python2
 rear
 java
 sed
+lrzsc
+ncurses-term
 %end
 
 # Keyboard layouts
