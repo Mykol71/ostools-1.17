@@ -4,7 +4,7 @@ TO DO -
 + tfremote access issue. (ssh to 15022 timesout. no errors in logs.)
 + update RTI iso.
 + console screen reso. remove irroneous nomodeset.
-+ build custom iso. boot options for localboot, install, and upgrade.
+- build custom iso. boot options for localboot, install, and upgrade.
 - smb users default passwords.
 + auditd fixes.
 - rh8 tcc.
@@ -13,7 +13,9 @@ TO DO -
 + 640x480 reso.
 + rti background program start up issue. (installing bbj18, bbj19, then java, fixes but adds wasted time.)
 + backspace issues from ssh connection. (scoansi term type not found.)
-- test backups.
++ test rtibackup.pl.
+- test tfrsync.pl --cloud.
+- test tfrsync.pl --server.
 + logging to anaconda console during %post section of kickstart. 
 - update ostools version info in 1.16. (for logging etc.)
 + errors logged to console.
@@ -27,9 +29,9 @@ TO DO -
 + test kaseya processes.
 - make backups and os migrations "sendgrid aware".
 - add os media isos to repo server.
-+ update os media to default to local boot.
-? check for cloud backup customer and if so ask if data should be restored.
 + display issue for silent install when registering with insights.  
 + iptables issue because of perl local ip issue.
 - in-place os upgrade process from rh7 to rh8.
-- 
+- users custom .bash_profile creation.
++ term backspace issue. (needed ncurses-term.)
+-    
