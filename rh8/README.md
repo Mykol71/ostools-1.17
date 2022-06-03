@@ -4,7 +4,7 @@ TO DO -
 + tfremote access issue. (ssh to 15022 timesout. no errors in logs.)
 + update RTI iso.
 + console screen reso. remove irroneous nomodeset.
-- build custom iso. boot options for localboot, install, and upgrade.
+~ build custom iso. boot options for localboot, install, and upgrade.
 - smb users default passwords.
 + auditd fixes.
 - rh8 tcc.
@@ -35,3 +35,15 @@ TO DO -
 - users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
 -    
+
+
+
+Key:
+----
+
++ Done.
+- To Do.
+~ In progress.
+? Consider?
+
+mgreen@teleflora.com
