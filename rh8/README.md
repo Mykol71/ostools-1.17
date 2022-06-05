@@ -31,7 +31,7 @@ TO DO -
 - add os media isos to repo server.
 + display issue for silent install when registering with insights.  
 + iptables issue because of perl local ip issue.
-- in-place os upgrade process from rh7 to rh8.
+~ in-place os upgrade process from rh7 to rh8.
 - users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
 -    
@@ -44,6 +44,5 @@ Key:
 + Done.
 - To Do.
 ~ In progress.
-? Consider?
 
 mgreen@teleflora.com

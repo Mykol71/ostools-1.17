@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# backup custom os user data and config items.
+
+# make change to /etc/default/grub to add KS reference, then reboot and kickstart.
+
