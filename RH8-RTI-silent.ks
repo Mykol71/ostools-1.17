@@ -43,7 +43,7 @@ python2
 rear
 java
 sed
-lrzsc
+lrzsz
 ncurses-term
 %end
 
