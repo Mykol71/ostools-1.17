@@ -31,3 +31,4 @@ umount /mnt
 /usr2/ostools/bin/rtiuser.pl --update tfsupport
 /usr2/ostools/bin/rtiuser.pl --update rti
 /usr2/ostools/bin/rtiuser.pl --update odbc
+
