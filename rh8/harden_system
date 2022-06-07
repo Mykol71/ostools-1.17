@@ -2,7 +2,6 @@
 
 # NOTE: the ostools 1.16 pam config will break the system. do not use. (harden_linux.pl --pam)
 
-/usr2/ostools/bin/harden_linux.pl --iptables
 /usr2/ostools/bin/harden_linux.pl --ssh
 /usr2/ostools/bin/harden_linux.pl --hostsallow
 /usr2/ostools/bin/harden_linux.pl --services
@@ -18,6 +17,12 @@
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 /usr2/ostools/bin/updateos.pl --audit-system-configure
 /usr2/ostools/bin/updateos.pl --motd
+
+smbpasswd -a odbc
+smbpasswd -a rti
+smbpasswd -a tfsupport
+
+/usr2/ostools/bin/harden_linux.pl --iptables
 
 systemctl restart iptables
 systemctl restart sshd

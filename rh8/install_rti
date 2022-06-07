@@ -9,7 +9,7 @@ cd /tmp
 
 echo "Installing bbj...."
 ./update_bbj_19.pl --java --bbj18
-./update_bbj_19.pl --bbj19
+./update_bbj_19.pl --java --bbj19
 
 echo "Adding multiserver.pwd fix....."
 cp -f /tmp/multiserver.pwd /usr2/bbx/config/
@@ -27,3 +27,7 @@ cd /mnt
 ./install_rti-16.3.8.pl --nobbxt /usr2/bbx
 cd /tmp
 umount /mnt
+
+/usr2/ostools/bin/rtiuser.pl --update tfsupport
+/usr2/ostools/bin/rtiuser.pl --update rti
+/usr2/ostools/bin/rtiuser.pl --update odbc
