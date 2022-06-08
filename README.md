@@ -17,6 +17,9 @@ Functionality -
 - Logging for updateos.sh is in /tmp/updateos.sh.log.
 
 
+How to build custom boot install media -
+----------------------------------------
+
 
 Contrib Info -
 --------------
@@ -44,26 +47,19 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 
 Steps -
 -------
-1. Download the RH8.x install media iso from the Redhat portal.
+1. Download the RH8.x install media iso from the support repo (link above).
 
-2. Use rufus or other utility to burn the iso to a blank usb stick of at least 16GB in size.
+2. Use rufus or other utility to burn the iso to a blank usb stick.
 
 3. Boot from usb stick.
 
-4. At the grub screen, press "e" to edit the "Install Redhat...." menu selection and add the following to the boot line:
-inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI.ks
-and, remove the "quiet" at the end.
-then ctl-x to continue the boot process.
+4. At the grub boot menu, select "Install RTI on RHEL8".
 
-5. After the OS installs, login as tfsupport - (normal daisy tfsupport password)
+5. After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login.
 
-6. execute the following command:
-$sudo updateos rh8 stage {desired hostname}
-(if hostname not provided, the current will be used.)
+6. if networking permits, kpugh and mgreen will get an email of the log file from the staging process.
 
-7. if networking permits, you will get an email of the log file from the staging process.
-
-8. run RTI:
+7. run RTI:
 $linuxbbx
 
 Information -
