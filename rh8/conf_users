@@ -5,6 +5,8 @@ useradd rti
 useradd odbc
 useradd delivery
 
+groupadd rtiadmin
+
 cd /tmp
 [ ! -f /tmp/tfsupport-authorized_keys ] && wget http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
 [ ! -f /tmp/twofactor-20090723.tar ] && wget http://rtihardware.homelinux.com/t1800/twofactor-20090723.tar
