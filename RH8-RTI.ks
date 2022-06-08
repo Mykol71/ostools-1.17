@@ -34,7 +34,6 @@ iptables-services
 samba
 cups
 chrony
-iptables
 ntpstat
 telnet
 fetchmail
