@@ -1,6 +1,8 @@
+---
+RHEL8
+
 TO DO -
 -------
-
 + tfremote access issue. (ssh to 15022 timesout. no errors in logs.)
 + update RTI iso.
 + console screen reso. remove irroneous nomodeset.
@@ -33,15 +35,16 @@ TO DO -
 - in-place os upgrade process from rh7 to rh8.
 - tfsupport users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
--    
-
-
+- iptables config issue when in %post of ks. Works after login.
+- no pam_talley2.
+-     
 
 Key:
 ----
-
 + Done.
 - To Do.
 ~ In progress.
 
 mgreen@teleflora.com
+
+---
