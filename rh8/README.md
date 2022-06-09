@@ -35,9 +35,10 @@ TO DO -
 - in-place os upgrade process from rh7 to rh8.
 - tfsupport users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
-- iptables config issue when in %post of ks. Works after login.
-- no pam_talley2.
--     
+~ iptables config issue when in %post of ks. Works after login.
+- no pam_talley2. Need to be sure to test password management.
+~ no post install updateos works. cannot find the temp download of the script.     
+-
 
 Key:
 ----
