@@ -108,5 +108,21 @@ systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
 ln -s /usr/bin/python2.7 /usr/bin/python
+
+# create script to run after reboot.
+cat << xxxEOFxxx > /tmp/post_install.sh
+#!/bin/bash
+updateos rh8 conf_firewall
+updateos rh8 register_insights
+updateos rh8 zzz_email_results
+sed '/post_install.sh/d' /etc/crontab
+rm -f /tmp/post_install.sh
+xxxEOFxxx
+chmod +x /tmp/post_install.sh
+
+# add crontab item to run above script on reboot.
+echo "@reboot root /bin/bash /tmp/post_install.sh" >> /etc/crontab
+
+# run rti staging in new virtual terminal.
 openvt -s -w -- /usr/bin/updateos rh8 stage rh8-rti 2>&1
 %end

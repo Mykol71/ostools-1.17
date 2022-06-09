@@ -1,8 +1,3 @@
 #!/bin/bash
 
-systemctl stop firewalld
-systemctl disable firewalld
-yum -y remove firewalld
-yum -y install iptables
-systemctl start iptables
-systemctl enable iptables
+/usr2/ostools/bin/harden_linux.pl --iptables

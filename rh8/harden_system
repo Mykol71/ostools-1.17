@@ -9,7 +9,7 @@
 /usr2/ostools/bin/harden_linux.pl --logrotate
 /usr2/ostools/bin/harden_linux.pl --sudo
 /usr2/ostools/bin/harden_linux.pl --ipv6
-/usr2/ostools/bin/harden_linux.pl --iptables
+/usr2/ostools/bin/harden_linux.pl --ids
 
 /usr2/ostools/bin/updateos.pl --samba
 /usr2/ostools/bin/updateos.pl --cupsconf
@@ -18,7 +18,6 @@
 /usr2/ostools/bin/updateos.pl --audit-system-configure
 /usr2/ostools/bin/updateos.pl --motd
 
-systemctl restart iptables
 systemctl restart sshd
 systemctl restart rsyslog
 systemctl restart smb
