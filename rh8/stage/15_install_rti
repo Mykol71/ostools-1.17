@@ -9,7 +9,7 @@ cd /tmp
 
 echo "Installing bbj...."
 ./update_bbj_19.pl --java --bbj18
-./update_bbj_19.pl --java --bbj19
+./update_bbj_19.pl --bbj19
 
 echo "Adding multiserver.pwd fix....."
 cp -f /tmp/multiserver.pwd /usr2/bbx/config/
