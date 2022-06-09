@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd /tmp
+[ ! -f /tmp/set_em_pwd.expect ] && wget http://rhel8repo.centalus.cloudapp.azure.com/ostools-1.17/rh8/set_em_pwd.expect
+
+/tmp/set_em_pwd.expect
+
+systemctl restart bbj
+systemctl restart rti
