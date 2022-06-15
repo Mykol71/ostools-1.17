@@ -40,7 +40,7 @@ Contrib Info -
 - it's ok to install dependent rpms, but hopefully not necessary.
 - if a new script is added, it is automatically available to all installations of ostools-1.17.
 - if a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
-- if a change needs to be made, create a ticket in office 365, and explain the details including the related pci rule etc.
+- if a change needs to be made, create a ticket in azure devops, and explain the details including the related pci rule etc.
 
 Staging Instructions -
 ----------------------
