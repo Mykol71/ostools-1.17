@@ -13,5 +13,4 @@ chmod +x /tmp/post_install.sh
 # add crontab item to run above script on reboot.
 echo "@reboot root /bin/bash /tmp/post_install.sh" >> /etc/crontab
 
-sleep 15
 reboot

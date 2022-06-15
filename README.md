@@ -8,18 +8,30 @@ Functionality -
 - After the system has been kickstarted using the ks file, updateos will be availible to all users. (in the /usr/bin folder).
 - updateos will download the scripts and exec them on every execution.
 - Syntax for updateos is:
-	updateos.sh [OS] [scriptname or "stage"] (cmdlineopt1 opt2 opt3 opt4 opt5)
+	updateos [OS] [scriptname or "stage"] (cmdlineopt1 opt2 opt3 opt4 opt5)
 - OS = rh7, rh8, etc.
 - scriptname is used if running a single task. EX: adduser
 - If the script requires user input, add command line alternatives.
 - If "stage" is specified, all scripts in the [OS]/stage/ folder will be executed. (intended to not require user input.)
 - If a script fails during a "stage" run, updateos.sh exits non-zero immediately.
-- Logging for updateos.sh is in /tmp/updateos.sh.log.
+- Logging for updateos is in /tmp/updateos.log.
 
 
 How to build custom boot install media -
 ----------------------------------------
+1. Download boot.iso from redhat, and mount it with $mount -o loop ./boot.iso /mnt .
+2. Copy the structure to a new folder. i.e. cp -rp /mnt/. ./newiso/.
+3. Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line:
+---
 
+	inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks in	st.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+
+---
+(Make any other edits you wish as well.)
+4. cd ./newiso/.
+5. sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux/boot.cat --no-emul-boot --boot-load-size 4 --boot-info-table -J -R -V "Teleflora Linux POS" .
+
+The resulting 900ish meg iso file can be then burned to a usb stick with any utility. i.e. rufus.
 
 Contrib Info -
 --------------
@@ -62,6 +74,8 @@ Steps -
 7. run RTI:
 $linuxbbx
 
+** Note: you will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
+
 Information -
 -------------
 - tcc is installed.
@@ -83,16 +97,19 @@ Information -
 - $updateos {os version} only will display a list of possible scripts.
 
 
-
 TO DO -
 -------
-- add help access for each script.
-+ add logging function to updateos.
-? add a cacheing situation for making the commands available without network.
+? add help access for each script.
 + add ostools 1.16 to git.
 + move ostools 1.16 download package to repo server.
-- 
++ full path to commands in /usr/bin in case ran from cron. 
 
+Key -
+-----
+- to do.
++ done.
+~ in progress.
+? consider.
 
 mgreen@teleflora.com
 

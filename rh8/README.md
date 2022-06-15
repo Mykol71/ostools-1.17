@@ -7,9 +7,9 @@ TO DO -
 + update RTI iso.
 + console screen reso. remove irroneous nomodeset.
 + build custom iso. boot options for localboot, install, and upgrade.
-- smb users default passwords.
++ smb users default passwords.
 + auditd fixes.
-- rh8 tcc.
+- rh8 tcc. upgrade ron's test VM so Moth can use to compile tcc.
 + download rti iso bug.
 + find a upsd rpm for rh8 and publish in our repo.
 + 640x480 reso.
@@ -19,7 +19,7 @@ TO DO -
 + test tfrsync.pl --cloud.
 + test tfrsync.pl --server.
 + logging to anaconda console during %post section of kickstart. 
-- update ostools version info in 1.16. (for logging etc.)
++ update ostools version info in 1.16. (for logging etc.)
 + errors logged to console.
 + rear support/integration. (Relax and Recover)
 + build qa vms.
@@ -33,12 +33,14 @@ TO DO -
 + display issue for silent install when registering with insights.  
 + iptables issue because of perl local ip issue.
 - in-place os upgrade process from rh7 to rh8.
-- tfsupport users custom .bash_profile creation.
++ users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
-~ iptables config issue when in %post of ks. Works after login.
-- no pam_talley2. Need to be sure to test password management.
++ iptables config issue when in %post of ks. Works after login.
++ no pam_talley2. Need to be sure to test password management. And let support know.
 ~ no post install updateos works. cannot find the temp download of the script.     
--
+- check pa-dss insights data for corrections.
+- qa rh8 vms.
+- 
 
 Key:
 ----

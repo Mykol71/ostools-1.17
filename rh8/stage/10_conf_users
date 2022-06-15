@@ -1,9 +1,12 @@
 #!/bin/bash
 
-useradd tfsupport -g rtiadmin
-useradd rti
-useradd odbc
-useradd delivery
+groupadd rtiadmin
+groupadd rti
+groupadd uucp
+useradd rti -g rti
+usermod tfsupport -g rtiadmin -G rti
+useradd odbc -G rti
+useradd delivery -G rti
 
 cd /tmp
 [ ! -f /tmp/tfsupport-authorized_keys ] && wget http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
@@ -18,6 +21,3 @@ chmod +x /tmp/*.pl
 cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
 chmod 700 /home/tfsupport/.ssh/authorized_keys
 chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
-
-#echo "Installing admin menus....."
-#/tmp/install_adminmenus.pl --run

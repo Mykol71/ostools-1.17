@@ -6,8 +6,8 @@ ID=$(/usr/bin/id -u)
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 OS="$1"
 
-[ "$1" == "" ] && echo "Specify OS from:" | tee -a /tmp/updateos.log && echo "------" | tee -a /tmp/updateos.log  && echo `curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | sed 's/\///g'` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
-[ "$2" == "" ] && echo "Specify script name or group from:" | tee -a /tmp/updateos.log  && echo "------" | tee -a /tmp/updateos.log && echo `curl -ls $BACKEND/$OS/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
+[ "$1" == "" ] && echo "Specify OS from:" | tee -a /tmp/updateos.log && echo "------" | tee -a /tmp/updateos.log  && echo `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | sed 's/\///g'` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
+[ "$2" == "" ] && echo "Specify script name or group from:" | tee -a /tmp/updateos.log  && echo "------" | tee -a /tmp/updateos.log && echo `/usr/bin/curl -ls $BACKEND/$OS/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
 
 if [ "$2" == "osup" ]
 then
@@ -17,11 +17,11 @@ echo ------ >>/tmp/updateos.log
 echo "" >>/tmp/updateos.log
 echo "Upgrading OS for RTI...." | tee -a /tmp/updateos.log
 echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
-for script in `curl -ls $BACKEND/$OS/osup/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
+for script in `/usr/bin/curl -ls $BACKEND/$OS/osup/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
 do
   echo "----> Running $script ..." | tee -a /tmp/updateos.log
   timestamp=`date +%Y%m%d%H%M%S`
-  curl -s $BACKEND/$OS/osup/$script -o /tmp/.${script}.${timestamp}.tmp
+  /usr/bin/curl -s $BACKEND/$OS/osup/$script -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
   /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
@@ -42,11 +42,11 @@ echo "@ Staging for RTI $OS...." | tee -a /tmp/updateos.log
 echo ")~ " | tee -a /tmp/updateos.log
 echo "-----" | tee -a /tmp/updateos.log
 echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
-for script in `curl -ls $BACKEND/$OS/stage/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
+for script in `/usr/bin/curl -ls $BACKEND/$OS/stage/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
 do
   echo "----> Running $script ..." | tee -a /tmp/updateos.log
   timestamp=`date +%Y%m%d%H%M%S`
-  curl -s $BACKEND/$OS/stage/$script -o /tmp/.${script}.${timestamp}.tmp
+  /usr/bin/curl -s $BACKEND/$OS/stage/$script -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
   /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
@@ -62,7 +62,7 @@ then
 echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   echo `date` >>/tmp/updateos.log
   echo "------" >>/tmp/updateos.log
-  curl -s $BACKEND/$OS/$2 -o /tmp/.${script}.${timestamp}.tmp
+  /usr/bin/curl -s $BACKEND/$OS/$2 -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
   /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
