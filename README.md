@@ -22,7 +22,7 @@ How to build custom boot install media -
 2. Copy the structure to a new folder. i.e. cp -rp /mnt/. ./newiso/.
 3. Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line:
 
-	inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks in	st.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks inst.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
 (Make any other edits you wish as well.)
 4. cd ./newiso/.
@@ -40,7 +40,7 @@ Contrib Info -
 - it's ok to install dependent rpms, but hopefully not necessary.
 - if a new script is added, it is automatically available to all installations of ostools-1.17.
 - if a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
-
+- if a change needs to be made, create a ticket in office 365, and explain the details including the related pci rule etc.
 
 Staging Instructions -
 ----------------------
@@ -54,34 +54,39 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 
 Steps -
 -------
-1. Download the RH8.x install media iso from the support repo (link above).
+1. Download the RH8.x install media iso:  
 
-2. Use rufus or other utility to burn the iso to a blank usb stick.
+http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 
-3. Boot from usb stick.
-
-4. At the grub boot menu, select "Install RTI on RHEL8".
-
-5. After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login.
-
-6. if networking permits, kpugh and mgreen will get an email of the log file from the staging process.
-
+2. Use rufus or other utility to burn the iso to a blank usb stick.  
+3. Boot from usb stick.  
+4. At the grub boot menu, select "Install RTI on RHEL8".  
+5. After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login.  
+6. if networking permits, kpugh and mgreen will get an email of the log file from the staging process.  
 7. run RTI:
 $linuxbbx
 
 ** Note: you will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
+OS Upgrade Instructions -
+-------------------------
+Steps -
+-------
+1. coming soon.
+2.
+
 Information -
 -------------
-- tcc is installed.
-- bbj 19 is installed.
-- kaseya is installed.
-- system is registered with redhat insights.
-- system is registered to the TF RH8 repo for patches.
-- ostools 1.16 is installed.
-- ostools 1.16 is ostools 1.15 with RH8 support.
-- ostools 1.17 is this.
-- there is also an -nvm.ks version of the kickstart file for nvm ssd support.
++ tcc is installed.
++ bbj 19 is installed.
++ kaseya is installed.
++ system is registered with redhat insights.
++ system is registered to the TF RH8 repo for patches.
++ ostools 1.16 is installed.
++ ostools 1.16 is ostools 1.15 with RH8 support.
++ ostools 1.17 is this.
++ there is also an -nvm.ks version of the kickstart file for nvm ssd support.
+
 ** take note that $updateos and $updateos.pl are both on the system and do different things. 
      Make sure, on step 6 above, you execute $updateos **
 
@@ -97,6 +102,7 @@ TO DO -
 + add ostools 1.16 to git.
 + move ostools 1.16 download package to repo server.
 + full path to commands in /usr/bin in case ran from cron. 
+- 
 
 Key -
 -----
@@ -108,3 +114,8 @@ Key -
 mgreen@teleflora.com
 
 ---
+
+History -
+---------
+
+

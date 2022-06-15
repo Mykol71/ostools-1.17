@@ -40,7 +40,9 @@ TO DO -
 ~ no post install updateos works. cannot find the temp download of the script.     
 - check pa-dss insights data for corrections.
 ~ qa rh8 vms.
-- 
+- configure compliance portion of redhat insights.
+- compare recommended changes to what is already implemented and make changes accordingly.
+-  
 
 Key:
 ----
