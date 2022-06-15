@@ -1,16 +1,10 @@
 #!/bin/bash
 
-# create script to run after reboot.
-cat << xxxEOFxxx > /tmp/post_install.sh
-#!/bin/bash
-updateos rh8 conf_firewall
-updateos rh8 register_insights
-updateos rh8 zz_email_results
-sed -i '/post_install.sh/d' /etc/crontab
-xxxEOFxxx
-chmod +x /tmp/post_install.sh
+#sed -i '/post_install.sh/d' /etc/crontab
 
 # add crontab item to run above script on reboot.
-echo "@reboot root /bin/bash /tmp/post_install.sh" >> /etc/crontab
+echo "@reboot root /bin/updateos rh8 conf_firewall" >> /etc/crontab
+echo "@reboot root /bin/updateos rh8 register_insights" >> /etc/crontab
+echo "@reboot root /bin/updateos rh8 zz_email_results" >> /etc/crontab
 
 reboot

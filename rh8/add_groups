@@ -1,4 +1,0 @@
-#!/bin/bash
-
-groupadd rti
-groupadd rtiadmins
