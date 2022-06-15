@@ -29,7 +29,7 @@ do
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
 done
-exit 0
+exit $?
 fi
 
 if [ "$2" == "stage" ]
@@ -54,7 +54,7 @@ do
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${script}.${timestamp}.tmp
 done
-exit 0
+exit $?
 fi
 
 if [ "$2" != "stage" ] || [ "$2" != "osup" ]
@@ -71,5 +71,5 @@ echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   echo "------" >>/tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
   rm -f /tmp/.${2}.${timestamp}.tmp
+exit $?
 fi
-exit 0
