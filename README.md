@@ -16,17 +16,14 @@ Functionality -
 - If a script fails during a "stage" run, updateos.sh exits non-zero immediately.
 - Logging for updateos is in /tmp/updateos.log.
 
-
 How to build custom boot install media -
 ----------------------------------------
 1. Download boot.iso from redhat, and mount it with $mount -o loop ./boot.iso /mnt .
 2. Copy the structure to a new folder. i.e. cp -rp /mnt/. ./newiso/.
 3. Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line:
----
 
 	inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks in	st.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
----
 (Make any other edits you wish as well.)
 4. cd ./newiso/.
 5. sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux/boot.cat --no-emul-boot --boot-load-size 4 --boot-info-table -J -R -V "Teleflora Linux POS" .
@@ -45,10 +42,8 @@ Contrib Info -
 - if a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
 
 
-
 Staging Instructions -
 ----------------------
-
 Repos -
 -------
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
@@ -95,7 +90,6 @@ Information -
 - $updateos {os version} {script name or "stage"}
 - $updateos only will display a list of possible os versions.
 - $updateos {os version} only will display a list of possible scripts.
-
 
 TO DO -
 -------
