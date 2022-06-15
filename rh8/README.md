@@ -39,7 +39,7 @@ TO DO -
 + no pam_talley2. Need to be sure to test password management. And let support know.
 ~ no post install updateos works. cannot find the temp download of the script.     
 - check pa-dss insights data for corrections.
-- qa rh8 vms.
+~ qa rh8 vms.
 - 
 
 Key:
