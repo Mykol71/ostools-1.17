@@ -42,6 +42,7 @@ TO DO -
 ~ qa rh8 vms.
 - configure compliance portion of redhat insights.
 - compare recommended changes to what is already implemented and make changes accordingly.
+- add a scheduled job for compliance checks.
 -  
 
 Key:
