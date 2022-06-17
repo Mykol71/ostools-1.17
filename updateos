@@ -63,13 +63,13 @@ echo "----> Running $2 ..." | tee -a /tmp/updateos.log
   timestamp=`date +%Y%m%d%H%M%S`
   echo `date` >>/tmp/updateos.log
   echo "------" >>/tmp/updateos.log
-  /usr/bin/curl -s $BACKEND/$OS/$2 -o /tmp/.${2}.${timestamp}.tmp
+  /usr/bin/curl -s $BACKEND/${OS}/${2} -o /tmp/.${2}.${timestamp}.tmp
   chmod +x /tmp/.${2}.${timestamp}.tmp
   /tmp/.${2}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
   echo "Success." | tee -a /tmp/updateos.log
   echo "------" >>/tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
-  rm -f /tmp/.${2}.${timestamp}.tmp
+#  rm -f /tmp/.${2}.${timestamp}.tmp
 exit $?
 fi
