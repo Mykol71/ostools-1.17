@@ -22,7 +22,6 @@ net-tools
 java
 perl
 wget
-postfix
 mailx
 procmail
 bind-utils
@@ -47,6 +46,7 @@ ncurses-term
 rsync
 grub2-efi-x64-modules
 grub2-tools-efi
+sendmail
 %end
 
 # Keyboard layouts
@@ -102,11 +102,11 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 cd /usr/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
-systemctl start postfix
+systemctl start sendmail
 systemctl start smb
 systemctl start cups
 systemctl start iptables
-systemctl enable postfix
+systemctl enable sendmail
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables

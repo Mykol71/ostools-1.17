@@ -3,7 +3,7 @@ text
 authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
-bootloader --append="video=640x480"
+bootloader --append="video=640x480 net.ifnames=0"
 repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
 repo --name="BaseOS" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
@@ -22,7 +22,6 @@ net-tools
 java
 perl
 wget
-postfix
 mailx
 procmail
 bind-utils
@@ -34,7 +33,6 @@ iptables-services
 samba
 cups
 chrony
-iptables
 ntpstat
 telnet
 fetchmail
@@ -45,6 +43,10 @@ java
 sed
 lrzsz
 ncurses-term
+rsync
+grub2-efi-x64-modules
+grub2-tools-efi
+sendmail
 %end
 
 # Keyboard layouts
@@ -56,7 +58,7 @@ lang en_US.UTF-8
 network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=no --activate
 network  --hostname=rhel8-rti.teleflora.com
 
-url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/BaseOS
 
 # Run the Setup Agent on first boot
 firstboot --disable
@@ -66,11 +68,10 @@ ignoredisk --only-use=sda
 zerombr
 clearpart --all --initlabel
 # Disk partitioning information
-#part /usr2 --fstype="xfs" --ondisk=nvme0n1 --grow
-part /usr2 --fstype="ext4" --onpart=/dev/sda3 --noformat
-part swap --fstype="swap" --ondisk=sda2
-part /boot/efi --fstype="efi" --ondisk=sda --size=200 --fsoptions="umask=0077,shortname=tflinux"
-part / --fstype="xfs" --ondisk=sda --size=30000 --onpart=/dev/sda1
+part /usr2 --fstype="xfs" --onpart=sda3 --noformat
+part swap --fstype="swap" --ondisk=sda --recommended
+part /boot/efi --fstype="efi" --ondisk=sda --size=600 --fsoptions="umask=0077,shortname=tflinux"
+part / --fstype="xfs" --ondisk=sda --size=30000
 
 # System timezone
 timezone America/Winnipeg --isUtc
@@ -101,11 +102,11 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 cd /usr/bin
 curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
-systemctl start postfix
+systemctl start sendmail
 systemctl start smb
 systemctl start cups
 systemctl start iptables
-systemctl enable postfix
+systemctl enable sendmail
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
