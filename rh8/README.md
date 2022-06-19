@@ -21,7 +21,7 @@ TO DO -
 + logging to anaconda console during %post section of kickstart. 
 + update ostools version info in 1.16. (for logging etc.)
 + errors logged to console.
-+ rear support/integration. (Relax and Recover)
+~ rear support/integration. (Relax and Recover)
 + build qa vms.
 - update tfrsync.pl with bug fixes from kevin and joe to 1.16 repo.
 - update tfrsync.pl with fixes for cloud backup warnings 23,24 to 1.16 repo.
