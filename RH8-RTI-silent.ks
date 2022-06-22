@@ -3,7 +3,7 @@ text
 authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
-bootloader --append="video=640x480 net.ifnames=0"
+bootloader --append="video=640x480"
 repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
 repo --name="BaseOS" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
