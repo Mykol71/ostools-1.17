@@ -42,7 +42,8 @@ TO DO -
 ~ qa rh8 vms.
 - configure compliance portion of redhat insights.
 - add a scheduled job for compliance checks.
--  
+- switch back to eth0,1 naming conventions?
+-   
 
 Key:
 ----
