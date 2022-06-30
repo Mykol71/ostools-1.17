@@ -22,16 +22,17 @@ echo "Usage: sudo updateos (groupname) (subgroupname or scriptname)"
 echo ""
 echo "If a subgroup name is provided, all the scripts in that subgroup will be executed."
 echo ""
-echo "GROUP  SUBGROUP  SCRIPT                  DESC"
-echo "-----  --------  ------                  ----"
+echo "GROUP  SUBGROUP  SCRIPT                   DESC"
+echo "-----  --------  ------                   ----"
 for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
 do
 echo "$GROUP"
 for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
 do
 cd /tmp
-DESC="`/usr/bin/curl -Os $BACKEND/$GROUP/$SCRIPT | cat /tmp/$SCRIPT | grep ^#DESC | sed -e 's/^#DESC\ //g'`"
-echo "                 $SCRIPT    $DESC"
+/usr/bin/curl -Os $BACKEND/$GROUP/$SCRIPT
+DESC="`cat /tmp/$SCRIPT | grep ^#DESC | sed -e 's/^#DESC\ //g'`"
+echo "                 $SCRIPT              $DESC"
 done
 for SUBGROUP in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
 do
