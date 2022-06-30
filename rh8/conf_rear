@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC Install and configure Relace and Recover.
+#DESC Install and configure Relax and Recover.
 # determine rsync account.
 # install cloud backup.
 # cp ssh keys to root account.
