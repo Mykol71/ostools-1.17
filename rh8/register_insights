@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Register system with TF's Redhat insights account.
 # TF POS Linux insights registration.
 
 yum -y install scap-security-guide*

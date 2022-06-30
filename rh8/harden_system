@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Harden the system per PCI/PADSS guidelines.
 # NOTE: the ostools 1.16 pam config will break the system. do not use. (harden_linux.pl --pam)
 
 /usr2/ostools/bin/harden_linux.pl --ssh

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-cd /tmp
-[ ! -f /tmp/KcsSetup.sh ] && wget http://rtihardware.homelinux.com/support/kuefi/KcsSetup.sh
-chmod +x /tmp/KcsSetup.sh
-/tmp/KcsSetup.sh

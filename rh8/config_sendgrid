@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Configures system to relay email through sendgrid. Need: APIuser password and email from address.
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC Installs RTI 16.3.8 and all dependancies.
+#DESC Installs RTI 16.3.8 and all deps.
 
 cd /tmp
 [ ! -f /tmp/RTI-16.3.8-Linux.iso ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/RTI-16.3.8-Linux.iso.gz

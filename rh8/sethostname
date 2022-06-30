@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Set the server's hostname.
 hostname=$1
 [ "$hostname" == "" ] && echo -n "Enter hostname: " && read hostname
 IP=`ip address | grep inet | grep -v inet6 | grep -v 127.0.0.1 | cut -d" " -f6 | cut -d/ -f1`

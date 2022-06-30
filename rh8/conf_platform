@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Creates folders need by the POS installation.
 [ ! -d /usr2 ] && mkdir /usr2
 [ ! -d /usr2/bbx ] && mkdir /usr2/bbx
 [ ! -d /usr2/bbx/bin ] && mkdir /usr2/bbx/bin

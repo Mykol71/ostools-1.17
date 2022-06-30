@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TF POS rti yum repo file install.
+#DESC Configure system to receive patches from TF's repo server.
 
 # verify root
 ID=`/usr/bin/id -u`

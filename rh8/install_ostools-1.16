@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Install legacy ostools.
 cd /tmp
 [ ! -f /tmp/ostools-1.16-latest.tar.gz ] && wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/ostools-1.16-latest.tar.gz
 tar xvfz ./ostools-1.16-latest.tar.gz

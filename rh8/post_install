@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Creates a systemd service that will run after first reboot only. (After network starts.)
 #sed -i '/post_install.sh/d' /etc/crontab
 # create post install script
 cat > /tmp/post_install.sh <<EOF

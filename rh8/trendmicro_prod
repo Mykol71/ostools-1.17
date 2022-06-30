@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Install Trendmicro and register with TF's account - production folder.
 ACTIVATIONURL='dsm://agents.deepsecurity.trendmicro.com:443/'
 MANAGERURL='https://app.deepsecurity.trendmicro.com:443'
 CURLOPTIONS='--silent --tlsv1.2'

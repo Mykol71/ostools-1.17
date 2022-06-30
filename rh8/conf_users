@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#DESC Add POS system accounts.
 groupadd rtiadmin
 groupadd rti
 groupadd uucp

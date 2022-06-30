@@ -97,10 +97,12 @@ TO DO -
 + add ostools 1.16 to git.
 + move ostools 1.16 download package to repo server.
 + full path to commands in /usr/bin in case ran from cron. 
-- usage.
-- add version info.
-- logging.
-- 
++ usage.
++ add version info.
++ logging.
++ add descriptions for scripts.
+~ rewrite updateos
+-   
 
 Key -
 -----

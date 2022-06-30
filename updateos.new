@@ -18,7 +18,7 @@ if [ "$1" == "" ] || [ "`echo $1 | grep -i help`" != "" ] || [ "`echo $1 | grep 
 then
 echo "updateos - $VERSION"
 echo ""
-echo "Usage: sudo updateos (groupname) (subgroupname or scriptname)"
+echo "USAGE: sudo updateos (groupname) (subgroupname or scriptname)"
 echo ""
 echo "If a subgroup name is provided, all the scripts in that subgroup will be executed."
 echo ""
@@ -84,3 +84,4 @@ else
   rm -f /tmp/.${script}.${timestamp}.tmp
   exit $?
 fi
+exit 0

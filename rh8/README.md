@@ -21,7 +21,7 @@ TO DO -
 + logging to anaconda console during %post section of kickstart. 
 + update ostools version info in 1.16. (for logging etc.)
 + errors logged to console.
-~ rear support/integration. (Relax and Recover)
+- rear support/integration. (Relax and Recover)
 + build qa vms.
 - update tfrsync.pl with bug fixes from kevin and joe to 1.16 repo.
 - update tfrsync.pl with fixes for cloud backup warnings 23,24 to 1.16 repo.
@@ -40,10 +40,13 @@ TO DO -
 + no post install updateos works. cannot find the temp download of the script.     
 - check pa-dss insights data for corrections.
 ~ qa rh8 vms.
+~ devel rh8 vm.
 - configure compliance portion of redhat insights.
 - add a scheduled job for compliance checks.
 ? switch back to eth0,1 naming conventions.
--   
++ switch to symlinks for groups.   
++ add #DESC comments.
+-
 
 Key:
 ----
