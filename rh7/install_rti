@@ -1,0 +1,33 @@
+#!/bin/bash
+
+cd /tmp
+[ ! -f /tmp/RTI-16.3.8-Linux.iso ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/RTI-16.3.8-Linux.iso.gz
+[ ! -f /tmp/multiserver.pwd ] && wget http://rtihardware.homelinux.com/t1800/multiserver.pwd
+[ ! -f /tmp/librxtxSerial.so ] && wget http://rtihardware.homelinux.com/ostools/librxtxSerial.so
+[ ! -f /tmp/update_bbj_19.pl ] && wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh8/update_bbj_19.pl && chmod +x /tmp/update_bbj_19.pl
+[ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" >/etc/profile.d/term.sh && chmod +x /etc/profile.d/term.sh
+
+echo "Installing bbj...."
+./update_bbj_19.pl --java --bbj19
+
+echo "Adding multiserver.pwd fix....."
+cp -f /tmp/multiserver.pwd /usr2/bbx/config/
+
+echo "Installing 32-bit library for serial ports...."
+cp /usr2/basis/lib/librxtxSerial.so /usr2/basis/lib/librxtxSerial.so.64bit
+cp librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
+chmod 666 /usr2/basis/lib/librxtxSerial.so
+chown root:root /usr2/basis/lib/librxtxSerial.so
+
+echo "Installing RTI...."
+[ ! -f ./RTI-16.3.8-Linux.iso ] && gunzip xvfz ./RTI-16.3.8-Linux.iso.gz
+mount -o loop /tmp/RTI-16.3.8-Linux.iso /mnt
+cd /mnt
+./install_rti-16.3.8.pl --nobbxt /usr2/bbx
+cd /tmp
+umount /mnt
+
+/usr2/ostools/bin/rtiuser.pl --update tfsupport
+/usr2/ostools/bin/rtiuser.pl --update rti
+/usr2/ostools/bin/rtiuser.pl --update odbc
+
