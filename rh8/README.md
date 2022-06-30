@@ -36,13 +36,13 @@ TO DO -
 + users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
 + iptables config issue when in %post of ks. Works after login.
-+ no pam_talley2. Need to be sure to test password management. And let support know.
++ no pam_tally2. Need to be sure to test password management. And let support know.
 + no post install updateos works. cannot find the temp download of the script.     
 - check pa-dss insights data for corrections.
 ~ qa rh8 vms.
 - configure compliance portion of redhat insights.
 - add a scheduled job for compliance checks.
-- switch back to eth0,1 naming conventions?
+? switch back to eth0,1 naming conventions.
 -   
 
 Key:
@@ -50,6 +50,7 @@ Key:
 + Done.
 - To Do.
 ~ In progress.
+? Consider.
 
 mgreen@teleflora.com
 

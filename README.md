@@ -1,5 +1,5 @@
 ---
-ostools-1.17
+ostools-1.17.1
 
 Functionality -
 ---------------
@@ -7,13 +7,8 @@ Functionality -
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
 - After the system has been kickstarted using the ks file, updateos will be availible to all users. (in the /usr/bin folder).
 - updateos will download the scripts and exec them on every execution.
-- Syntax for updateos is:
-	updateos [OS] [scriptname or "stage"] (cmdlineopt1 opt2 opt3 opt4 opt5)
-- OS = rh7, rh8, etc.
-- scriptname is used if running a single task. EX: adduser
 - If the script requires user input, add command line alternatives.
-- If "stage" is specified, all scripts in the [OS]/stage/ folder will be executed. (intended to not require user input.)
-- If a script fails during a "stage" run, updateos.sh exits non-zero immediately.
+- If a script fails during a "group" run, updateos.sh exits non-zero immediately.
 - Logging for updateos is in /tmp/updateos.log.
 
 How to build custom boot install media -
@@ -92,9 +87,9 @@ Information -
 
 /usr/bin/updateos syntax -
 --------------------------
-- $updateos {os version} {script name or "stage"}
-- $updateos only will display a list of possible os versions.
-- $updateos {os version} only will display a list of possible scripts.
+- $updateos {group} {subgroup or scriptname}
+- $updateos only will display usage.
+- $updateos {group} only will display a list of possible subgroups or scripts.
 
 TO DO -
 -------
@@ -102,6 +97,9 @@ TO DO -
 + add ostools 1.16 to git.
 + move ostools 1.16 download package to repo server.
 + full path to commands in /usr/bin in case ran from cron. 
+- usage.
+- add version info.
+- logging.
 - 
 
 Key -
