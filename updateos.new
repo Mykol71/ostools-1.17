@@ -22,8 +22,8 @@ echo "USAGE: sudo updateos (groupname) (subgroupname or scriptname)"
 echo ""
 echo "If a subgroup name is provided, all the scripts in that subgroup will be executed."
 echo ""
-echo "GROUP  SUBGROUP  SCRIPT                  DESC"
-echo "-----  --------  ------                  ----"
+echo "GROUP  SUBGROUP  SCRIPT                  DESCRIPTION"
+echo "-----  --------  ------                  -----------"
 for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
 do
 echo "$GROUP"
