@@ -12,10 +12,9 @@ VERSION="1.17.1"
 GROUP="$1"
 SCRIPT="$2"
 SUBGROUP="$2"
+n="${15:-24}"
 
-# usage
-if [ "$1" == "" ] || [ "`echo $1 | grep -i help`" != "" ] || [ "`echo $1 | grep \?`" != "" ]
-then
+usage() {
 echo "updateos - $VERSION"
 echo ""
 echo "USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
@@ -27,14 +26,13 @@ echo "-----  --------  ------                  -----------"
 for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
 do
 echo "$GROUP"
-n=${1:-24}
 for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
 do
 cd /tmp
 /usr/bin/curl -Os $BACKEND/$GROUP/$SCRIPT
 DESC="`grep ^#DESC /tmp/$SCRIPT | sed -e 's/^#DESC\ //g'`"
-    SCRIPT=$SCRIPT$(printf '%*s' "$n" "")                  # pad with `n` spaces.
-    var=$(echo "${SCRIPT}"|grep -Eo "^.{1,$n}")            # limit length to `n`
+    SCRIPT="$SCRIPT$(printf '%*s' "$n" "")"                  # pad with `n` spaces.
+    var="$(echo "${SCRIPT}"|grep -Eo "^.{1,$n}")"            # limit length to `n`
     echo -n "                 "
     printf '%s' "${var}" 
 echo "$DESC"
@@ -49,24 +47,12 @@ done
 done
 done
 exit 1
-fi
+}
 
-# logging
-
-# the next line is crap. do it better. 
-if [ "`echo $2 | grep _`" == "" ]
-then
-echo ------ >>/tmp/updateos.log
-echo `date` >>/tmp/updateos.log
-echo ------ >>/tmp/updateos.log
-echo "" >>/tmp/updateos.log
-echo "@ Staging for RTI $1...." | tee -a /tmp/updateos.log
-echo ")~ " | tee -a /tmp/updateos.log
-echo "-----" | tee -a /tmp/updateos.log
-echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
+run_subgroup() {
 for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
 do
-  echo "----> Running $script ..." | tee -a /tmp/updateos.log
+  echo "----> Running $GROUP $SUBGROUP ..." | tee -a /tmp/updateos.log
   timestamp=`date +%Y%m%d%H%M%S`
   /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$script -o /tmp/.${script}.${timestamp}.tmp
   chmod +x /tmp/.${script}.${timestamp}.tmp
@@ -77,16 +63,31 @@ do
   rm -f /tmp/.${script}.${timestamp}.tmp
 done
 exit $?
-else
-  echo "----> Running $2 ..." | tee -a /tmp/updateos.log
-  timestamp=`date +%Y%m%d%H%M%S`
-  /usr/bin/curl -s $BACKEND/$GROUP/$2 -o /tmp/.${script}.${timestamp}.tmp
-  chmod +x /tmp/.${script}.${timestamp}.tmp
-  /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
-  [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
-  echo "Success." | tee -a /tmp/updateos.log
-  echo "" | tee -a /tmp/updateos.log
-  rm -f /tmp/.${script}.${timestamp}.tmp
-  exit $?
-fi
-exit 0
+}
+
+run_script() {
+echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
+timestamp=`date +%Y%m%d%H%M%S`
+/usr/bin/curl -s $BACKEND/$GROUP/$SCRIPT -o /tmp/.${script}.${timestamp}.tmp
+chmod +x /tmp/.${script}.${timestamp}.tmp
+/tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
+[ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
+echo "Success." | tee -a /tmp/updateos.log
+echo "" | tee -a /tmp/updateos.log
+rm -f /tmp/.${script}.${timestamp}.tmp
+exit $?
+}
+
+log() {
+echo ------ >>/tmp/updateos.log
+echo `date` >>/tmp/updateos.log
+echo ------ >>/tmp/updateos.log
+echo "$@" | tee -a /tmp/updateos.log
+}
+
+# main
+#[ "`/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep $GROUP`" != "" ] && [ "`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep $SUBGROUP`" != "" ] && run_subgroup
+#[ "`/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep $GROUP`" != "" ] && [ "`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep $SUBGROUP`" != "" ] && run_script
+[ $# -ne 2 ] && usage
+[ "$2" == "stage" ] && run_subgroup 
+run_script
