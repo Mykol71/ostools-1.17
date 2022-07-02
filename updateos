@@ -4,72 +4,71 @@ ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
-OS="$1"
+VERSION="1.17.2"
+GROUP="$1"
+SCRIPT="$2"
+SUBGROUP="$2"
+n="${15:-24}"
 
-[ "$1" == "" ] && echo "Specify OS from:" | tee -a /tmp/updateos.log && echo "------" | tee -a /tmp/updateos.log  && echo `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | sed 's/\///g'` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
-[ "$2" == "" ] && echo "Specify script name or group from:" | tee -a /tmp/updateos.log  && echo "------" | tee -a /tmp/updateos.log && echo `/usr/bin/curl -ls $BACKEND/$OS/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/` | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && exit 1
+usage() {
+echo "updateos - $VERSION"
+echo "USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
+echo "If a subgroup name is provided, all the scripts (symlinks) in that subgroup will be executed in the order listed."
+echo ""
+echo "GROUP  SUBGROUP  SCRIPT                  DESCRIPTION"
+echo "-----  --------  ------                  -----------"
+for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
+  do
+  echo "$GROUP"
+  for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
+    do
+    DESC="`grep ^#DESC /tmp/$script | sed -e 's/^#DESC\ //g'`"
+    script="$script$(printf '%*s' "$n" "")"        
+    var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
+    echo -n "                 "
+    printf '%s' "${var}" 
+    echo "$DESC"
+    done
+  for SUBGROUP in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
+    do
+    echo "       $SUBGROUP"
+    for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
+      do
+      echo "                 $script"
+      done
+    done
+  done
+exit 1
+}
 
-if [ "$2" == "osup" ]
-then
-echo ------ >>/tmp/updateos.log
-echo `date` >>/tmp/updateos.log
-echo ------ >>/tmp/updateos.log
-echo "" >>/tmp/updateos.log
-echo "Upgrading OS for RTI...." | tee -a /tmp/updateos.log
-echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
-for script in `/usr/bin/curl -ls $BACKEND/$OS/osup/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
-do
-  echo "----> Running $script ..." | tee -a /tmp/updateos.log
-  timestamp=`date +%Y%m%d%H%M%S`
-  /usr/bin/curl -s $BACKEND/$OS/osup/$script -o /tmp/.${script}.${timestamp}.tmp
-  chmod +x /tmp/.${script}.${timestamp}.tmp
-  /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
+run_subgroup() {
+for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
+  do
+  echo "----> Running $GROUP $SUBGROUP ..." | tee -a /tmp/updateos.log
+  /usr/bin/curl -s $BACKEND/$GROUP/$script -o /tmp/.${script}
+  chmod +x /tmp/.${script}
+  /tmp/.${script} $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
   echo "Success." | tee -a /tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
-  rm -f /tmp/.${script}.${timestamp}.tmp
-done
+  rm -f /tmp/.${script}
+  done
 exit $?
-fi
+}
 
-if [ "$2" == "stage" ]
-then
-echo ------ >>/tmp/updateos.log
-echo `date` >>/tmp/updateos.log
-echo ------ >>/tmp/updateos.log
-echo "" >>/tmp/updateos.log
-echo "@ Staging for RTI $OS...." | tee -a /tmp/updateos.log
-echo ")~ " | tee -a /tmp/updateos.log
-echo "-----" | tee -a /tmp/updateos.log
-echo "" >>/tmp/updateos.log | tee -a /tmp/updateos.log
-for script in `/usr/bin/curl -ls $BACKEND/$OS/stage/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/ | grep -v ^?`
-do
-  echo "----> Running $script ..." | tee -a /tmp/updateos.log
-  timestamp=`date +%Y%m%d%H%M%S`
-  /usr/bin/curl -s $BACKEND/$OS/stage/$script -o /tmp/.${script}.${timestamp}.tmp
-  chmod +x /tmp/.${script}.${timestamp}.tmp
-  /tmp/.${script}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
-  [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
-  echo "Success." | tee -a /tmp/updateos.log
-  echo "" | tee -a /tmp/updateos.log
-  rm -f /tmp/.${script}.${timestamp}.tmp
-done
+run_script() {
+echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
+/usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /tmp/.${SCRIPT}
+[ "`cat /tmp/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && rm -f /tmp/.${SCRIPT} && usage
+chmod +x /tmp/.${SCRIPT}
+/tmp/.${SCRIPT} $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
+[ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
+echo "Success." | tee -a /tmp/updateos.log
+echo "" | tee -a /tmp/updateos.log
 exit $?
-fi
+}
 
-if [ "$2" != "stage" ] || [ "$2" != "osup" ]
-then
-echo "----> Running $2 ..." | tee -a /tmp/updateos.log
-  timestamp=`date +%Y%m%d%H%M%S`
-  echo `date` >>/tmp/updateos.log
-  echo "------" >>/tmp/updateos.log
-  /usr/bin/curl -s $BACKEND/${OS}/${2} -o /tmp/.${2}.${timestamp}.tmp
-  chmod +x /tmp/.${2}.${timestamp}.tmp
-  /tmp/.${2}.${timestamp}.tmp $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
-  [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
-  echo "Success." | tee -a /tmp/updateos.log
-  echo "------" >>/tmp/updateos.log
-  echo "" | tee -a /tmp/updateos.log
-#  rm -f /tmp/.${2}.${timestamp}.tmp
-exit $?
-fi
+# main
+[ $# -ne 2 ] && usage
+[ "$SUBGROUP" == "stage" ] && run_subgroup
+run_script
