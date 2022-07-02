@@ -23,7 +23,7 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
   for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
     do
     /usr/bin/curl -s $BACKEND/$GROUP/$script -o /tmp/.$script
-    DESC="`grep ^#DESC /tmp/$script | sed -e 's/^#DESC\ //g'`"
+    DESC="`grep ^#DESC /tmp/.$script | sed -e 's/^#DESC\ //g'`"
     script="$script$(printf '%*s' "$n" "")"        
     var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
     echo -n "                 "
@@ -70,6 +70,6 @@ exit $?
 }
 
 # main
-[ $# -ne 2 ] && usage
+[ $# -le 1 ] && usage
 [ "$SUBGROUP" == "stage" ] && run_subgroup
 run_script
