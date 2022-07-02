@@ -22,6 +22,7 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
   echo "$GROUP"
   for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
     do
+    /usr/bin/curl -s $BACKEND/$GROUP/$script -o /tmp/.$script
     DESC="`grep ^#DESC /tmp/$script | sed -e 's/^#DESC\ //g'`"
     script="$script$(printf '%*s' "$n" "")"        
     var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
@@ -42,10 +43,10 @@ exit 1
 }
 
 run_subgroup() {
-for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
+for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
   do
-  echo "----> Running $GROUP $SUBGROUP ..." | tee -a /tmp/updateos.log
-  /usr/bin/curl -s $BACKEND/$GROUP/$script -o /tmp/.${script}
+  echo "----> Running $GROUP $SUBGROUP $script..." | tee -a /tmp/updateos.log
+  /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$script -o /tmp/.${script}
   chmod +x /tmp/.${script}
   /tmp/.${script} $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
   [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
