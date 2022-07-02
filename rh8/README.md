@@ -38,15 +38,17 @@ TO DO -
 + iptables config issue when in %post of ks. Works after login.
 + no pam_tally2. Need to be sure to test password management. And let support know.
 + no post install updateos works. cannot find the temp download of the script.     
-- check pa-dss insights data for corrections.
+~ check pa-dss insights data for corrections.
 ~ qa rh8 vms.
 ~ devel rh8 vm.
-- configure compliance portion of redhat insights.
-- add a scheduled job for compliance checks.
-? switch back to eth0,1 naming conventions.
++ configure compliance portion of redhat insights.
+~ add compliance check script.
+~ switch back to eth0,1 naming conventions.
 + switch to symlinks for groups.   
 + add #DESC comments.
--
+- hostname issue with /etc/hosts in ostools-1.16.
++ reversed /etc/hosts syntax for hostnames in ostools-1.16.
+-  
 
 Key:
 ----

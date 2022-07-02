@@ -93,7 +93,6 @@ Information -
 
 TO DO -
 -------
-? add help access for each script.
 + add ostools 1.16 to git.
 + move ostools 1.16 download package to repo server.
 + full path to commands in /usr/bin in case ran from cron. 
@@ -101,8 +100,10 @@ TO DO -
 + add version info.
 + logging.
 + add descriptions for scripts.
-~ rewrite updateos
--   
++ rewrite updateos.
+- updateos subgroup work.
+? rear integration.
+-
 
 Key -
 -----
@@ -117,5 +118,6 @@ mgreen@teleflora.com
 
 History -
 ---------
+1.17.2 - Replaced with rewritten updateos. updateos.orig backup.
 
 
