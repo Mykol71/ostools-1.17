@@ -101,9 +101,10 @@ TO DO -
 + logging.
 + add descriptions for scripts.
 + rewrite updateos.
-- updateos subgroup work.
++ updateos subgroup work.
 ? rear integration.
--
++ keep hidden copies of scripts in /tmp.
+-  
 
 Key -
 -----

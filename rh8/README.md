@@ -39,10 +39,10 @@ TO DO -
 + no pam_tally2. Need to be sure to test password management. And let support know.
 + no post install updateos works. cannot find the temp download of the script.     
 ~ check pa-dss insights data for corrections.
-~ qa rh8 vms.
++ qa rh8 vms.
 ~ devel rh8 vm.
 + configure compliance portion of redhat insights.
-~ add compliance check script.
++ add compliance check script.
 ~ switch back to eth0,1 naming conventions.
 + switch to symlinks for groups.   
 + add #DESC comments.
