@@ -5,9 +5,12 @@ ID=$(/usr/bin/id -u)
 
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 VERSION="1.17.2"
-GROUP="$1"
-SCRIPT="$2"
-SUBGROUP="$2"
+GROUP=empty
+[ "$1" != "" ] && GROUP="$1"
+SCRIPT=empty
+[ "$2" != "" ] && SCRIPT="$2"
+SUBGROUP=empty
+[ "$2" != "" ] && SUBGROUP="$2"
 n="${15:-24}"
 
 usage() {
@@ -60,7 +63,7 @@ exit $?
 run_script() {
 echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
 /usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /tmp/.${SCRIPT}
-[ "`cat /tmp/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && rm -f /tmp/.${SCRIPT} && usage
+[ "`cat /tmp/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && rm -f /tmp/.${SCRIPT} && usage
 chmod +x /tmp/.${SCRIPT}
 /tmp/.${SCRIPT} $3 $4 $5 $6 $7 | tee -a /tmp/updateos.log
 [ "$?" != "0" ] && echo "Failed." && echo "" && exit $?
@@ -70,6 +73,9 @@ exit $?
 }
 
 # main
-[ $# -le 1 ] && usage
-[ "$SUBGROUP" == "stage" ] && run_subgroup
-run_script
+for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT`
+  do
+  [ "`echo $file | grep \/`" != "" ] && run_subgroup
+  [ "`echo $file | grep -v \/`" != "" ] && run_script
+  done
+usage
