@@ -2,4 +2,12 @@
 
 #DESC Set the server's hostname.
 
-/usr2/ostools/bin/updateos.pl --hostname=rh8-rti
+NAME=$1
+
+[ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
+
+hostnamectl set-hostname=$NAME
+
+IP="`hostname -i`"
+[ "`grep NAME /etc/hosts`" != "" ] && sed -i "/$NAME/d /etc/hosts"
+echo "$IP	$NAME    $NAME.teleflora.com" >>/etc/hosts

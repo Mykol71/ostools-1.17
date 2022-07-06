@@ -46,9 +46,9 @@ TO DO -
 ~ switch back to eth0,1 naming conventions. (need to reproduce .iso)
 + switch to symlinks for groups.   
 + add #DESC comments.
-- sethostname script.
++ sethostname script.
 + reversed /etc/hosts syntax for hostnames in ostools-1.16.
-- ipaddr change script.
++ net info change script.
 -  
 
 Key:
