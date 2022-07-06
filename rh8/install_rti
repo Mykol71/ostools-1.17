@@ -7,6 +7,8 @@ cd /tmp
 [ ! -f /tmp/multiserver.pwd ] && wget http://rtihardware.homelinux.com/t1800/multiserver.pwd
 [ ! -f /tmp/librxtxSerial.so ] && wget http://rtihardware.homelinux.com/ostools/librxtxSerial.so
 [ ! -f /tmp/update_bbj_19.pl ] && wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh8/update_bbj_19.pl && chmod +x /tmp/update_bbj_19.pl
+[ ! -f /tmp/tfsupport-authorized_keys ] && wget http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
+[ ! -f /tmp/twofactor-20090723.tar ] && wget http://rtihardware.homelinux.com/t1800/twofator-20090723.tar
 [ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" >/etc/profile.d/term.sh && chmod +x /etc/profile.d/term.sh
 
 echo "Installing bbj...."
@@ -33,3 +35,11 @@ umount /mnt
 /usr2/ostools/bin/rtiuser.pl --update rti
 /usr2/ostools/bin/rtiuser.pl --update odbc
 
+echo "Installing tfsupport authorized keys...."
+[ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh
+chmod 700 /home/tfsupport/.ssh
+chown tfsupport:rti /home/tfsupport/.ssh
+tar xvf /tmp/twofactor-20090723.tar
+cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+chmod 700 /home/tfsupport/.ssh/authorized_keys
+chown tfsupport:root /home/tfsupport/.ssh/authorized_keys

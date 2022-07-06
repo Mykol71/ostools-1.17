@@ -49,7 +49,8 @@ TO DO -
 + sethostname script.
 + reversed /etc/hosts syntax for hostnames in ostools-1.16.
 + net info change script.
--  
++ fix for permission denied when accessing from CS server CALL script.
+-   
 
 Key:
 ----
