@@ -7,7 +7,7 @@ NAME="rti-rh8"
 
 [ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
 
-hostnamectl set-hostname=$NAME
+hostnamectl set-hostname $NAME
 
 IP="`hostname -i`"
 [ "`grep NAME /etc/hosts`" != "" ] && sed -i "/$NAME/d /etc/hosts"
