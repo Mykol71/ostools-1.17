@@ -23,3 +23,11 @@ systemctl restart sshd
 systemctl restart rsyslog
 systemctl restart smb
 systemctl restart cups
+
+# Added per insights comliance scan.
+# CCE-80841-0
+sed -i 's/nullok//g' /etc/pam.d/system-auth
+
+# CCE-80788-3
+sed -i '/pam_lastlog/d' /etc/pam.d/postlogin
+echo "session required pam_lastlog.so showfailed" >> /etc/pam.d/postlogin
