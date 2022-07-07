@@ -9,7 +9,7 @@ TO DO -
 + build custom iso. boot options for localboot, install, and upgrade.
 + smb users default passwords.
 + auditd fixes.
-- rh8 tcc. upgrade ron's test VM so Moth can use to compile tcc.
++ rh8 tcc. upgrade ron's test VM so Moth can use to compile tcc.
 + download rti iso bug.
 + find a upsd rpm for rh8 and publish in our repo.
 + 640x480 reso.
@@ -38,19 +38,20 @@ TO DO -
 + iptables config issue when in %post of ks. Works after login.
 + no pam_tally2. Need to be sure to test password management. And let support know.
 + no post install updateos works. cannot find the temp download of the script.     
-~ check pa-dss insights data for corrections.
++ check pa-dss insights data for corrections.
 + qa rh8 vms.
-~ devel rh8 vm.
++ devel rh8 vm.
 + configure compliance portion of redhat insights.
 + add compliance check script.
-~ switch back to eth0,1 naming conventions. (need to reproduce .iso)
++ switch back to eth0,1 naming conventions. (need to reproduce .iso)
 + switch to symlinks for groups.   
 + add #DESC comments.
 + sethostname script.
 + reversed /etc/hosts syntax for hostnames in ostools-1.16.
 + net info change script.
 + fix for permission denied when accessing from CS server CALL script.
--   
+- aide setup.
+-    
 
 Key:
 ----

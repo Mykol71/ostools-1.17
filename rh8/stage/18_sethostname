@@ -1,14 +1,1 @@
-#!/bin/bash
-
-#DESC Set the server's hostname.
-
-NAME=$1
-NAME="rti-rh8"
-
-[ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
-
-hostnamectl set-hostname $NAME
-
-IP="`hostname -I | cut -d" " -f1`"
-sed -i "/$NAME/d" /etc/hosts
-echo "$IP	$NAME    $NAME.teleflora.com" >>/etc/hosts
+../sethostname

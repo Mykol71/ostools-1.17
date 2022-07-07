@@ -10,7 +10,6 @@
 /usr2/ostools/bin/harden_linux.pl --logrotate
 /usr2/ostools/bin/harden_linux.pl --sudo
 /usr2/ostools/bin/harden_linux.pl --ipv6
-/usr2/ostools/bin/harden_linux.pl --ids
 
 /usr2/ostools/bin/updateos.pl --samba
 /usr2/ostools/bin/updateos.pl --cupsconf
@@ -34,3 +33,4 @@ echo "session required pam_lastlog.so showfailed" >> /etc/pam.d/postlogin
 
 # Initialize intrusion protection db.
 aide -i
+/usr2/ostools/bin/harden_linux.pl --ids
