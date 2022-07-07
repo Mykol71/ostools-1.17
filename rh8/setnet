@@ -16,7 +16,9 @@ nmcli dev mod eth0 ipv4.dns $DNS
 nmcli dev mod eth0 ipv4.gateway $GATEWAY
 
 #Update hosts file
-NAME="`hostname | cut -d"." -f1`
+NAME="`hostname | cut -d"." -f1`"
 IP="`hostname -I | cut -d" " -f1`"
-[ "`grep NAME /etc/hosts`" != "" ] && sed -i "/$NAME/d /etc/hosts"
+[ "`grep $NAME /etc/hosts`" != "" ] && sed -i "/$NAME/d /etc/hosts"
 echo "$IP       $NAME    $NAME.teleflora.com" >>/etc/hosts
+
+exit $?

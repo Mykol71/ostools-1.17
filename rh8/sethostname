@@ -11,3 +11,5 @@ hostnamectl set-hostname $NAME
 IP="`hostname -I | cut -d" " -f1`"
 [ "`grep NAME /etc/hosts`" != "" ] && sed -i "/$NAME/d /etc/hosts"
 echo "$IP	$NAME    $NAME.teleflora.com" >>/etc/hosts
+
+echo $?

@@ -43,3 +43,5 @@ tar xvf /tmp/twofactor-20090723.tar
 cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
 chmod 700 /home/tfsupport/.ssh/authorized_keys
 chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+
+exit $?
