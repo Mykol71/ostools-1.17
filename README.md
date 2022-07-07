@@ -17,7 +17,7 @@ How to build custom boot install media -
 2. Copy the structure to a new folder. i.e. cp -rp /mnt/. ./newiso/.
 3. Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line:
 
-inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks inst.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks inst.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms net.ifnames=0
 
 (Make any other edits you wish as well.)
 4. cd ./newiso/.
