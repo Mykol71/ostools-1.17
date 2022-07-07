@@ -14,3 +14,9 @@ nmcli dev set eth0 managed yes
 nmcli dev mod eth0 ipv4.addr "$IP/24"
 nmcli dev mod eth0 ipv4.dns $DNS
 nmcli dev mod eth0 ipv4.gateway $GATEWAY
+
+#Update hosts file
+NAME=`hostname`
+IP="`hostname -I | cut -d" " -f1`"
+[ "`grep NAME /etc/hosts`" != "" ] && sed -i "/$NAME/d /etc/hosts"
+echo "$IP       $NAME    $NAME.teleflora.com" >>/etc/hosts
