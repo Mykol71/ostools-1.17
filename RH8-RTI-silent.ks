@@ -3,7 +3,7 @@ text
 authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
-bootloader --append="video=640x480"
+bootloader --append="video=640x480 net.ifnames=0"
 repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
 repo --name="BaseOS" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
@@ -55,7 +55,7 @@ keyboard --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=dhcp --device=enp0s20f0u3 --ipv6=no --activate
+network  --bootproto=dhcp --device=eth0 --ipv6=no --activate
 network  --hostname=rhel8-rti.teleflora.com
 
 url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/BaseOS
