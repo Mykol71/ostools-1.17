@@ -285,3 +285,7 @@ fi
 else
     >&2 echo 'Remediation is not applicable, nothing was done'
 fi
+
+# Aide updates.
+#aide -i
+#cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
