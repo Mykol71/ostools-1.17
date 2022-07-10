@@ -51,10 +51,12 @@ TO DO -
 + net info change script.
 + fix for permission denied when accessing from CS server CALL script.
 + aide setup.
-~ pam.d system-auth fixes.
++ pam.d system-auth fixes.
 + rpm permission fixes.
 + add scheduled job for compliance checks.
--     
++ authselect config for system login info.
++ rpm permission fixes.
+-       
 
 Key:
 ----
