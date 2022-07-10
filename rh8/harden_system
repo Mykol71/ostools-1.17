@@ -33,7 +33,7 @@ echo "session required pam_lastlog.so showfailed" >> /etc/pam.d/postlogin
 
 for line in `cat /etc/pam.d/system-auth`
 do
-[ "`echo $line | grep password`" != "" && "`echo $line | grep pam_unix.so`" != "" ] && echo "$line remember=5" >>/tmp/system-auth.new || echo $line >>/tmp/system-auth.new
+[ "`echo $line | grep password`" != "" ] && [ "`echo $line | grep pam_unix.so`" != "" ] && echo "$line remember=5" >>/tmp/system-auth.new || echo $line >>/tmp/system-auth.new
 done
 cp -f /etc/pam.d/system-auth /tmp
 cp -f /tmp/system-auth.new /etc/pam.d/system-auth
