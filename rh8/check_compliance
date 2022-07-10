@@ -4,3 +4,5 @@
 echo "Requires that a profile was assigned for this machine via the Insights webui...."
 
 insights-client --compliance
+
+[ ! -f /etc/cron.d/compliance_check ] && echo "30 10 * * * root (insights-client --compliance)" > /etc/cron.d/compliance_check

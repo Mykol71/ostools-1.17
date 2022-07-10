@@ -50,9 +50,10 @@ TO DO -
 + reversed /etc/hosts syntax for hostnames in ostools-1.16.
 + net info change script.
 + fix for permission denied when accessing from CS server CALL script.
-~ aide setup.
++ aide setup.
 ~ pam.d system-auth fixes.
-~ rpm permission fixes.
++ rpm permission fixes.
++ add scheduled job for compliance checks.
 -     
 
 Key:

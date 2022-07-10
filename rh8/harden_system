@@ -17,31 +17,12 @@
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 /usr2/ostools/bin/updateos.pl --audit-system-configure
 /usr2/ostools/bin/updateos.pl --motd
+/usr2/ostools/bin/harden_linux.pl --ids
 
 systemctl restart sshd
 systemctl restart rsyslog
 systemctl restart smb
 systemctl restart cups
-
-echo "Making pam.d changes..."
-# CCE-80841-0
-sed -i 's/nullok//g' /etc/pam.d/system-auth
-
-# CCE-80788-3
-sed -i '/pam_lastlog/d' /etc/pam.d/postlogin
-echo "session required pam_lastlog.so showfailed" >> /etc/pam.d/postlogin
-
-for line in `cat /etc/pam.d/system-auth`
-do
-[ "`echo $line | grep password`" != "" ] && [ "`echo $line | grep pam_unix.so`" != "" ] && echo "$line remember=5" >>/tmp/system-auth.new || echo $line >>/tmp/system-auth.new
-done
-cp -f /etc/pam.d/system-auth /tmp
-cp -f /tmp/system-auth.new /etc/pam.d/system-auth
-
-echo "Setting up intrusion protection..."
-# Initialize intrusion protection db.
-aide -i
-/usr2/ostools/bin/harden_linux.pl --ids
 
 echo "Fixing rpm permissions....."
 for file in `rpm -Va | awk '{ if (substr($0,2,1)=="M") print $NF }'` 
