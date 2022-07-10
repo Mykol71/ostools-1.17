@@ -14,10 +14,7 @@ SUBGROUP=empty
 n="${15:-24}"
 
 usage() {
-echo "updateos - $VERSION"
-echo "USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
-echo "If a subgroup name is provided, all the scripts (symlinks) in that subgroup will be executed in the order listed."
-echo ""
+echo "updateos - $VERSION - USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
 echo "GROUP  SUBGROUP  SCRIPT                  DESCRIPTION"
 echo "-----  --------  ------                  -----------"
 for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
@@ -73,9 +70,15 @@ exit $?
 }
 
 # main
+if [ "`echo $1 | grep help`" != "" ]
+then
+usage
+else
 for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT`
   do
   [ "`echo $file | grep \/`" != "" ] && run_subgroup
   [ "`echo $file | grep -v \/`" != "" ] && run_script
   done
-usage
+echo "updateos - $VERSION - USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
+exit 1
+fi
