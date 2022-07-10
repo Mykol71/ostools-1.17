@@ -110,6 +110,5 @@ systemctl enable sendmail
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
-ln -s /usr/bin/python2.7 /usr/bin/python
 openvt -s -w -- /usr/bin/updateos rh8 osup rh8-rti 2>&1
 %end
