@@ -38,7 +38,7 @@ baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpm
 EOF
 
 # run leap preupgrade
-leapp preupgrade --target 8 --no-rhsm
+leapp preupgrade --target 8.6 --no-rhsm
 
 # run leap upgrade
-leapp upgrade --target 8 --no-rhsm --reboot
+leapp upgrade --target 8.6 --no-rhsm --reboot
