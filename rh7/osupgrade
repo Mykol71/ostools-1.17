@@ -42,8 +42,31 @@ cd /etc/leapp/files
 wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh7/leapp-data17.tar.gz
 tar xvfz ./leapp-data17.tar.gz
 
+#remove unneeded kernel drivers
+modprobe -r pata_acpi
+rmmod pata_acpi
+
+#remove tf system-auth
+rm -f /etc/pam.d/system-auth-teleflora
+
 # run leap preupgrade
 leapp preupgrade --target 8.6 --no-rhsm
+
+#create leapp answer file
+cat > /var/log/leapp/answerfile << EOF
+[remove_pam_pkcs11_module_check]
+# Title:              None
+# Reason:             Confirmation
+# =================== remove_pam_pkcs11_module_check.confirm ==================
+# Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
+# Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
+# Reason:             Leaving this module in PAM configuration may lock out the system.
+# Type:               bool
+# Default:            None
+# Available choices: True/False
+# Unanswered question. Uncomment the following line with your answer
+confirm = True
+EOF
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
