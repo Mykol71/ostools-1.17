@@ -63,15 +63,15 @@ url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos
 # Run the Setup Agent on first boot
 firstboot --disable
 
-ignoredisk --only-use=sda
+ignoredisk --only-use=nvme0n1
 # Partition clearing information
 zerombr
-#clearpart --all --initlabel
+clearpart --all --initlabel
 # Disk partitioning information
-part /usr2 --fstype="xfs" --onpart=sda3 --noformat
-#part swap --fstype="swap" --ondisk=sda --recommended
-#part /boot/efi --fstype="efi" --ondisk=sda --size=600 --fsoptions="umask=0077,shortname=tflinux"
-part / --fstype="xfs" --ondisk=sda --size=30000
+part /usr2 --fstype="xfs" --onpart=nvme0n1p3 --noformat
+part swap --fstype="swap" --ondisk=nvme0n1 --recommended
+part /boot/efi --fstype="efi" --ondisk=nvme0n1 --size=600 --fsoptions="umask=0077,shortname=tflinux"
+part / --fstype="xfs" --ondisk=nvme0n1 --size=30000
 
 # System timezone
 timezone America/Winnipeg --isUtc

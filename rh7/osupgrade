@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#DESC Inplace OS upgrade from RH7 to RH8 - RTI.
+# add rh7 extras repo.
+cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
+[RH7extras]
+name=RH7extras
+baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
+enabled=1
+EOF
+
+# make sure up2date
+yum -y upgrade
+
+# clear yum version lock if used
+yum versionlock clear
+
+# add leapp package
+yum -y install leapp-upgrade
+
+# add leapp repos
+cat > /etc/leapp/files/leapp_upgrade_repositories.repo << EOF
+[RH8AppStream]
+name=RH8AppStream
+baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
+
+[RH8BaseOS]
+name=RH8BaseOS
+baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+
+[RH7rpms]
+name=RH7rpms
+baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-rpms
+
+[RH7extras]
+name=RH7extras
+baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
+EOF
+
+# run leap preupgrade
+leapp preupgrade --target 8 --no-rhsm
+
+# run leap upgrade
+leapp upgrade --target 8 --no-rhsm --reboot
