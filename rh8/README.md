@@ -32,7 +32,7 @@ TO DO -
 + add os media isos to repo server.
 + display issue for silent install when registering with insights.  
 + iptables issue because of perl local ip issue.
-- in-place os upgrade process from rh7 to rh8.
+~ in-place os upgrade process from rh7 to rh8.
 + users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
 + iptables config issue when in %post of ks. Works after login.
@@ -56,7 +56,8 @@ TO DO -
 + add scheduled job for compliance checks.
 + authselect config for system login info.
 + rpm permission fixes.
--       
+~ reproduce support ssh keys.
+-        
 
 Key:
 ----

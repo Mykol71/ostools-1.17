@@ -44,7 +44,6 @@ tar xvfz ./leapp-data17.tar.gz
 
 #remove unneeded kernel drivers
 modprobe -r pata_acpi
-rmmod pata_acpi
 
 #remove tf system-auth
 rm -f /etc/pam.d/system-auth-teleflora

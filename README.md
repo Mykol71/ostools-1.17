@@ -39,6 +39,9 @@ Contrib Info -
 
 Staging Instructions -
 ----------------------
+RH8 -
+-----
+
 Repos -
 -------
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
@@ -63,11 +66,30 @@ $linuxbbx
 
 ** Note: you will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
-OS Upgrade Instructions -
--------------------------
+RH9 -
+-----
+
+Repos -
+-------
+
 Steps -
 -------
-1. coming soon.
+1.
+2.
+
+OS Upgrade Instructions -
+-------------------------
+RH7-RH8 Steps -
+---------------
+1. From the rh7 server to be upgraded download http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos , make it executable, and place it in /bin.
+2. Run: sudo updateos rh7 osupgrade
+
+** Note: Only 1 kernel named NIC (ethX) allowed.
+** Process will take a bit of time. An hour or more.
+
+RH8-RH9 Steps -
+---------------
+1. comming soon.
 2.
 
 Information -
@@ -104,6 +126,8 @@ TO DO -
 + updateos subgroup work.
 ? rear integration.
 + keep hidden copies of scripts in /tmp.
+- add os ver to downloaded cached scripts. to allow for dup names for different os versions.
+- no longer need RTI-osupgrade.ks file.
 -  
 
 Key -
