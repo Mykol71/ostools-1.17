@@ -37,6 +37,11 @@ name=RH7extras
 baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
 EOF
 
+#download leapp metadata
+cd /etc/leapp/files
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh7/leapp-data17.tar.gz
+tar xvfz ./leapp-data17.tar.gz
+
 # run leap preupgrade
 leapp preupgrade --target 8.6 --no-rhsm
 
