@@ -39,7 +39,7 @@ EOF
 
 #download leapp metadata
 cd /etc/leapp/files
-wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh7/leapp-data17.tar.gz
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/support/leapp-data17.tar.gz
 tar xvfz ./leapp-data17.tar.gz
 
 #remove unneeded kernel drivers
