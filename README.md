@@ -127,8 +127,9 @@ TO DO -
 ? rear integration.
 + keep hidden copies of scripts in /tmp.
 + add os ver to downloaded cached scripts. to allow for dup names for different os versions.
-- no longer need RTI-osupgrade.ks file.
-- no longer need non-silent versions of .ks files. 
++ no longer need RTI-osupgrade.ks file.
++ no longer need non-silent versions of .ks files. 
++ add initial rh9 support.
 -
 
 Key -
