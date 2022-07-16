@@ -72,6 +72,8 @@ exit $?
 }
 
 # main
+/usr/bin/curl -s $BACKEND/updateos -o /tmp/.updateos
+[ "`diff /tmp/.updateos /bin/updateos`" != "" ] && cp -f /tmp/.updateos /bin/updateos && echo "Newer version of updateos detected and installed. Please rerun updateos." && exit 2
 if [ "`echo $1 | grep help`" != "" ]
 then
 usage
