@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#DESC Configures iptables for use with linux POS systems.
+/usr2/ostools/bin/harden_linux.pl --iptables

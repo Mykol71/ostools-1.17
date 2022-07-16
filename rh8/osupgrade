@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#DESC Inplace OS upgrade from RH8 to RH9 - RTI.
+# make sure up2date
+yum -y upgrade
+
+# clear yum version lock if used
+yum versionlock clear
+
+# add leapp package
+yum -y install leapp-upgrade
+
+# add leapp repos
+cat > /etc/leapp/files/leapp_upgrade_repositories.repo << EOF
+[RH8AppStream]
+name=RH8AppStream
+baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
+
+[RH8BaseOS]
+name=RH8BaseOS
+baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+
+EOF
+
+#download leapp metadata
+cd /etc/leapp/files
+wget http://rhel9repo.centralus.cloudapp.azure.com/ostools-1.17/support/leapp-data17.tar.gz
+tar xvfz ./leapp-data17.tar.gz
+
+#remove unneeded kernel drivers
+modprobe -r pata_acpi
+
+#remove tf system-auth
+rm -f /etc/pam.d/system-auth-teleflora
+
+# run leap preupgrade
+leapp preupgrade --target 9.2 --no-rhsm
+
+#create leapp answer file
+#cat > /var/log/leapp/answerfile << EOF
+#EOF
+
+# run leap upgrade
+leapp upgrade --target 9.2 --no-rhsm --reboot

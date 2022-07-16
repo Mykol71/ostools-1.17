@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#DESC Install TF's kaseya agent.
+cd /tmp
+[ ! -f /tmp/KcsSetup.sh ] && wget -q http://rtihardware.homelinux.com/support/kuefi/KcsSetup.sh
+chmod +x /tmp/KcsSetup.sh
+/tmp/KcsSetup.sh

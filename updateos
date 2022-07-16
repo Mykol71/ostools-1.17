@@ -23,7 +23,9 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
   for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
     do
     /usr/bin/curl -s $BACKEND/$GROUP/$script -o /tmp/.$script
-    DESC="`grep ^#DESC /tmp/.$script | sed -e 's/^#DESC\ //g'`"
+    [ ! -d /tmp/.$GROUP ] && mkdir /tmp/.$GROUP
+    mv /tmp/.$script /tmp/.$GROUP.$script
+    DESC="`grep ^#DESC /tmp/$GROUP.$script | sed -e 's/^#DESC\ //g'`"
     script="$script$(printf '%*s' "$n" "")"        
     var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
     echo -n "                 "

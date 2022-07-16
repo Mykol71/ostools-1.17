@@ -1,0 +1,287 @@
+#!/bin/bash
+
+#DESC System authentication configuration.
+# Configure system profile
+
+authselect select minimal -f
+
+# Taken from https://static.open-scap.org/ssg-guides/ssg-rhel8-guide-rht-ccp.html#!
+
+# Limit password reuse
+if rpm --quiet -q pam; then
+
+var_password_pam_unix_remember='5'
+
+
+if [ -f /usr/bin/authselect ]; then
+    if authselect check; then
+        CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
+        # Standard profiles delivered with authselect should not be modified.
+        # If not already in use, a custom profile is created preserving the enabled features.
+        if [[ ! $CURRENT_PROFILE == custom/* ]]; then
+            ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
+            authselect create-profile hardening -b $CURRENT_PROFILE
+            CURRENT_PROFILE="custom/hardening"
+            # Ensure a backup before changing the profile
+            authselect apply-changes -b --backup=before-pwhistory-hardening.backup
+            authselect select $CURRENT_PROFILE
+            for feature in $ENABLED_FEATURES; do
+                authselect enable-feature $feature;
+            done
+        fi
+        # Include the desired configuration in the custom profile
+        CUSTOM_SYSTEM_AUTH="/etc/authselect/$CURRENT_PROFILE/system-auth"
+        CUSTOM_PASSWORD_AUTH="/etc/authselect/$CURRENT_PROFILE/password-auth"
+        for custom_pam_file in $CUSTOM_SYSTEM_AUTH $CUSTOM_PASSWORD_AUTH; do
+            if ! grep -q "^[^#].*pam_pwhistory.so.*remember=" $custom_pam_file; then
+                sed -i --follow-symlinks "/^password.*requisite.*pam_pwquality.so/a password    requisite     pam_pwhistory.so remember=$var_password_pam_unix_remember use_authtok" $custom_pam_file
+            else
+                sed -i --follow-symlinks "s/\(.*pam_pwhistory.so.*remember=\)[[:digit:]]\+\s\(.*\)/\1$var_password_pam_unix_remember \2/g" $custom_pam_file
+            fi
+        done
+        authselect apply-changes -b --backup=after-pwhistory-hardening.backup
+    else
+        echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not intact.
+It is not recommended to manually edit the PAM files when authselect is available
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+        false
+    fi
+else
+    
+    AUTH_FILES[0]="/etc/pam.d/system-auth"
+    
+    AUTH_FILES[1]="/etc/pam.d/password-auth"
+
+    for pamFile in "${AUTH_FILES[@]}"; do
+        if grep -q "pam_unix.so.*" $pamFile; then
+            if [ -e "$pamFile" ] ; then
+    valueRegex="$var_password_pam_unix_remember" defaultValue="$var_password_pam_unix_remember"
+    # non-empty values need to be preceded by an equals sign
+    [ -n "${valueRegex}" ] && valueRegex="=${valueRegex}"
+    # add an equals sign to non-empty values
+    [ -n "${defaultValue}" ] && defaultValue="=${defaultValue}"
+
+    # fix the value for 'option' if one exists but does not match 'valueRegex'
+    if grep -q -P "^\\s*password\\s+sufficient\\s+pam_unix.so(\\s.+)?\\s+remember(?"'!'"${valueRegex}(\\s|\$))" < "$pamFile" ; then
+        sed --follow-symlinks -i -E -e "s/^(\\s*password\\s+sufficient\\s+pam_unix.so(\\s.+)?\\s)remember=[^[:space:]]*/\\1remember${defaultValue}/" "$pamFile"
+
+    # add 'option=default' if option is not set
+    elif grep -q -E "^\\s*password\\s+sufficient\\s+pam_unix.so" < "$pamFile" &&
+            grep    -E "^\\s*password\\s+sufficient\\s+pam_unix.so" < "$pamFile" | grep -q -E -v "\\sremember(=|\\s|\$)" ; then
+
+        sed --follow-symlinks -i -E -e "s/^(\\s*password\\s+sufficient\\s+pam_unix.so[^\\n]*)/\\1 remember${defaultValue}/" "$pamFile"
+    # add a new entry if none exists
+    elif ! grep -q -P "^\\s*password\\s+sufficient\\s+pam_unix.so(\\s.+)?\\s+remember${valueRegex}(\\s|\$)" < "$pamFile" ; then
+        echo "password sufficient pam_unix.so remember${defaultValue}" >> "$pamFile"
+    fi
+else
+    echo "$pamFile doesn't exist" >&2
+fi
+        fi
+        if grep -q "pam_pwhistory.so.*" $pamFile; then
+            if [ -e "$pamFile" ] ; then
+    valueRegex="$var_password_pam_unix_remember" defaultValue="$var_password_pam_unix_remember"
+    # non-empty values need to be preceded by an equals sign
+    [ -n "${valueRegex}" ] && valueRegex="=${valueRegex}"
+    # add an equals sign to non-empty values
+    [ -n "${defaultValue}" ] && defaultValue="=${defaultValue}"
+
+    # fix the value for 'option' if one exists but does not match 'valueRegex'
+    if grep -q -P "^\\s*password\\s+required\\s+pam_pwhistory.so(\\s.+)?\\s+remember(?"'!'"${valueRegex}(\\s|\$))" < "$pamFile" ; then
+        sed --follow-symlinks -i -E -e "s/^(\\s*password\\s+required\\s+pam_pwhistory.so(\\s.+)?\\s)remember=[^[:space:]]*/\\1remember${defaultValue}/" "$pamFile"
+
+    # add 'option=default' if option is not set
+    elif grep -q -E "^\\s*password\\s+required\\s+pam_pwhistory.so" < "$pamFile" &&
+            grep    -E "^\\s*password\\s+required\\s+pam_pwhistory.so" < "$pamFile" | grep -q -E -v "\\sremember(=|\\s|\$)" ; then
+
+        sed --follow-symlinks -i -E -e "s/^(\\s*password\\s+required\\s+pam_pwhistory.so[^\\n]*)/\\1 remember${defaultValue}/" "$pamFile"
+    # add a new entry if none exists
+    elif ! grep -q -P "^\\s*password\\s+required\\s+pam_pwhistory.so(\\s.+)?\\s+remember${valueRegex}(\\s|\$)" < "$pamFile" ; then
+        echo "password required pam_pwhistory.so remember${defaultValue}" >> "$pamFile"
+    fi
+else
+    echo "$pamFile doesn't exist" >&2
+fi
+        fi
+    done
+fi
+
+else
+    >&2 echo 'Remediation is not applicable, nothing was done'
+fi
+
+# Lock accounts after failed password attempts.
+
+if rpm --quiet -q pam; then
+
+var_accounts_passwords_pam_faillock_deny='5'
+
+
+if [ -f /usr/bin/authselect ]; then
+    if authselect check; then
+    authselect enable-feature with-faillock
+    authselect apply-changes
+else
+    echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.
+It is not recommended to manually edit the PAM files when authselect tool is available.
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+    false
+fi
+else
+    AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+for pam_file in "${AUTH_FILES[@]}"
+do
+    if ! grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+(preauth silent|authfail).*$' "$pam_file" ; then
+        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent' "$pam_file"
+        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/a auth        required      pam_faillock.so authfail' "$pam_file"
+        sed -i --follow-symlinks '/^account.*required.*pam_unix.so.*/i account     required      pam_faillock.so' "$pam_file"
+    fi
+    sed -Ei 's/(auth.*)(\[default=die\])(.*pam_faillock.so)/\1required     \3/g' "$pam_file"
+done
+fi
+FAILLOCK_CONF="/etc/security/faillock.conf"
+if [ -f $FAILLOCK_CONF ]; then
+    regex="^\s*deny\s*="
+    line="deny = $var_accounts_passwords_pam_faillock_deny"
+    if ! grep -q $regex $FAILLOCK_CONF; then
+        echo $line >> $FAILLOCK_CONF
+    else
+        sed -i --follow-symlinks 's/^\s*\(deny\s*=\s*\)\([0-9]\+\)/\1'"$var_accounts_passwords_pam_faillock_deny"'/g' $FAILLOCK_CONF
+    fi
+else
+    AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+    for pam_file in "${AUTH_FILES[@]}"
+    do
+        if ! grep -qE '^\s*auth.*pam_faillock.so (preauth|authfail).*deny' "$pam_file"; then
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ deny='"$var_accounts_passwords_pam_faillock_deny"'/' "$pam_file"
+            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ deny='"$var_accounts_passwords_pam_faillock_deny"'/' "$pam_file"
+        else
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"deny"'=\)[0-9]\+\(.*\)/\1\2'"$var_accounts_passwords_pam_faillock_deny"'\3/' "$pam_file"
+            sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*authfail.*\)\('"deny"'=\)[0-9]\+\(.*\)/\1\2'"$var_accounts_passwords_pam_faillock_deny"'\3/' "$pam_file"
+        fi
+    done
+fi
+
+else
+    >&2 echo 'Remediation is not applicable, nothing was done'
+fi
+
+# Prevent accounts with empty password
+
+if [ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]; then
+
+SYSTEM_AUTH="/etc/pam.d/system-auth"
+PASSWORD_AUTH="/etc/pam.d/password-auth"
+if [ -f /usr/bin/authselect ]; then
+    if authselect check; then
+        authselect enable-feature without-nullok
+        authselect apply-changes
+    else
+        echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not intact.
+It is not recommended to manually edit the PAM files when authselect is available
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+        false
+    fi
+else
+    sed --follow-symlinks -i 's/\<nullok\>//g' $SYSTEM_AUTH
+    sed --follow-symlinks -i 's/\<nullok\>//g' $PASSWORD_AUTH
+fi
+
+else
+    >&2 echo 'Remediation is not applicable, nothing was done'
+fi
+
+# AIDE 
+
+if [ ! -f /.dockerenv ] && [ ! -f /run/.containerenv ]; then
+
+if ! rpm -q --quiet "aide" ; then
+    yum install -y "aide"
+fi
+
+sed -i '/\/var\/log/d' /etc/aide.conf
+echo "/var/log   p+u+g+i+n+acl+selinux+xattrs" >>/etc/aide.conf
+
+/usr/sbin/aide --init
+/bin/cp -p /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+else
+    >&2 echo 'Remediation is not applicable, nothing was done'
+fi
+
+if ! grep -q "/usr/sbin/aide --check" /etc/crontab ; then
+    echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
+else
+    sed -i '\!^.* --check.*$!d' /etc/crontab
+    echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
+fi
+
+else
+    >&2 echo 'Remediation is not applicable, nothing was done'
+fi
+
+# Display loastlogin info
+if rpm --quiet -q pam; then
+
+if [ -f /usr/bin/authselect ]; then
+    if authselect check; then
+        CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')
+        # Standard profiles delivered with authselect should not be modified.
+        # If not already in use, a custom profile is created preserving the enabled features.
+        if [[ ! $CURRENT_PROFILE == custom/* ]]; then
+            ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')
+            authselect create-profile hardening -b $CURRENT_PROFILE
+            CURRENT_PROFILE="custom/hardening"
+            # Ensure a backup before changing the profile
+            authselect apply-changes -b --backup=before-pwhistory-hardening.backup
+            authselect select $CURRENT_PROFILE
+            for feature in $ENABLED_FEATURES; do
+                authselect enable-feature $feature;
+            done
+        fi
+        # Include the desired configuration in the custom profile
+        CUSTOM_POSTLOGIN="/etc/authselect/$CURRENT_PROFILE/postlogin"
+        # The line should be included on the top of postlogin file
+        if [ "$(grep -c "^\s*session.*required.*pam_lastlog.so\s\+showfailed\s*$" $CUSTOM_POSTLOGIN)" -eq 0 ]; then
+            sed -i --follow-symlinks '0,/^session.*/s/^session.*/session     required                   pam_lastlog.so showfailed\n&/' $CUSTOM_POSTLOGIN
+        fi
+        if grep -q "^\s*session.*required.*pam_lastlog.so.*silent.*" $CUSTOM_POSTLOGIN; then
+            # remove 'silent' option
+            sed -i --follow-symlinks 's/^\(session.*required.*pam_lastlog.so\).*/\1 showfailed/g' $CUSTOM_POSTLOGIN
+        fi
+        authselect apply-changes -b --backup=after-pwhistory-hardening.backup
+    else
+        echo "
+authselect integrity check failed. Remediation aborted!
+This remediation could not be applied because the authselect profile is not intact.
+It is not recommended to manually edit the PAM files when authselect is available.
+In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended."
+        false
+    fi
+else
+    
+    
+    
+
+    if [ "$(grep -c "^\s*session.*required.*pam_lastlog.so\s\+showfailed\s*$" /etc/pam.d/postlogin)" -eq 0 ]; then
+        sed -i --follow-symlinks '0,/^session.*/s/^session.*/session     required                   pam_lastlog.so showfailed\n&/' /etc/pam.d/postlogin
+    fi
+    if grep -q "^\s*session.*required.*pam_lastlog.so.*silent.*" /etc/pam.d/postlogin; then
+        # remove 'silent' option
+        sed -i --follow-symlinks 's/^\(session.*required.*pam_lastlog.so\).*/\1 showfailed/g' /etc/pam.d/postlogin
+    fi
+fi
+
+else
+    >&2 echo 'Remediation is not applicable, nothing was done'
+fi
+
+# Add ssh-dss keytypes to tfremote
+echo "PubkeyAcceptedKeyTypes +ssh-dss" >>/etc/ssh/tfremote_config
+systemctl restart tfremote

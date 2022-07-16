@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#DESC Install the APC UPS Daemon.
+cd /tmp
+[ ! -f ./apcupsd-3.14.14-18.el8.x86_64.rpm ] && wget -q http://rhel8repo.centralus.cloudapp.azure.com/support/apcupsd-3.14.14-18.el8.x86_64.rpm
+yum -y localinstall ./apcupsd-3.14.14-18.el8.x86_64.rpm
+/usr2/ostools/bin/updateos.pl --ups
