@@ -1,0 +1,7 @@
+#!/bin/bash
+ 
+# DOwnload script
+[ ! -f /bin/updateos ] && curl -s http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos -o /tmp/updateos && chmod +x /bin/updateos && /bin/updateos --help
+
+# Add hourly scheduled job to check for updated version.
+[ ! -f /etc/cron.d/updateos_check ] && echo "0 * * * * root /bin/updateos --help" > /etc/cron.d/updateos_check
