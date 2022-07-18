@@ -25,10 +25,6 @@ baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstrea
 name=RH8BaseOS
 baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
-[RH7rpms]
-name=RH7rpms
-baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-rpms
-
 [RH7extras]
 name=RH7extras
 baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
