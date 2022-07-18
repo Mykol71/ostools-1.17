@@ -9,9 +9,6 @@ baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpm
 enabled=1
 EOF
 
-# clear yum version lock if used
-yum versionlock clear
-
 # add leapp package
 yum -y install leapp-upgrade
 
