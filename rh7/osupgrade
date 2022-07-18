@@ -9,9 +9,6 @@ baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpm
 enabled=1
 EOF
 
-# make sure up2date
-yum -y upgrade
-
 # clear yum version lock if used
 yum versionlock clear
 
@@ -45,12 +42,6 @@ tar xvfz ./leapp-data17.tar.gz
 #remove unneeded kernel drivers
 modprobe -r pata_acpi
 
-#remove tf system-auth
-rm -f /etc/pam.d/system-auth-teleflora
-
-# run leap preupgrade
-leapp preupgrade --target 8.6 --no-rhsm
-
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
 [remove_pam_pkcs11_module_check]
@@ -67,5 +58,11 @@ cat > /var/log/leapp/answerfile << EOF
 confirm = True
 EOF
 
+#remove tf system-auth
+mv /etc/pam.d/system-auth-teleflora /tmp/system-atuh-teleflora
+
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
+
+#replace tf system-auth
+mv /tmp/system-auth-teleflora /etc/pam.d/system-auth-teleflora
