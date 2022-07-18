@@ -55,10 +55,10 @@ confirm = True
 EOF
 
 #remove tf system-auth
-mv /etc/pam.d/system-auth-teleflora /tmp/system-atuh-teleflora
+mv /etc/pam.d/system-auth-teleflora /tmp/system-auth-teleflora.bak
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
 
 #replace tf system-auth
-mv /tmp/system-auth-teleflora /etc/pam.d/system-auth-teleflora
+mv /tmp/system-auth-teleflora.bak /etc/pam.d/system-auth-teleflora
