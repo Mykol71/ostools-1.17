@@ -52,14 +52,14 @@ cat > /var/log/leapp/answerfile << EOF
 confirm = True
 EOF
 
+#add script to run after reboot.
+updateos rh7 post_install
+
 #remove tf system-auth
 mv /etc/pam.d/system-auth-teleflora /tmp/system-auth-teleflora.bak
 
 # run leap upgrade
-leapp upgrade --target 8.6 --no-rhsm
+leapp upgrade --target 8.6 --no-rhsm --reboot
 
 #replace tf system-auth
 mv /tmp/system-auth-teleflora.bak /etc/pam.d/system-auth-teleflora
-
-#create post install script.
-updateos rh7 post_install
