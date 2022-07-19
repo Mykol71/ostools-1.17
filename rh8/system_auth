@@ -209,7 +209,8 @@ sed -i '/\/var\/log/d' /etc/aide.conf
 echo "/var/log   p+u+g+i+n+acl+selinux+xattrs" >>/etc/aide.conf
 
 /usr/sbin/aide --init
-/bin/cp -p /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+#/bin/cp -p /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+/bin/cp -p /etc/aide/aide.db.new.gz /etc/aide/aide.db.gz
 
 else
     >&2 echo 'Remediation is not applicable, nothing was done'
@@ -220,10 +221,6 @@ if ! grep -q "/usr/sbin/aide --check" /etc/crontab ; then
 else
     sed -i '\!^.* --check.*$!d' /etc/crontab
     echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
-fi
-
-else
-    >&2 echo 'Remediation is not applicable, nothing was done'
 fi
 
 # Display loastlogin info
