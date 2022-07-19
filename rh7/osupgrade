@@ -55,8 +55,9 @@ EOF
 #add script to run after reboot.
 #updateos rh7 post_install
 
-#remove pam_tally2 support from pam.d. rh8 doesn't support.
-sed -i '/pam_tally2/d' /etc/pam.d/system-auth-teleflora
+#remove rh8 unsupported pam.d modules.
+sed -i '/pam_tally2/d' /etc/pam.d/*
+sed -i '/pam_pkcs11/d' /etc/pam.d/*
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
