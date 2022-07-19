@@ -31,4 +31,3 @@ EOF
 
 chmod +x /tmp/post_install.sh
 systemctl enable post_install
-reboot

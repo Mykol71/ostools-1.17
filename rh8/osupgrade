@@ -3,7 +3,7 @@
 #DESC Inplace OS upgrade from RH7 to RH8 - RTI.
 
 rm -f /tmp/updateos.log
-echo "---> Upgrading RHEL7 to RHEL8 ..." | tee -a /tmp/updateos.log
+echo "---> Upgrading OS to RHEL8 ..." | tee -a /tmp/updateos.log
 echo `date` | tee -a /tmp/updateos.log
 echo "--" | tee -a /tmp/updateos.log
 
