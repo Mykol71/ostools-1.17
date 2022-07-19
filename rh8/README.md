@@ -1,6 +1,6 @@
-
 ---
 RHEL8
+
 
 TO DO -
 -------
@@ -58,7 +58,7 @@ TO DO -
 + authselect config for system login info.
 + rpm permission fixes.
 ~ reproduce support ssh keys.
--        
+-
 
 Key:
 ----
@@ -70,7 +70,3 @@ Key:
 mgreen@teleflora.com
 
 ---
-
-History -
----------
-1.17.2 - Replaced with rewritten updateos. updateos.orig backup.
