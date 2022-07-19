@@ -1,7 +1,6 @@
 ---
 RHEL8
 
-
 TO DO -
 -------
 + tfremote access issue. (ssh to 15022 timesout. no errors in logs.)
@@ -74,5 +73,3 @@ mgreen@teleflora.com
 History -
 ---------
 1.17.2 - Replaced with rewritten updateos. updateos.orig backup.
-
-
