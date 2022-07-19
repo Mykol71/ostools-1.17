@@ -5,13 +5,17 @@
 cat > /tmp/post_install.sh <<EOF
 #!/bin/bash
 
+/bin/updateos rh8 rh8repo_install
 /bin/updateos rh8 conf_firewall
 /bin/updateos rh8 register_insights
-/bin/updateos rh8 zz_email_results
+/bin/updateos rh8 system_auth
+systemctl restart bbj
+systemctl restart rti
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 aide -i
-cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+cp -f /etc/aide/aide.db.new.gz /etc/aide/aide.db.gz
+/bin/updateos rh8 zz_email_results
 EOF
 
 # add post install service file to run after network starts.

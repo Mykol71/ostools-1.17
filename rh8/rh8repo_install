@@ -12,6 +12,7 @@ ID=`/usr/bin/id -u`
 
 # move off redhat.repo if there.
 [ -f /etc/yum.repos.d/redhat.repo ] && mv /etc/yum.repos.d/redhat.repo ~
+rm -f /etc/yum/repos.d/tf*.repo
 
 # create rti repos file
 cat > /etc/yum.repos.d/rtirepos.repo <<EOF
