@@ -53,13 +53,10 @@ confirm = True
 EOF
 
 #add script to run after reboot.
-updateos rh7 post_install
+#updateos rh7 post_install
 
-#remove tf system-auth
-mv /etc/pam.d/system-auth-teleflora /tmp/system-auth-teleflora.bak
+#remove pam_tally2 support from pam.d. rh8 doesn't support.
+sed -i '/pam_tally2/d' /etc/pam.d/system-auth-teleflora
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
-
-#replace tf system-auth
-mv /tmp/system-auth-teleflora.bak /etc/pam.d/system-auth-teleflora
