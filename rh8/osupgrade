@@ -55,7 +55,7 @@ confirm = True
 EOF
 
 #add script to run after reboot.
-updateos rh7 post_install
+updateos rh8 post_install
 
 #remove rh8 unsupported pam.d modules.
 sed -i '/pam_tally2/d' /etc/pam.d/*
