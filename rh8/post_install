@@ -14,7 +14,7 @@ systemctl restart rti
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 aide -i
-cp -f /etc/aide/aide.db.new.gz /etc/aide/aide.db.gz
+cp -f /etc/aide.db.new.gz /etc/aide.db.gz
 /bin/updateos rh8 zz_email_results
 EOF
 
