@@ -1,9 +1,19 @@
 #!/bin/bash
 
-#DESC Inplace OS upgrade from RH8 to RH9 - RTI.
+#DESC Inplace OS upgrade from RH7 to RH8 - RTI.
 
-# clear yum version lock if used
-yum versionlock clear
+rm -f /tmp/updateos.log
+echo "---> Upgrading RHEL7 to RHEL8 ..." | tee -a /tmp/updateos.log
+echo `date` | tee -a /tmp/updateos.log
+echo "--" | tee -a /tmp/updateos.log
+
+# add rh7 extras repo.
+cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
+[RH7extras]
+name=RH7extras
+baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
+enabled=1
+EOF
 
 # add leapp package
 yum -y install leapp-upgrade
@@ -18,14 +28,6 @@ baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstrea
 name=RH8BaseOS
 baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
-[RH9AppStream]
-name=RH9AppStream
-baseurl=http://rhel9repo.centralus.cloudapp.azure.com/rhel-9-for-x86_64-appstream-rpms
-
-[RH9BaseOS]
-name=RH9BaseOS
-baseurl=http://rhel9repo.centralus.cloudapp.azure.com/rhel-9-for-x86_64-baseos-rpms
-
 EOF
 
 #download leapp metadata
@@ -36,5 +38,28 @@ tar xvfz ./leapp-data17.tar.gz
 #remove unneeded kernel drivers
 modprobe -r pata_acpi
 
+#create leapp answer file
+cat > /var/log/leapp/answerfile << EOF
+[remove_pam_pkcs11_module_check]
+# Title:              None
+# Reason:             Confirmation
+# =================== remove_pam_pkcs11_module_check.confirm ==================
+# Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
+# Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
+# Reason:             Leaving this module in PAM configuration may lock out the system.
+# Type:               bool
+# Default:            None
+# Available choices: True/False
+# Unanswered question. Uncomment the following line with your answer
+confirm = True
+EOF
+
+#add script to run after reboot.
+updateos rh7 post_install
+
+#remove rh8 unsupported pam.d modules.
+sed -i '/pam_tally2/d' /etc/pam.d/*
+sed -i '/pam_pkcs11/d' /etc/pam.d/*
+
 # run leap upgrade
-leapp upgrade --target 9.2 --no-rhsm --reboot
+leapp upgrade --target 8.6 --no-rhsm --reboot
