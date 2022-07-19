@@ -2,8 +2,10 @@
 
 #DESC Inplace OS upgrade from RH7 to RH8 - RTI.
 
+rm -f /tmp/updateos.log
 echo "---> Upgrading RHEL7 to RHEL8 ..." | tee -a /tmp/updateos.log
-echo "" | tee -a /tmp/updateos.log
+echo `date` | tee -a /tmp/updateos.log
+echo "--" | tee -a /tmp/updateos.log
 
 # add rh7 extras repo.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
@@ -53,7 +55,7 @@ confirm = True
 EOF
 
 #add script to run after reboot.
-#updateos rh7 post_install
+updateos rh7 post_install
 
 #remove rh8 unsupported pam.d modules.
 sed -i '/pam_tally2/d' /etc/pam.d/*
