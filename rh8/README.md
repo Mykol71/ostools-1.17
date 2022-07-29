@@ -4,6 +4,7 @@ RHEL8
 
 TO DO -
 -------
+
 + tfremote access issue. (ssh to 15022 timesout. no errors in logs.)
 + update RTI iso.
 + console screen reso. remove irroneous nomodeset.
@@ -56,10 +57,10 @@ TO DO -
 + authselect config for system login info.
 + rpm permission fixes.
 - reproduce support ssh keys for tfremote.pl.
--        
 
-Key:
-----
+
+Key -
+-----
 + Done.
 - To Do.
 ~ In progress.
