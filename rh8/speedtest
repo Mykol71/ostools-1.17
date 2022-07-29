@@ -682,7 +682,6 @@ def build_user_agent():
         '(%s; U; %s; en-us)' % (platform.platform(),
                                 platform.architecture()[0]),
         'Python/%s' % platform.python_version(),
-#        '(KHTML, like Gecko)',
         'speedtest-cli/%s' % __version__
     )
     user_agent = ' '.join(ua_tuple)
