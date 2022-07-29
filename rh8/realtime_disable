@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#DESC Disable RTI realtime.
+
+# comment out batch jobs.
+sed -i 's/^/#/g' /usr2/bbx/config/rtiBackgr
+
+# move off tcc links.
+cd /usr2/
+find . -name "tcc" -exec mv {} /tmp \;
+find . -name "tcc_tws" -exec mv {} /tmp \;
+
+# stop services.
+systemctl stop rti
+systemctl stop bbj
+systemctl stop blm
+
+echo "Real time disabled."
+
+exit 0

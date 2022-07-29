@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#DESC Enable RTI Real time. (Must have been disabled by updateos rh8 realtime_disable)
+
+# uncomment out jobs.
+sed -i 's/^//g' /usr2/bbx/config/rtiBackgr
+
+# restore tcc links.
+cd /tmp/
+find . -name "tcc" -exec mv {} /usr2/bbx/bin \;
+find . -name "tcc_tws" -exec mv {} /usr2/bbx/bin \;
+
+# start services
+systemctl start blm
+systemctl start bbj
+systemctl start rti
+
+echo "Real time enabled."
+fi
+
+exit 0
