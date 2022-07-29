@@ -5,9 +5,9 @@ Functionality -
 ---------------
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
-- After the system has been kickstarted using the ks file, updateos will be availible to all users. (in the /usr/bin folder).
+- After the system has been kickstarted using the ks file, updateos will be availible  in the /bin folder.
 - updateos will download the scripts and exec them on every execution.
-- If the script requires user input, add command line alternatives.
+- Prompting for user input is ok.
 - If a script fails during a "group" run, updateos.sh exits non-zero immediately.
 - Logging for updateos is in /tmp/updateos.log.
 
@@ -41,7 +41,6 @@ Staging Instructions -
 ----------------------
 RH8 -
 -----
-
 Repos -
 -------
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
@@ -68,7 +67,6 @@ $linuxbbx
 
 RH9 -
 -----
-
 Repos -
 -------
 
@@ -85,7 +83,7 @@ RH7-RH8 Steps -
 2. Run: sudo updateos rh7 osupgrade
 
 ** Note: Only 1 kernel named NIC (ethX) allowed.
-** Process will take a bit of time. An hour or more.
+** Process will take a bit of time. 2 hours or more.
 
 RH8-RH9 Steps -
 ---------------
@@ -110,8 +108,8 @@ Information -
 /usr/bin/updateos syntax -
 --------------------------
 - $updateos {group} {subgroup or scriptname}
-- $updateos only will display usage.
-- $updateos {group} only will display a list of possible subgroups or scripts.
+- $updateos help  - will display detailed usage.
+- $updateos {group}  - will display short usage.
 
 TO DO -
 -------
@@ -124,7 +122,6 @@ TO DO -
 + add descriptions for scripts.
 + rewrite updateos.
 + updateos subgroup work.
-? rear integration.
 + keep hidden copies of scripts in /tmp.
 + add os ver to downloaded cached scripts. to allow for dup names for different os versions.
 + no longer need RTI-osupgrade.ks file.
@@ -146,5 +143,4 @@ mgreen@teleflora.com
 History -
 ---------
 1.17.2 - Replaced with rewritten updateos. updateos.orig backup.
-
 

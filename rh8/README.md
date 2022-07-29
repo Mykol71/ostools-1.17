@@ -22,9 +22,8 @@ TO DO -
 + logging to anaconda console during %post section of kickstart. 
 + update ostools version info in 1.16. (for logging etc.)
 + errors logged to console.
-? rear support/integration. (Relax and Recover)
 + build qa vms.
-- update tfrsync.pl with bug fixes from kevin and joe to 1.16 repo.
++ update tfrsync.pl with bug fixes from kevin and joe to 1.16 repo.
 - update tfrsync.pl with fixes for cloud backup warnings 23,24 to 1.16 repo.
 - merge in server-to-server tfrsync.pl fixes to ostools-1.16 repo.
 + document how to create usb media.
@@ -33,7 +32,7 @@ TO DO -
 + add os media isos to repo server.
 + display issue for silent install when registering with insights.  
 + iptables issue because of perl local ip issue.
-~ in-place os upgrade process from rh7 to rh8.
++ in-place os upgrade process from rh7 to rh8.
 + users custom .bash_profile creation.
 + term backspace issue. (needed ncurses-term.)
 + iptables config issue when in %post of ks. Works after login.
@@ -50,14 +49,13 @@ TO DO -
 + sethostname script.
 + reversed /etc/hosts syntax for hostnames in ostools-1.16.
 + net info change script.
-+ fix for permission denied when accessing from CS server CALL script.
 + aide setup.
 + pam.d system-auth fixes.
 + rpm permission fixes.
 + add scheduled job for compliance checks.
 + authselect config for system login info.
 + rpm permission fixes.
-~ reproduce support ssh keys.
+- reproduce support ssh keys for tfremote.pl.
 -
 
 Key:
