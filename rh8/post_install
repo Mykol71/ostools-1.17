@@ -1,21 +1,18 @@
 #!/bin/bash
 
 #DESC Creates a systemd service that will run after first reboot only. (After network starts.)
+#sed -i '/post_install.sh/d' /etc/crontab
 # create post install script
 cat > /tmp/post_install.sh <<EOF
 #!/bin/bash
 
-/bin/updateos rh8 rh8repo_install
 /bin/updateos rh8 conf_firewall
 /bin/updateos rh8 register_insights
-/bin/updateos rh8 system_auth
-systemctl restart bbj
-systemctl restart rti
+/bin/updateos rh8 zz_email_results
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 aide -i
-cp -f /etc/aide.db.new.gz /etc/aide.db.gz
-/bin/updateos rh8 zz_email_results
+cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 EOF
 
 # add post install service file to run after network starts.
