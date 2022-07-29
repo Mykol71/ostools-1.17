@@ -44,7 +44,7 @@ TO DO -
 + add compliance check script.
 + switch back to eth0,1 naming conventions. (need to reproduce .iso)
 + switch to symlinks for groups.   
-+ add #DESC comments.
++ add DESC comments.
 + sethostname script.
 + reversed /etc/hosts syntax for hostnames in ostools-1.16.
 + net info change script.
