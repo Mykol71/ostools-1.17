@@ -16,6 +16,5 @@ systemctl start bbj
 systemctl start rti
 
 echo "Real time enabled."
-fi
 
 exit 0
