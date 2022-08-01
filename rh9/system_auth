@@ -222,10 +222,6 @@ else
     echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
 fi
 
-else
-    >&2 echo 'Remediation is not applicable, nothing was done'
-fi
-
 # Display loastlogin info
 if rpm --quiet -q pam; then
 
