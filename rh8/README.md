@@ -1,10 +1,8 @@
 ---
 RHEL8
 
-
 TO DO -
 -------
-
 + tfremote access issue. (ssh to 15022 timesout. no errors in logs.)
 + update RTI iso.
 + console screen reso. remove irroneous nomodeset.
@@ -65,6 +63,7 @@ Key -
 - To Do.
 ~ In progress.
 ? Consider.
+
 
 mgreen@teleflora.com
 
