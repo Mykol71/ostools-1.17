@@ -14,6 +14,8 @@ nmcli dev set eth0 managed yes
 nmcli dev mod eth0 ipv4.addr "$IP/24"
 nmcli dev mod eth0 ipv4.dns $DNS
 nmcli dev mod eth0 ipv4.gateway $GATEWAY
+nmcli con mod eth0 ipv4.method manual
+nmcli connection reload
 
 #Update hosts file
 NAME="`hostname | cut -d"." -f1`"
