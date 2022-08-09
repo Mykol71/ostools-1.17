@@ -15,9 +15,9 @@ n="${15:-20}"
 
 usage() {
 echo "updateos - $VERSION - USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
-echo ""
 for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
   do
+  echo ""
   echo "$GROUP"
   for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
     do
