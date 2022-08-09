@@ -10,12 +10,19 @@ GATEWAY=$3
 [ "$DNS" == "" ] && echo -n "Enter DNS: " && read DNS
 [ "$GATEWAY" == "" ] && echo -n "Enter Gateway: " && read GATEWAY
 
+# use old ostools to make ifcfg-eth0 changes
+/usr2/ostools/bin/updateos.pl --ipaddr=$IP
+
+# replace the hardcoded gateway from old ostools with the entered gw.
+sed -i "/GATEWAY=/d" /etc/sysconfig/network-scripts/ifcfg-eth0
+echo "GATEWAY=$GATEWAY" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+
 nmcli dev set eth0 managed yes
 nmcli dev mod eth0 ipv4.addr "$IP/24"
 nmcli dev mod eth0 ipv4.dns $DNS
 nmcli dev mod eth0 ipv4.gateway $GATEWAY
-nmcli con mod eth0 ipv4.method manual
 nmcli connection reload
+systemctl restart NetworkManager
 
 #Update hosts file
 NAME="`hostname | cut -d"." -f1`"
