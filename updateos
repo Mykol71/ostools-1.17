@@ -11,12 +11,11 @@ SCRIPT=empty
 [ "$2" != "" ] && SCRIPT="$2"
 SUBGROUP=empty
 [ "$2" != "" ] && SUBGROUP="$2"
-n="${15:-24}"
+n="${15:-20}"
 
 usage() {
 echo "updateos - $VERSION - USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
-echo "GROUP  SUBGROUP  SCRIPT                  DESCRIPTION"
-echo "-----  --------  ------                  -----------"
+echo ""
 for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
   do
   echo "$GROUP"
@@ -28,16 +27,16 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
     DESC="`grep ^#DESC /tmp/.$GROUP.$script | sed -e 's/^#DESC\ //g'`"
     script="$script$(printf '%*s' "$n" "")"        
     var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
-    echo -n "                 "
+    echo -n " "
     printf '%s' "${var}" 
-    echo "$DESC"
+    echo ${DESC:0:50}
     done
   for SUBGROUP in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
     do
-    echo "       $SUBGROUP"
+    echo " $SUBGROUP"
     for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
       do
-      echo "                 $script"
+      echo "  $script"
       done
     done
   done
