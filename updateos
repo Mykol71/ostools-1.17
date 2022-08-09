@@ -29,7 +29,7 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
     var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
     echo -n " "
     printf '%s' "${var}" 
-    echo ${DESC:0:50}
+    echo ${DESC:0:58}
     done
   for SUBGROUP in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
     do
