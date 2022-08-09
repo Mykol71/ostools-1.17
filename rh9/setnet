@@ -12,6 +12,7 @@ GATEWAY=$3
 
 # use old ostools to make ifcfg-eth0 changes
 /usr2/ostools/bin/updateos.pl --ipaddr=$IP --gateway=$GATEWAY --netmask=255.255.255.0
+sed -i "/nm_controlled=/d" /etc/sysconfig/network-scripts/ifcfg-eth0
 
 nmcli dev set eth0 managed yes
 nmcli dev mod eth0 ipv4.addr "$IP/24"
