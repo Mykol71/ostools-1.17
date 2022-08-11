@@ -10,7 +10,7 @@ yum -y install policycoreutils-python-utils selinux-policy-devel
 
 # Copy conf file.
 mkdir -p /etc/panw
-cp -f ./cortext.conf /etc/panw/
+cp -f ./cortex.conf /etc/panw/
 
 # Install.
 yum -y localinstall ./cortex-7.7.2.66464.rpm
