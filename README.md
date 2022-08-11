@@ -1,6 +1,59 @@
 ---
 ostools-1.17.2
 
+Usage -
+-------
+updateos - 1.17.2 - USAGE: sudo updateos (groupname) (subgroupname|scriptname)
+
+rh7/
+ blcheck             Check common blacklists for public IP.
+ config_sendgrid     Configures system to relay email through sendgrid. Need: A
+ install_cortex      Installs Cortex for IT managed malware protection.
+ install_flordir     Install the POS Electronic Directory.
+ install_kaseya      Install TF's kaseya agent.
+ install_ostools-1.16Install legacy ostools.
+ install_rti         Installs RTI 16.3.8 and all deps.
+ realtime_disable    Disable RTI realtime.
+ realtime_enable     Enable RTI Real time. (Must have been disabled by updateos
+ register_insights   Register system with TF's Redhat insights account.
+ rtirepo_install     
+ speedtest           Check network speed.
+ trendmicro_prod     Install Trendmicro and register with TF's account - produc
+ trendmicro_qa       Install Trendmicro and register to TF's account - qa folde
+ update_bbj_19.pl    Install and/or upgrade BBJ and Java.
+
+rh8/
+ blcheck             Check common blacklists for public IP.
+ check_compliance    Must have already assigned this server to a compliance pro
+ conf_firewall       Configures iptables for use with linux POS systems.
+ conf_platform       Creates folders need by the POS installation.
+ conf_users          Add POS system accounts.
+ config_sendgrid     Configures system to relay email through sendgrid. Need: A
+ harden_system       Harden the system per PCI/PADSS guidelines.
+ install_cortex      Installs Cortex for IT managed malware protection.
+ install_flordir     Install the POS Electronic Directory.
+ install_kaseya      Install TF's kaseya agent.
+ install_ostools-1.16Install legacy ostools.
+ install_rti         Installs RTI 16.3.8 and all deps.
+ install_tcc         Install TF's CC processing program. (Used by POS software)
+ install_ups         Install the APC UPS Daemon.
+ osupgrade           Inplace OS upgrade from RH7 to RH8 - RTI.
+ post_install        Creates a systemd service that will run after first reboot
+ realtime_disable    Disable RTI realtime.
+ realtime_enable     Enable RTI Real time. (Must have been disabled by updateos
+ register_insights   Register system with TF's Redhat insights account.
+ rh8repo_install     Configure system to receive patches from TF's repo server.
+ sethostname         Set the server's hostname.
+ setnet              Set/Change IP, DNS, and Gateway.
+ smb_passwords       Creates initial samba passwords for POS system accounts.
+ speedtest           Check network speed.
+ system_auth         System authentication configuration.
+ trendmicro_prod     Install Trendmicro and register with TF's account - produc
+ trendmicro_qa       Install Trendmicro and register to TF's account - qa folde
+ update_bbj_19.pl    Install and/or upgrade BBJ and Java.
+ zz_email_results    Email staging results.
+ stage/
+
 Functionality -
 ---------------
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
@@ -39,18 +92,6 @@ Contrib Info -
 
 Staging Instructions -
 ----------------------
-RH8 -
------
-Repos -
--------
-http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
-http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
-http://rhel8repo.centralus.cloudapp.azure.com/support/
-http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
-http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
-
-Steps -
--------
 1. Download the RH8.x install media iso:  
 
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
@@ -65,15 +106,13 @@ $linuxbbx
 
 ** Note: you will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
-RH9 -
------
 Repos -
 -------
-
-Steps -
--------
-1.
-2.
+http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
+http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
+http://rhel8repo.centralus.cloudapp.azure.com/support/
+http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
+http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 
 OS Upgrade Instructions -
 -------------------------
@@ -85,62 +124,9 @@ RH7-RH8 Steps -
 ** Note: Only 1 kernel named NIC (ethX) allowed.
 ** Process will take a bit of time. 2 hours or more.
 
-RH8-RH9 Steps -
----------------
-1. comming soon.
-2.
-
-Information -
--------------
-+ tcc is installed.
-+ bbj 19 is installed.
-+ kaseya is installed.
-+ system is registered with redhat insights.
-+ system is registered to the TF RH8 repo for patches.
-+ ostools 1.16 is installed.
-+ ostools 1.16 is ostools 1.15 with RH8 support.
-+ ostools 1.17 is this.
-+ there is also an -nvm.ks version of the kickstart file for nvm ssd support.
-
-** take note that $updateos and $updateos.pl are both on the system and do different things. 
-     Make sure, on step 6 above, you execute $updateos **
-
-/usr/bin/updateos syntax -
---------------------------
-- $updateos {group} {subgroup or scriptname}
-- $updateos help  - will display detailed usage.
-- $updateos {group}  - will display short usage.
-
-TO DO -
--------
-+ add ostools 1.16 to git.
-+ move ostools 1.16 download package to repo server.
-+ full path to commands in /usr/bin in case ran from cron. 
-+ usage.
-+ add version info.
-+ logging.
-+ add descriptions for scripts.
-+ rewrite updateos.
-+ updateos subgroup work.
-+ keep hidden copies of scripts in /tmp.
-+ add os ver to downloaded cached scripts. to allow for dup names for different os versions.
-+ no longer need RTI-osupgrade.ks file.
-+ no longer need non-silent versions of .ks files. 
-+ add initial rh9 support.
--
-
-Key -
------
-- to do.
-+ done.
-~ in progress.
-? consider.
 
 mgreen@teleflora.com
 
 ---
 
-History -
----------
-1.17.2 - Replaced with rewritten updateos. updateos.orig backup.
 
