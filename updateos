@@ -34,10 +34,6 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
   for SUBGROUP in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
     do
     echo " $SUBGROUP"
-#    for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
-#      do
-#      echo "  $script"
-#      done
     done
   done
 exit 1
