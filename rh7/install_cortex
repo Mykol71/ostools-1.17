@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#DESC Installs Cortex for IT managed malware protection.
+
+# Install deps.
+yum -y install policycoreutils-python-utils selinux-policy-devel 
+
+# Download rpm.
+[ ! -f ./cortext_rpm.tar.gz ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/cortex_rpm.tar.gz && tar xvfz ./cortext_rpm.tar.gz
+
+# Copy conf file.
+mkdir -p /etc/panw
+cp -f ./cortext.conf /etc/panw/
+
+# Install.
+yum -y localinstall ./cortex-7.7.2.66464.rpm
+
+exit $? 

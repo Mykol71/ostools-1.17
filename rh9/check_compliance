@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#DESC Must have already assigned this server to a compliance profile on the Insights WebUI.
-echo "Requires that a profile was assigned for this machine via the Insights webui...."
-
-insights-client --compliance
-
-[ ! -f /etc/cron.d/compliance_check ] && echo "30 10 * * * root (insights-client --compliance)" > /etc/cron.d/compliance_check
