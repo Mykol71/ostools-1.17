@@ -5,6 +5,18 @@
 # uncomment out jobs.
 sed -i 's/^#//g' /usr2/bbx/config/rtiBackgr
 
+# uncomment out cron jobs.
+for file in `ls /etc/cron.d`
+do 
+sed -i 's/^#//g' /etc/cron.d/$file
+done
+
+# uncommenting out any jobs in roots crontab
+spawn crontab -e
+expect "" { send ":%s/^#//g\r" }
+expect "" { send ":wq\r" }
+interact
+
 # restore tcc links.
 cd /tmp/
 find . -name "tcc" -exec mv {} /usr2/bbx/bin \;

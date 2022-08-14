@@ -5,6 +5,18 @@
 # comment out batch jobs.
 sed -i 's/^/#/g' /usr2/bbx/config/rtiBackgr
 
+# comment out cron jobs.
+for file in `ls /etc/cron.d`
+do 
+sed -i 's/^/#/g' /etc/cron.d/$file
+done
+
+# commenting out any jobs in roots crontab
+spawn crontab -e
+expect "" { send ":%s/^/#/g\r" }
+expect "" { send ":wq\r" }
+interact
+
 # move off tcc links.
 cd /usr2/
 find . -name "tcc" -exec mv {} /tmp \;
