@@ -5,6 +5,24 @@
 # uncomment out jobs.
 sed -i 's/^#//g' /usr2/bbx/config/rtiBackgr
 
+# uncomment out cron jobs.
+for file in `ls /etc/cron.d`
+do 
+sed -i 's/^#//g' /etc/cron.d/$file
+done
+
+# uncommenting out any jobs in users crontab
+for file in `ls /var/spool/cron`
+do
+sed -i 's/^/#/g' /var/spool/cron/$file
+done
+
+# uncomment out items in dove.ini
+sed -i 's/^#//g' /usr2/bbx/config/dove.ini
+
+# move back doverserver.pl
+mv /usr2/bbx/bin/doveserver.pl.bak /usr2/bbx/bin/doveserver.pl
+
 # restore tcc links.
 cd /tmp/
 find . -name "tcc" -exec mv {} /usr2/bbx/bin \;

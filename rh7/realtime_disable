@@ -5,6 +5,24 @@
 # comment out batch jobs.
 sed -i 's/^/#/g' /usr2/bbx/config/rtiBackgr
 
+# comment out cron jobs.
+for file in `ls /etc/cron.d`
+do 
+sed -i 's/^/#/g' /etc/cron.d/$file
+done
+
+# commenting out any jobs in any users crontab
+for file in `ls /var/spool/cron`
+do
+sed -i 's/^/#/g' /var/spool/cron/$file
+done
+
+# disable dove login.
+sed -i 's/^/#/g' /usr2/bbx/config/dove.ini
+
+# move off doveserver.pl
+mv /usr2/bbx/bin/doveserver.pl /usr2/bbx/bin/doveserver.pl.bak
+
 # move off tcc links.
 cd /usr2/
 find . -name "tcc" -exec mv {} /tmp \;
