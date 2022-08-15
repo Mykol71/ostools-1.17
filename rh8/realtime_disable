@@ -14,6 +14,9 @@ done
 # commenting out any jobs in roots crontab
 [ -f /var/spool/cron/root ] && sed -i 's/^/#/g' /var/spool/cron/root
 
+# disable dove login.
+sed -i 's/^/#/g' /usr2/bbx/config/dove.ini
+
 # move off tcc links.
 cd /usr2/
 find . -name "tcc" -exec mv {} /tmp \;
