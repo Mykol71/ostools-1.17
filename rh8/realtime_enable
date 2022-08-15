@@ -12,10 +12,7 @@ sed -i 's/^#//g' /etc/cron.d/$file
 done
 
 # uncommenting out any jobs in roots crontab
-spawn crontab -e
-send ":%s/^#//g\r"
-send ":wq\r"
-interact
+[ -f /var/spool/cron/root ] && sed -i 's/^#//g' /var/spool/cron/root
 
 # restore tcc links.
 cd /tmp/
