@@ -11,8 +11,11 @@ do
 sed -i 's/^#//g' /etc/cron.d/$file
 done
 
-# uncommenting out any jobs in roots crontab
-[ -f /var/spool/cron/root ] && sed -i 's/^#//g' /var/spool/cron/root
+# uncommenting out any jobs in users crontab
+for file in `ls /var/spool/cron/*`
+do
+sed -i 's/^/#/g' /var/spool/cron/$file
+done
 
 # uncomment out items in dove.ini
 sed -i 's/^#//g' /usr2/bbx/config/dove.ini
