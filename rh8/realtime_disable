@@ -12,7 +12,7 @@ sed -i 's/^/#/g' /etc/cron.d/$file
 done
 
 # commenting out any jobs in any users crontab
-for file in `ls /var/spool/cron/*`
+for file in `ls /var/spool/cron`
 do
 sed -i 's/^/#/g' /var/spool/cron/$file
 done
