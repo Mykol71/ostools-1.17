@@ -17,6 +17,9 @@ done
 # uncomment out items in dove.ini
 sed -i 's/^#//g' /usr2/bbx/config/dove.ini
 
+# move back doverserver.pl
+mv /usr2/bbx/bin/doveserver.pl.bak /usr2/bbx/bin/doveserver.pl
+
 # restore tcc links.
 cd /tmp/
 find . -name "tcc" -exec mv {} /usr2/bbx/bin \;

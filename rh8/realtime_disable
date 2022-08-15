@@ -17,6 +17,9 @@ done
 # disable dove login.
 sed -i 's/^/#/g' /usr2/bbx/config/dove.ini
 
+# move off doveserver.pl
+mv /usr2/bbx/bin/doveserver.pl /usr2/bbx/bin/doveserver.pl.bak
+
 # move off tcc links.
 cd /usr2/
 find . -name "tcc" -exec mv {} /tmp \;
