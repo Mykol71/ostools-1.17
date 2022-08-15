@@ -13,8 +13,8 @@ done
 
 # uncommenting out any jobs in roots crontab
 spawn crontab -e
-expect "" { send ":%s/^#//g\r" }
-expect "" { send ":wq\r" }
+send ":%s/^#//g\r"
+send ":wq\r"
 interact
 
 # restore tcc links.
