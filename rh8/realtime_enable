@@ -37,6 +37,11 @@ systemctl start blm
 systemctl start bbj
 systemctl start rti
 
+# enable on startup.
+systemctl enable blm
+systemctl enable bbj
+systemctl enable rti
+
 # tell this process the status.
 rm -f /usr2/bbx/config/.rtoff
 touch /usr2/bbx/config/.rton
