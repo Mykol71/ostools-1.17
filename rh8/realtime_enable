@@ -1,6 +1,10 @@
 #!/bin/bash
 
-#DESC Enable RTI Real time. (Must have been disabled by updateos rh8 realtime_disable)
+#DESC Enable RTI Real time. (had to be  disabled by realtime_disable)
+
+# check to see if disabled.
+[ -f /usr2/bbx/config/.rton ] && echo "Real time already enabled." && exit 1
+[ ! -f /usr2/bbx/config/.rtoff ] && echo "Real time not disabled by this process." && exit 2
 
 # uncomment out jobs.
 sed -i 's/^#//g' /usr2/bbx/config/rtiBackgr
@@ -11,7 +15,7 @@ do
 sed -i 's/^#//g' /etc/cron.d/$file
 done
 
-# uncommenting out any jobs in users crontab
+# uncommenting out any jobs in users crontab.
 for file in `ls /var/spool/cron`
 do
 sed -i 's/^/#/g' /var/spool/cron/$file
@@ -21,17 +25,21 @@ done
 sed -i 's/^#//g' /usr2/bbx/config/dove.ini
 
 # move back doverserver.pl
-mv /usr2/bbx/bin/doveserver.pl.bak /usr2/bbx/bin/doveserver.pl
+mv /usr2/bbx/bin/doveserver.pl.rtoff /usr2/bbx/bin/doveserver.pl
 
 # restore tcc links.
 cd /tmp/
 find . -name "tcc" -exec mv {} /usr2/bbx/bin \;
 find . -name "tcc_tws" -exec mv {} /usr2/bbx/bin \;
 
-# start services
+# start services.
 systemctl start blm
 systemctl start bbj
 systemctl start rti
+
+# tell this process the status.
+rm -f /usr2/bbx/config/.rtoff
+touch /usr2/bbx/config/.rton
 
 echo "Real time enabled."
 
