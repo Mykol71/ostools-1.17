@@ -2,11 +2,11 @@
 
 #DESC Set the server's hostname.
 
-NAME=$1
+NAME="$3"
 
 [ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
 
-hostnamectl set-hostname $NAME
+hostnamectl set-hostname "$NAME"
 
 IP="`hostname -I | cut -d" " -f1`"
 sed -i "/$NAME/d" /etc/hosts

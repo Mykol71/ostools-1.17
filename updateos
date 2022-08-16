@@ -45,7 +45,7 @@ for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~
   echo "----> Running $GROUP $SUBGROUP $script..." | tee -a /tmp/updateos.log
   /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$script -o /tmp/.${script}
   chmod +x /tmp/.${script}
-  /tmp/.${script} $3 $4 $5 $6 $7 2>&1 | tee -a /tmp/updateos.log
+  /tmp/.${script} "$@" 2>&1 | tee -a /tmp/updateos.log
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
   echo "Success." | tee -a /tmp/updateos.log
@@ -60,7 +60,7 @@ echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
 /usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /tmp/.${SCRIPT}
 [ "`cat /tmp/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && rm -f /tmp/.${SCRIPT} && usage
 chmod +x /tmp/.${SCRIPT}
-/tmp/.${SCRIPT} $3 $4 $5 $6 $7 2>&1 | tee -a /tmp/updateos.log
+/tmp/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
 echo "Success." | tee -a /tmp/updateos.log
