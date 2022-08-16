@@ -2,7 +2,6 @@
 ostools-1.17.2
 
 Usage :
-
 sudo updateos (groupname) (subgroupname|scriptname)
 
 rh7/
@@ -55,7 +54,6 @@ rh8/
  stage/
 
 Staging :
-
 1. Download the RH8.x install media iso.  
 
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
@@ -71,9 +69,7 @@ $linuxbbx
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
 OS Upgrade :
-
 RH7-RH8 :
-
 1. From the rh7 server to be upgraded download http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos , make it executable, and place it in /bin.
 2. Run   sudo updateos rh8 osupgrade
 
@@ -81,7 +77,6 @@ RH7-RH8 :
 ** Process will take a bit of time. 2 hours or more.
 
 Information :
-
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
 - After the system has been kickstarted using the ks file, updateos will be availible  in the /bin folder.
@@ -91,7 +86,6 @@ Information :
 - Logging for updateos is in /tmp/updateos.log.
 
 How to build custom boot install media :
-
 1. Download boot.iso from redhat, and mount it with $mount -o loop ./boot.iso /mnt .
 2. Copy the structure to a new folder. i.e. cp -rp /mnt/. ./newiso/. Also make sure to get /mnt/.discinfo.
 3. Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line
@@ -105,7 +99,6 @@ inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silen
 The resulting 900ish meg iso file can be then burned to a usb stick with any utility. i.e. rufus.
 
 Contrib Info :
-
 - programs should exit 0 if success and non-0 if fail.
 - already installed treat as success.
 - programs in staging folders should not require user input. Staging should be a silent install.
@@ -117,7 +110,6 @@ Contrib Info :
 - if a change needs to be made, create a ticket in azure devops, and explain the details including the related pci rule etc.
 
 Repos :
-
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
 http://rhel8repo.centralus.cloudapp.azure.com/support/
@@ -127,5 +119,3 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 mgreen@teleflora.com
 
 ---
-
-
