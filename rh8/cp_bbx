@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#DESC With QA in mind. Copy /usr2/bbx from one server to another.
+
+SOURCE=$1
+TARGET=$2
+
+[ "$SOURCE" == "" ] && echo -n "Enter source IP: " && read SOURCE
+[ "$TARGET" == "" ] && echo -n "Enter target IP: " && read TARGET
+
+ping -c 1 $SOURCE
+[ "$?" != "0" ] && echo "Source unavalible." && exit 1
+ping -c 1 $TARGET
+[ "$?" != "0" ] && echo "Target unavalible." && exit 1
+
+rsync -avz --exclude '*.prepatch*' --exclude '*.tar' --exclude '*.zip' --exclude '*pre*' --exclude '.*' --exclude '*orig*' --exclude '*.bak*' --exclude '*.log' tfsupport@${SOURCE}:/usr2/bbx tfsupport@${TARGET}:/usr2/
