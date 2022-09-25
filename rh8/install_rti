@@ -18,8 +18,8 @@ echo "Adding multiserver.pwd fix....."
 cp -f ~/multiserver.pwd /usr2/bbx/config/
 
 echo "Installing 32-bit library for serial ports...."
+cp ~/librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
 cp /usr2/basis/lib/librxtxSerial.so /usr2/basis/lib/librxtxSerial.so.64bit
-cp librxtxSerial.so /usr2/basis/lib/librxtxSerial.so
 chmod 666 /usr2/basis/lib/librxtxSerial.so
 chown root:root /usr2/basis/lib/librxtxSerial.so
 
