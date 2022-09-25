@@ -9,16 +9,16 @@ usermod tfsupport -g rtiadmin -G rti
 useradd odbc -G rti
 useradd delivery -G rti
 
-cd /tmp
-[ ! -f /tmp/tfsupport-authorized_keys ] && wget -q http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
-[ ! -f /tmp/twofactor-20090723.tar ] && wget -q http://rtihardware.homelinux.com/t1800/twofactor-20090723.tar
+cd ~
+[ ! -f ~/tfsupport-authorized_keys ] && wget -q http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
+[ ! -f ~/twofactor-20090723.tar ] && wget -q http://rtihardware.homelinux.com/t1800/twofactor-20090723.tar
 
 echo "Installing tfsupport authorized keys...."
 mkdir /home/tfsupport/.ssh
 chmod 700 /home/tfsupport/.ssh
 chown tfsupport:rti /home/tfsupport/.ssh
-tar xvf /tmp/twofactor-20090723.tar
-chmod +x /tmp/*.pl
-cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+tar xvf ~/twofactor-20090723.tar
+chmod +x ~/*.pl
+cp ~/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
 chmod 700 /home/tfsupport/.ssh/authorized_keys
 chown tfsupport:root /home/tfsupport/.ssh/authorized_keys

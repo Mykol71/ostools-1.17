@@ -73,7 +73,7 @@ my $java_rel = "";
 my $jdir_link = "";
 my $BBJ_INSTALL_FILE = "";
 my $tmp_MBs_needed = "1350";
-my $tmpDir = "/tmp/";
+my $tmpDir = "~/";
 my $created_tmpDir = "false";
 my $df_java = "";
 my $du_java = "";
@@ -180,7 +180,7 @@ close(PIPE);
 loginfo("Need $tmp_MBs_needed and have $availfs ");
 if ( $availfs >= $tmp_MBs_needed )
 {
-   $tmpDir = "/tmp/";
+   $tmpDir = "~/";
    loginfo("Ok to load on root partition in $tmpDir ");
 } else {
    loginfo("Not enough space on root partition, checking /usr2 \n");
