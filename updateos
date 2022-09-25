@@ -21,10 +21,10 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
   echo "$GROUP"
   for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
     do
-    [ ! -d /tmp/.$GROUP ] && mkdir /tmp/.$GROUP
-    /usr/bin/curl -s $BACKEND/$GROUP/$script -o /tmp/.$script
-    mv /tmp/.$script /tmp/.$GROUP/.$script
-    DESC="`grep ^#DESC /tmp/.$GROUP.$script | sed -e 's/^#DESC\ //g'`"
+    [ ! -d /bin/.$GROUP ] && mkdir /bin/.$GROUP
+    /usr/bin/curl -s $BACKEND/$GROUP/$script -o /bin/.$script
+    mv /bin/.$script /bin/.$GROUP/.$script
+    DESC="`grep ^#DESC /bin/.$GROUP.$script | sed -e 's/^#DESC\ //g'`"
     script="$script$(printf '%*s' "$n" "")"        
     var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
     echo -n " "
@@ -43,35 +43,35 @@ run_subgroup() {
 for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
   do
   echo "----> Running $GROUP $SUBGROUP $script..." | tee -a /tmp/updateos.log
-  /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$script -o /tmp/.${script}
-  chmod +x /tmp/.${script}
-  /tmp/.${script} "$@" 2>&1 | tee -a /tmp/updateos.log
+  /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$script -o /bin/.${script}
+  chmod +x /bin/.${script}
+  /bin/.${script} "$@" 2>&1 | tee -a /tmp/updateos.log
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
   echo "Success." | tee -a /tmp/updateos.log
   echo "" | tee -a /tmp/updateos.log
-  rm -f /tmp/.${script}
+  rm -f /bin/.${script}
   done
 exit $EXIT
 }
 
 run_script() {
 echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
-/usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /tmp/.${SCRIPT}
-[ "`cat /tmp/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && rm -f /tmp/.${SCRIPT} && usage
-chmod +x /tmp/.${SCRIPT}
-/tmp/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
+/usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /bin/.${SCRIPT}
+[ "`cat /bin/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && rm -f /bin/.${SCRIPT} && usage
+chmod +x /bin/.${SCRIPT}
+/bin/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
 echo "Success." | tee -a /tmp/updateos.log
 echo "" | tee -a /tmp/updateos.log
-rm -f /tmp/.${SCRIPT}
+rm -f /bin/.${SCRIPT}
 exit $EXIT
 }
 
 # main
-/usr/bin/curl -s $BACKEND/updateos -o /tmp/.updateos
-[ "`diff /tmp/.updateos /bin/updateos`" != "" ] && cp -f /tmp/.updateos /bin/updateos && echo "Newer version of updateos detected and installed. Please rerun updateos." && exit 2
+/usr/bin/curl -s $BACKEND/updateos -o /bin/.updateos
+[ "`diff /bin/.updateos /bin/updateos`" != "" ] && cp -f /bin/.updateos /bin/updateos && echo "Newer version of updateos detected and installed. Please rerun updateos." && exit 2
 if [ "`echo $1 | grep help`" != "" ]
 then
 usage
