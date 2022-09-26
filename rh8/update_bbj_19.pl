@@ -180,7 +180,7 @@ close(PIPE);
 loginfo("Need $tmp_MBs_needed and have $availfs ");
 if ( $availfs >= $tmp_MBs_needed )
 {
-   $tmpDir = "~/";
+   $tmpDir = "/tmp/";
    loginfo("Ok to load on root partition in $tmpDir ");
 } else {
    loginfo("Not enough space on root partition, checking /usr2 \n");
