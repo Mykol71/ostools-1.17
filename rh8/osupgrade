@@ -92,12 +92,12 @@ mkdir -p /etc/dracut.conf.d
 echo install_items+=\" /etc/udev/rules.d/10-persistent.rules \" > /etc/dracut.conf.d/include-nic-names-rules.conf
 dracut -f
 #fix ifcfg files
-sed -i '/DEVICE=\"eth0\"/DEVICE=\"tfeth0\"' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i '/DEVICE=\"eth0\"/DEVICE=\"tfeth0\"/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-tfeth0
-sed -i '/DEVICE=\"eth1\"/DEVICE=\"tfeth1\"' /etc/sysconfig/network-scripts/ifcfg-eth1
+sed -i '/DEVICE=\"eth1\"/DEVICE=\"tfeth1\"/g' /etc/sysconfig/network-scripts/ifcfg-eth1
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-tfeth1
 #remove kernel command line add.
-sed -i '/GRUB_CMDLINE_LINUX="crashkernel=auto net.ifnames=0 biosdevname=0 nomodeset video=640x480"/GRUB_CMDLINE_LINUX="crashkernel=auto biosdevname=0 nomodeset video=640x480"/g' /etc/sysconfig/grub
+sed -i '/GRUB_CMDLINE_LINUX=\"crashkernel=auto net.ifnames=0 biosdevname=0 nomodeset video=640x480\"/GRUB_CMDLINE_LINUX=\"crashkernel=auto biosdevname=0 nomodeset video=640x480\"/g' /etc/sysconfig/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
 systemctl restart network
 
