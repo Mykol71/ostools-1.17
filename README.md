@@ -71,7 +71,8 @@ $linuxbbx
 OS Upgrade :
 RH7-RH8 :
 1. From the rh7 server to be upgraded download http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos , make it executable, and place it in /bin.
-2. Run   sudo updateos rh8 osupgrade
+2. Run   sudo updateos rh8 change_nics
+3. Run   sudo updateos rh8 osupgrade
 
 ** Only 1 kernel named NIC (ethX) allowed.
 ** Process will take a bit of time. 2 hours or more.
