@@ -9,15 +9,16 @@ cat > /tmp/post_install.sh <<EOF
 /bin/updateos rh8 conf_firewall
 /bin/updateos rh8 register_insights
 /bin/updateos rh8 zz_email_results
-systemctl disable post_install
-rm -f /etc/systemd/system/post_install.service
 aide -i
 cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 rm -f /etc/yum.repos.d/*
-yum -y install perl
 /bin/updateos rh8 rh8repo_install
+yum -y reinstall perl
 /bin/updateos rh8 install_ostools-1.16
 update-crypto-policies --set LEGACY
+systemctl disable post_install
+rm -f /etc/systemd/system/post_install.service
+reboot
 EOF
 
 # add post install service file to run after network starts.
