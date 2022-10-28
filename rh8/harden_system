@@ -23,6 +23,9 @@ systemctl restart rsyslog
 systemctl restart smb
 systemctl restart cups
 
+# update default crypto policy to LEGACY for RH8.
+update-crypto-policies --set LEGACY
+
 echo "Fixing rpm permissions....."
 # Declare array to hold set of RPM packages we need to correct permissions for
 declare -A SETPERMS_RPM_DICT
