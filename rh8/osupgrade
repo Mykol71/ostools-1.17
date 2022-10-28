@@ -38,20 +38,20 @@ tar xvfz ./leapp-data17.tar.gz
 modprobe -r pata_acpi
 
 #create leapp answer file
-cat > /var/log/leapp/answerfile << EOF
-[remove_pam_pkcs11_module_check]
- Title:              None
- Reason:             Confirmation
- =================== remove_pam_pkcs11_module_check.confirm ==================
- Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
- Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
- Reason:             Leaving this module in PAM configuration may lock out the system.
- Type:               bool
- Default:            None
- Available choices: True/False
- Unanswered question. Uncomment the following line with your answer
-confirm = True
-EOF
+#cat > /var/log/leapp/answerfile << EOF
+#[remove_pam_pkcs11_module_check]
+# Title:              None
+# Reason:             Confirmation
+# =================== remove_pam_pkcs11_module_check.confirm ==================
+# Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
+# Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
+# Reason:             Leaving this module in PAM configuration may lock out the system.
+# Type:               bool
+# Default:            None
+# Available choices: True/False
+# Unanswered question. Uncomment the following line with your answer
+# confirm = True
+#EOF
 
 #add script to run after reboot.
 updateos rh8 post_install
@@ -66,7 +66,7 @@ sed -i '/sendmail/d' /etc/hosts.allow
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
 mv -f /etc/hosts.allow /tmp
-rm -f /etc/hosts.deny /tmp
+mv -f /etc/hosts.deny /tmp
 
 #remove vsftpd.
 yum -y remove vsftpd
