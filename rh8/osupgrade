@@ -40,16 +40,16 @@ modprobe -r pata_acpi
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
 [remove_pam_pkcs11_module_check]
-# Title:              None
-# Reason:             Confirmation
-# =================== remove_pam_pkcs11_module_check.confirm ==================
-# Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
-# Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
-# Reason:             Leaving this module in PAM configuration may lock out the system.
-# Type:               bool
-# Default:            None
-# Available choices: True/False
-# Unanswered question. Uncomment the following line with your answer
+ Title:              None
+ Reason:             Confirmation
+ =================== remove_pam_pkcs11_module_check.confirm ==================
+ Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
+ Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
+ Reason:             Leaving this module in PAM configuration may lock out the system.
+ Type:               bool
+ Default:            None
+ Available choices: True/False
+ Unanswered question. Uncomment the following line with your answer
 confirm = True
 EOF
 
@@ -59,6 +59,45 @@ updateos rh8 post_install
 #remove rh8 unsupported pam.d modules.
 sed -i '/pam_tally2/d' /etc/pam.d/*
 sed -i '/pam_pkcs11/d' /etc/pam.d/*
+
+#remove sendmail reference in hosts.allow.
+sed -i '/sendmail/d' /etc/hosts.allow
+
+#remove tcp_wrappers no longer supported.
+yum -y remove tcp_wrappers
+
+#remove vsftpd.
+yum -y remove vsftpd
+
+#change nic naming convention.
+#determine mac address
+MACADDR0=`ifconfig eth0 | grep ether | cut -d" " -f10`
+if [ "$MACADDR0" != "" ]
+then
+cat > /etc/udev/rules.d/10-persistent.rules << EOF
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$MACADDR0", ATTR{type}=="1", KERNEL=="*", NAME="tfeth0"
+EOF
+fi
+MACADDR1=`ifconfig eth1 | grep ether | cut -d" " -f10`
+if ["$MACADDR1" != "" ] 
+then
+cat >> /etc/udev/rules.d/10-persistent.rules << EOF
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$MACADDR1", ATTR{type}=="1", KERNEL=="*", NAME="tfeth1"
+EOF
+fi
+#add to dracut image
+mkdir -p /etc/dracut.conf.d
+echo install_items+=\" /etc/udev/rules.d/10-persistent.rules \" > /etc/dracut.conf.d/include-nic-names-rules.conf
+dracut -f
+#fix ifcfg files
+sed -i '/DEVICE=\"eth0\"/DEVICE=\"tfeth0\"' /etc/sysconfig/network-scripts/ifcfg-eth0
+mv -f /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-tfeth0
+sed -i '/DEVICE=\"eth1\"/DEVICE=\"tfeth1\"' /etc/sysconfig/network-scripts/ifcfg-eth1
+mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-tfeth1
+#remove kernel command line add.
+sed -i '/GRUB_CMDLINE_LINUX="crashkernel=auto net.ifnames=0 biosdevname=0 nomodeset video=640x480"/GRUB_CMDLINE_LINUX="crashkernel=auto biosdevname=0 nomodeset video=640x480"/g' /etc/sysconfig/grub
+grub2-mkconfig -o /boot/grub2/grub.cfg
+systemctl restart network
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
