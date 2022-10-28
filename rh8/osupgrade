@@ -81,7 +81,7 @@ SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$MACADDR0", ATTR
 EOF
 fi
 MACADDR1=`ifconfig eth1 | grep ether | cut -d" " -f10`
-if ["$MACADDR1" != "" ] 
+if [ "$MACADDR1" != "" ] 
 then
 cat >> /etc/udev/rules.d/10-persistent.rules << EOF
 SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$MACADDR1", ATTR{type}=="1", KERNEL=="*", NAME="tfeth1"
