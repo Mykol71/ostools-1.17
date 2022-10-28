@@ -92,9 +92,9 @@ mkdir -p /etc/dracut.conf.d
 echo install_items+=\" /etc/udev/rules.d/10-persistent.rules \" > /etc/dracut.conf.d/include-nic-names-rules.conf
 dracut -f
 #fix ifcfg files
-sed -i '/DEVICE=\"eth0\"/DEVICE=\"tfeth0\"/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i '/eth0/tfeth0/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-tfeth0
-sed -i '/DEVICE=\"eth1\"/DEVICE=\"tfeth1\"/g' /etc/sysconfig/network-scripts/ifcfg-eth1
+sed -i '/eth1/tfeth1/g' /etc/sysconfig/network-scripts/ifcfg-eth1
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-tfeth1
 #remove kernel command line add.
 sed -i '/net.ifnames=0//g' /etc/sysconfig/grub
