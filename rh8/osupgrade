@@ -38,8 +38,8 @@ tar xvfz ./leapp-data17.tar.gz
 modprobe -r pata_acpi
 
 #create leapp answer file
-#cat > /var/log/leapp/answerfile << EOF
-#[remove_pam_pkcs11_module_check]
+cat > /var/log/leapp/answerfile << EOF
+[remove_pam_pkcs11_module_check]
 # Title:              None
 # Reason:             Confirmation
 # =================== remove_pam_pkcs11_module_check.confirm ==================
@@ -50,8 +50,8 @@ modprobe -r pata_acpi
 # Default:            None
 # Available choices: True/False
 # Unanswered question. Uncomment the following line with your answer
-# confirm = True
-#EOF
+confirm = True
+EOF
 
 #add script to run after reboot.
 updateos rh8 post_install
