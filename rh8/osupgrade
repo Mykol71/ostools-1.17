@@ -100,7 +100,7 @@ sed -i 's/eth1/DEVICE=tfeth1/g' /etc/sysconfig/network-scripts/ifcfg-eth1
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-tfeth1
 #remove kernel command line ac
 cp -f /etc/default/grub /tmp
-sed -i 's/net.ifnames=0/GRUB_CMDLINE=biosnevname=0\ video=640x480/g' /etc/sysconfig/grub
+sed -i 's/net.ifnames=0/GRUB_CMDLINE_LINUX=biosnevname=0\ video=640x480/g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
 systemctl restart network
 
