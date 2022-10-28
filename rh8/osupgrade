@@ -65,6 +65,8 @@ sed -i '/sendmail/d' /etc/hosts.allow
 
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
+mv -f /etc/hosts.allow /tmp
+rm -f /etc/hosts.deny /tmp
 
 #remove vsftpd.
 yum -y remove vsftpd
