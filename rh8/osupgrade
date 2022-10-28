@@ -102,8 +102,6 @@ mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/i
 cp -f /etc/default/grub /tmp
 sed -i 's/net.ifnames=0//g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
-systemctl restart network
-[ "$?" != "0" ] && echo "failed network changes." && exit 1
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
