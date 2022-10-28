@@ -93,16 +93,16 @@ echo install_items+=\" /etc/udev/rules.d/10-persistent.rules \" > /etc/dracut.co
 dracut -f
 #fix ifcfg files
 cp -f /etc/sysconfig/network-scripts/ifcfg-eth0 /tmp
-sed -i 's/eth0/DEVICE=tfeth0/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i 's/eth0/tfeth0/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-tfeth0
 cp -f /etc/sysconfig/network-scripts/ifcfg-eth1 /tmp
-sed -i 's/eth1/DEVICE=tfeth1/g' /etc/sysconfig/network-scripts/ifcfg-eth1
+sed -i 's/eth1/tfeth1/g' /etc/sysconfig/network-scripts/ifcfg-eth1
 mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-tfeth1
 #remove kernel command line ac
 cp -f /etc/default/grub /tmp
-sed -i 's/net.ifnames=0/GRUB_CMDLINE_LINUX=biosnevname=0\ video=640x480/g' /etc/default/grub
+sed -i 's/net.ifnames=0//g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
-systemctl restart network
+#systemctl restart network
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
