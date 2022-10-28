@@ -13,6 +13,10 @@ systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 aide -i
 cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+rm -f /etc/yum.repos.d/*
+yum -y install perl
+/bin/updateos rh8 rh8repo_install
+/bin/updateos rh8 install_ostools-1.16
 EOF
 
 # add post install service file to run after network starts.
