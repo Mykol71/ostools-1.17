@@ -8,7 +8,6 @@ cat > /tmp/post_install.sh <<EOF
 
 /bin/updateos rh8 conf_firewall
 /bin/updateos rh8 register_insights
-/bin/updateos rh8 zz_email_results
 aide -i
 cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 rm -f /etc/yum.repos.d/*
@@ -18,6 +17,7 @@ yum -y reinstall perl
 update-crypto-policies --set LEGACY
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
+/bin/updateos rh8 zz_email_results
 reboot
 EOF
 

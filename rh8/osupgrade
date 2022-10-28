@@ -3,8 +3,7 @@
 #DESC Inplace OS upgrade from RH7 to RH8 - RTI.
 
 echo "---> Upgrading OS to RHEL8 ..." | tee -a /tmp/updateos.log
-echo `date` | tee -a /tmp/updateos.log
-echo "--" | tee -a /tmp/updateos.log
+echo "" | tee -a /tmp/updateos.log
 
 # add rh7 extras repo.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
