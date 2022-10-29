@@ -10,4 +10,4 @@ echo "------">>/tmp/updateos.log
 echo `date` >>/tmp/updateos.log
 echo "------">>/tmp/updateos.log
 
-/usr/bin/mail -s "Staging results for `hostname`." $EMAIL_LIST </tmp/updateos.log
+/usr/bin/mail -s "Results for `hostname`." $EMAIL_LIST </tmp/updateos.log
