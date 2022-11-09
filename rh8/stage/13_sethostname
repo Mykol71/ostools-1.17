@@ -2,7 +2,7 @@
 
 #DESC Set the server's hostname.
 
-NAME=$1
+NAME=$3
 NAME=rh8-rt1
 
 [ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
