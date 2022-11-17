@@ -13,11 +13,16 @@ GATEWAY=$3
 # use old ostools to make ifcfg-tfeth0 changes
 /usr2/ostools/bin/updateos.pl --ipaddr=$IP --gateway=$GATEWAY --netmask=255.255.255.0
 sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth0
+sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth1
 
 nmcli dev set tfeth0 managed yes
 nmcli dev mod tfeth0 ipv4.addr "$IP/24"
 nmcli dev mod tfeth0 ipv4.dns $DNS
 nmcli dev mod tfeth0 ipv4.gateway $GATEWAY
+nmcli dev set tfeth1 managed yes
+nmcli dev mod tfeth1 ipv4.addr "$IP/24"
+nmcli dev mod tfeth1 ipv4.dns $DNS
+nmcli dev mod tfeth1 ipv4.gateway $GATEWAY
 nmcli connection reload
 systemctl restart NetworkManager
 
