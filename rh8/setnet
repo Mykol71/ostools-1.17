@@ -3,10 +3,12 @@
 #DESC Set/Change IP, DNS, and Gateway.
 
 IP=$1
+IP2=$4
 DNS=$2
 GATEWAY=$3
 
-[ "$IP" == "" ] && echo -n "Enter IP: " && read IP
+[ "$IP" == "" ] && echo -n "Enter eth0 IP: " && read IP
+[ "$IP2" == "" ] && echo -n "Enter eth1 IP: " && read IP2
 [ "$DNS" == "" ] && echo -n "Enter DNS: " && read DNS
 [ "$GATEWAY" == "" ] && echo -n "Enter Gateway: " && read GATEWAY
 
@@ -20,7 +22,7 @@ nmcli dev mod tfeth0 ipv4.addr "$IP/24"
 nmcli dev mod tfeth0 ipv4.dns $DNS
 nmcli dev mod tfeth0 ipv4.gateway $GATEWAY
 nmcli dev set tfeth1 managed yes
-nmcli dev mod tfeth1 ipv4.addr "$IP/24"
+nmcli dev mod tfeth1 ipv4.addr "$IP2/24"
 nmcli dev mod tfeth1 ipv4.dns $DNS
 nmcli dev mod tfeth1 ipv4.gateway $GATEWAY
 nmcli connection reload
