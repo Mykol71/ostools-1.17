@@ -13,7 +13,8 @@ GATEWAY=$3
 [ "$GATEWAY" == "" ] && echo -n "Enter Gateway: " && read GATEWAY
 
 # use old ostools to make ifcfg-tfeth0 changes
-/usr2/ostools/bin/updateos.pl --ipaddr=$IP --gateway=$GATEWAY --netmask=255.255.255.0
+/usr2/ostools/bin/updateos.pl --ipaddr=$IP --gateway=$GATEWAY --netmask=255.255.255.0 --ifname=tfeth0
+/usr2/ostools/bin/updateos.pl --ipaddr=$IP2 --gateway=$GATEWAY --netmask=255.255.255.0 --ifname=tfeth1
 sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth0
 sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth1
 
