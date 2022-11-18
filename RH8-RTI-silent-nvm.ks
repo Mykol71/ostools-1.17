@@ -47,6 +47,7 @@ rsync
 grub2-efi-x64-modules
 grub2-tools-efi
 sendmail
+crypto-policies-scripts
 %end
 
 # Keyboard layouts
