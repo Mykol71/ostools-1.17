@@ -6,7 +6,7 @@
 yum -y install policycoreutils-python-utils selinux-policy-devel 
 
 # Download rpm.
-[ ! -f ./cortext_rpm.tar.gz ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/cortex_rpm.tar.gz && tar xvfz ./cortext_rpm.tar.gz
+[ ! -f ./cortext_rpm.tar.gz ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/cortext_rpm.tar.gz && tar xvfz ./cortext_rpm.tar.gz
 
 # Copy conf file.
 mkdir -p /etc/panw
