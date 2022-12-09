@@ -14,6 +14,7 @@ rm -f /etc/yum.repos.d/*
 /bin/updateos rh8 rh8repo_install
 yum -y reinstall perl
 /bin/updateos rh8 install_ostools-1.16
+/bin/updateos rh8 install_tcc
 update-crypto-policies --set LEGACY
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
