@@ -74,5 +74,8 @@ mv -f /etc/hosts.deny /tmp
 #remove vsftpd.
 yum -y remove vsftpd
 
+#change nic naming
+updateos rh8 change_nics
+
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
