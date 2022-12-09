@@ -13,9 +13,6 @@ baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpm
 enabled=1
 EOF
 
-# install gpg key
-rpm --import public.gpg.key
-
 # add leapp package
 yum -y install leapp-upgrade
 
