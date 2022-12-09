@@ -48,6 +48,7 @@ grub2-efi-x64-modules
 grub2-tools-efi
 sendmail
 crypto-policies-scripts
+mutt
 %end
 
 # Keyboard layouts
