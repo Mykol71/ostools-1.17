@@ -1,6 +1,7 @@
 ---
-ostools-1.17.2
+updateos-1.17.2
 
+```
 Usage :
 sudo updateos (groupname) (subgroupname|scriptname)
 
@@ -52,8 +53,10 @@ rh8/
  update_bbj_19.pl    Install and/or upgrade BBJ and Java.
  zz_email_results    Email staging results.
  stage/
+```
 
-Staging :
+_Staging_
+
 1. Download the RH8.x install media iso.  
 
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
@@ -64,20 +67,34 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 5. After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login.  
 6. if networking permits, kpugh and mgreen will get an email of the log file from the staging process.  
 7. run RTI.
-$linuxbbx
 
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
-OS Upgrade :
-RH7-RH8 :
-1. From the rh7 server to be upgraded download http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos , make it executable, and place it in /bin.
-2. Run   sudo updateos rh8 change_nics
-3. Run   sudo updateos rh8 osupgrade
+_OS Upgrade_
 
-** Only 1 kernel named NIC (ethX) allowed.
-** Process will take a bit of time. 2 hours or more.
+_RH7-RH8_
 
-Information :
+1. From the rh7 server to be upgraded download updateos, make it executable, and place it in /bin
+
+http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos
+
+2. Run   
+
+```
+sudo updateos rh8 change_nics
+```
+
+3. Run
+
+```
+   sudo updateos rh8 osupgrade
+```
+
+** Only 1 kernel named NIC (ethX) allowed. **
+** Process will take a bit of time. 2 hours or more. **
+
+_Information_
+
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
 - After the system has been kickstarted using the ks file, updateos will be availible  in the /bin folder.
@@ -86,20 +103,33 @@ Information :
 - If a script fails during a "group" run, updateos.sh exits non-zero immediately.
 - Logging for updateos is in /tmp/updateos.log.
 
-How to build custom boot install media :
-1. Download boot.iso from redhat, and mount it with $mount -o loop ./boot.iso /mnt .
-2. Copy the structure to a new folder. i.e. cp -rp /mnt/. ./newiso/. Also make sure to get /mnt/.discinfo.
+_How to build custom boot install media_
+
+1. Download boot.iso from redhat, and mount it with
+```
+ mount -o loop ./boot.iso /mnt .
+```
+2. Copy the structure to a new folder.  Also make sure to get /mnt/.discinfo
+```
+cp -rp /mnt/. ./newiso/.
+```
 3. Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line
-
+```
 inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks inst.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms net.ifnames=0
-
+```
 (Make any other edits you wish as well.)
-4. cd ./newiso/.
-5. sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux/boot.cat --no-emul-boot --boot-load-size 4 --boot-info-table -J -R -V "Teleflora Linux POS" .
-
+4. Run
+```
+cd ./newiso/.
+```
+5. Run
+```
+sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux/boot.cat --no-emul-boot --boot-load-size 4 --boot-info-table -J -R -V "Teleflora Linux POS" .
+```
 The resulting 900ish meg iso file can be then burned to a usb stick with any utility. i.e. rufus.
 
-Contrib Info :
+_Contrib Info_
+
 - programs should exit 0 if success and non-0 if fail.
 - already installed treat as success.
 - programs in staging folders should not require user input. Staging should be a silent install.
@@ -110,7 +140,8 @@ Contrib Info :
 - if a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
 - if a change needs to be made, create a ticket in azure devops, and explain the details including the related pci rule etc.
 
-Repos :
+_Repos_
+
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
 http://rhel8repo.centralus.cloudapp.azure.com/support/

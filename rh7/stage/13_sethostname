@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#DESC Set the server's hostname.
+
+NAME=$3
+NAME=rh7-rt1
+
+[ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
+
+hostnamectl set-hostname $NAME
+
+IP="`hostname -I | cut -d" " -f1`"
+sed -i "/$IP/d" /etc/hosts
+echo "$IP	$NAME    $NAME.teleflora.com" >>/etc/hosts

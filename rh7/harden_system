@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#DESC Harden the system per PCI/PADSS guidelines.
+
+/usr2/ostools/bin/harden_linux.pl --ssh
+/usr2/ostools/bin/harden_linux.pl --hostsallow
+/usr2/ostools/bin/harden_linux.pl --services
+/usr2/ostools/bin/harden_linux.pl --logging
+/usr2/ostools/bin/harden_linux.pl --logrotate
+/usr2/ostools/bin/harden_linux.pl --sudo
+
+/usr2/ostools/bin/updateos.pl --samba
+/usr2/ostools/bin/updateos.pl --cupsconf
+/usr2/ostools/bin/updateos.pl --samba-gen-conf
+/usr2/ostools/bin/updateos.pl --samba-set-passdb
+/usr2/ostools/bin/updateos.pl --audit-system-configure
+/usr2/ostools/bin/updateos.pl --motd
+/usr2/ostools/bin/harden_linux.pl --ids
+/usr2/ostools/bin/harden_linux.pl --pam
+
+systemctl restart sshd
+systemctl restart rsyslog
+systemctl restart smb
+systemctl restart cups
+
+echo "Fixing rpm permissions....."
+# Declare array to hold set of RPM packages we need to correct permissions for
+declare -A SETPERMS_RPM_DICT
+
+# Create a list of files on the system having permissions different from what
+# is expected by the RPM database
+readarray -t FILES_WITH_INCORRECT_PERMS < <(rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)=="M") print $NF }')
+
+for FILE_PATH in "${FILES_WITH_INCORRECT_PERMS[@]}"
+do
+        # NOTE: some files maybe controlled by more then one package
+        readarray -t RPM_PACKAGES < <(rpm -qf "${FILE_PATH}")
+        for RPM_PACKAGE in "${RPM_PACKAGES[@]}"
+        do
+                # Use an associative array to store packages as it's keys, not having to care about duplicates.
+                SETPERMS_RPM_DICT["$RPM_PACKAGE"]=1
+        done
+done
+
+# For each of the RPM packages left in the list -- reset its permissions to the
+# correct values
+for RPM_PACKAGE in "${!SETPERMS_RPM_DICT[@]}"
+do
+	rpm --restore "${RPM_PACKAGE}"
+done

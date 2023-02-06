@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#DESC Install TF's CC processing program. (Used by POS software)
+cd /usr2/bbx/bin
+[ ! -f /usr2/bbx/bin/tcc-1.8.21_rhel8.tar ] && wget -q http://rhel8repo.centralus.cloudapp.azure.com/support/tcc-1.8.21_rhel8.tar
+tar xvf ./tcc-1.8.21_rhel8.tar
+rm -f ./tcc
+rm -f ./tcc_tws
+ln -s ./tcc2_rhel7 ./tcc
+ln -s ./tcc_rhel7 ./tcc_tws
