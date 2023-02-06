@@ -18,7 +18,7 @@ yum -y reinstall perl
 update-crypto-policies --set LEGACY
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
-/bin/updateos rh8 zz_email_results
+/bin/updateos rh8 email_results
 reboot
 EOF
 

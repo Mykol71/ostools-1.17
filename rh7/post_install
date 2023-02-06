@@ -14,7 +14,7 @@ yum -y reinstall perl
 /bin/updateos rh7 install_tcc
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
-/bin/updateos rh7 zz_email_results
+/bin/updateos rh7 email_results
 reboot
 EOF
 
