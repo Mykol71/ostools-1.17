@@ -7,7 +7,7 @@ cat > /tmp/post_install.sh <<EOF
 #!/bin/bash
 
 /bin/updateos rh7 conf_firewall
-/bin/updateos rh7 register_insights
+#/bin/updateos rh7 register_insights
 rm -f /etc/yum.repos.d/*
 #yum -y reinstall perl
 /bin/updateos rh7 install_ostools-1.16
