@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for file in `find . -type f`
+do
+#echo $file
+MD5="`md5sum $file | cut -d' ' -f1`"
+echo $MD5 >$file.md5
+done
