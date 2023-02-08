@@ -23,12 +23,12 @@ nmcli dev mod eth0 ipv4.addr "$IP/24"
 nmcli dev mod eth0 ipv4.dns $DNS
 nmcli dev mod eth0 ipv4.gateway $GATEWAY
 if [ "$IP2" != "" ]
-do
+then
 nmcli dev set eth1 managed yes
 nmcli dev mod eth1 ipv4.addr "$IP2/24"
 nmcli dev mod eth1 ipv4.dns $DNS
 nmcli dev mod eth1 ipv4.gateway $GATEWAY
-done
+fi
 nmcli connection reload
 systemctl restart NetworkManager
 
