@@ -47,7 +47,7 @@ install
 # part biosboot --fstype=biosboot --size=1 --ondisk=sda
 part /boot/efi --ondisk=sda --asprimary --fstype=efi --size=200
   part / --ondisk=sda --asprimary --fstype=xfs --size=30000
-  part /teleflora --ondisk=sda --asprimary --fstype=xfs --size=100 --grow
+  part /usr2 --ondisk=sda --asprimary --fstype=xfs --size=100 --grow
   part swap    --ondisk=sda --asprimary --recommended
 %packages
 @Base
