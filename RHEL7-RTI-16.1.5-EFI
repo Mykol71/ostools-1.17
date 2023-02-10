@@ -98,6 +98,8 @@ iptables-services
 perl-Digest
 perl-Digest-MD5
 -chrony
+ntpd
+NetworkManager
 
 %end
 
