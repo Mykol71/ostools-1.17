@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#DESC Install legacy ostools.
-cd /tmp
-[ ! -f /tmp/ostools-1.16-latest.tar.gz ] && wget -q http://rtihardware.homelinux.com/ostools/ostools-1.15-latest.tar.gz
-tar xvfz ./ostools-1.15-latest.tar.gz
-./bin/install-ostools.pl ./ostools-1.15-latest.tar.gz --noharden-linux

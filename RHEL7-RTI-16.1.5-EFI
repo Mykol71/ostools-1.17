@@ -97,9 +97,10 @@ biosdevname
 iptables-services
 perl-Digest
 perl-Digest-MD5
--chrony
+chrony
 ntp
 NetworkManager
+-firewalld
 
 %end
 

@@ -17,15 +17,20 @@
 /usr2/ostools/bin/updateos.pl --motd
 /usr2/ostools/bin/harden_linux.pl --ids
 /usr2/ostools/bin/harden_linux.pl --pam
-/usr2/ostools/bin/harden_linux.pl --configure-grub2
+/usr2/ostools/bin/updateos.pl --init-console-res
+/usr2/ostools/bin/updateos.pl --configure-grub2
 /usr2/ostools/bin/updateos.pl --default-password-hash
 /usr2/ostools/bin/updateos.pl --ups
-/usr2/ostools/bin/updateos.pl --init-console-res
 
 systemctl restart sshd
 systemctl restart rsyslog
 systemctl restart smb
 systemctl restart cups
+
+systemctl enable upsd
+systemctl enable chrony
+systemctl enable smb
+systemctl enable cups
 
 echo "Fixing rpm permissions....."
 # Declare array to hold set of RPM packages we need to correct permissions for

@@ -18,10 +18,7 @@ for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v col
   echo "$GROUP"
   for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
     do
-    [ ! -d /bin/.$GROUP ] && mkdir /bin/.$GROUP
-    /usr/bin/curl -s $BACKEND/$GROUP/$SCRIPT -o /bin/.$SCRIPT
-    mv /bin/.$SCRIPT /bin/.$GROUP/.$SCRIPT
-    DESC="`grep ^#DESC /bin/.$GROUP.$SCRIPT | sed -e 's/^#DESC\ //g'`"
+    DESC="`grep ^#DESC /bin/.$SCRIPT | sed -e 's/^#DESC\ //g'`"
     SCRIPT="$SCRIPT$(printf '%*s' "$n" "")"        
     var="$(echo "${SCRIPT}"|grep -Eo "^.{1,$n}")" 
     echo -n " "
@@ -41,7 +38,7 @@ for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP 
   do
   echo "----> Running $GROUP $SUBGROUP $script..." | tee -a /tmp/updateos.log
 download_script
-  /bin/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
+  /bin/.updateos/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
   echo "Success." | tee -a /tmp/updateos.log
@@ -53,7 +50,7 @@ exit $EXIT
 run_script() {
 download_script
 echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
-/bin/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
+/bin/.updateos/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
 echo "Success." | tee -a /tmp/updateos.log
@@ -62,17 +59,23 @@ exit $EXIT
 }
 
 download_script () {
-/usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /tmp/.${SCRIPT}
-/usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT}.md5 -o /tmp/.${SCRIPT}.md5
-if [ "`md5sum /tmp/.${SCRIPT}`" == "`cat /tmp/.${SCRIPT}.md5`" ]
-then
-mv /tmp/.${SCRIPT} /bin/.${SCRIPT}
-chmod +x /bin/.${SCRIPT}
-echo "Script updated." | tee -a /tmp/updateos.log
-fi
+touch /tmp/.${SCRIPT}
+["`/usr/bin/curl $BACKEND/${GROUP}/${SCRIPT}.md5`" != "`md5sum /bin/.${SCRIPT}`"] && rm -f /tmp/.$SCRIPT && /usr/bin/curl -s $BACKEND/$GROUP/$SCRIPT -o /tmp/.$SCRIPT
+[ "`md5sum /tmp/.${SCRIPT}`" == "`/usr/bin/curl $BACKEND/${GROUP}/${SCRIPT}.md5`" ] && mv /tmp/.${SCRIPT} /bin/.updateos/.${SCRIPT} && chmod +x /bin/.updateos/.${SCRIPT} && echo "Script updated." | tee -a /tmp/updateos.log
 }
 
 # main
+if [ ! -d /bin/.updateos ] 
+then
+mkdir /bin/.updateos
+for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5`
+  do
+  for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
+    do
+	download_script
+    done
+   done
+fi
 if [ "`echo $1 | grep help`" != "" ]
 then
 usage
