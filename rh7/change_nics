@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#DESC change nic namings from ethX to tfethX.
+
+#eth0
+if [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ]
+then
+MACADDR0=`ifconfig eth0 | grep ether | cut -d" " -f10`
+cat > /etc/udev/rules.d/10-persistent.rules << EOF
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$MACADDR0", ATTR{type}=="1", KERNEL=="*", NAME="tfeth0"
+EOF
+cp -f /etc/sysconfig/network-scripts/ifcfg-eth0 /tmp
+sed -i 's/eth0/tfeth0/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+mv -f /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-tfeth0
+fi
+
+#eth1
+if [ -f /etc/sysconfig/network-scripts/ifcfg-eth1 ]
+then
+MACADDR1=`ifconfig eth1 | grep ether | cut -d" " -f10`
+cat >> /etc/udev/rules.d/10-persistent.rules << EOF
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$MACADDR1", ATTR{type}=="1", KERNEL=="*", NAME="tfeth1"
+EOF
+cp -f /etc/sysconfig/network-scripts/ifcfg-eth1 /tmp
+sed -i 's/eth1/tfeth1/g' /etc/sysconfig/network-scripts/ifcfg-eth1
+mv -f /etc/sysconfig/network-scripts/ifcfg-eth1 /etc/sysconfig/network-scripts/ifcfg-tfeth1
+fi
+
+#add to dracut image so change will persist after kernel update.
+if [ -f /etc/udev/rules.d/10-persistent.rules ]
+then
+mkdir -p /etc/dracut.conf.d
+echo install_items+=\" /etc/udev/rules.d/10-persistent.rules \" > /etc/dracut.conf.d/include-nic-names-rules.conf
+dracut -f
+cp -f /etc/default/grub /tmp
+sed -i 's/net.ifnames=0//g' /etc/default/grub
+grub2-mkconfig -o /boot/grub2/grub.cfg
+fi
+
+exit 0

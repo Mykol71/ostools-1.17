@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TF POS rti yum repo file install.
+#DESC TF POS rti yum repo file install.
 
 # verify root
 ID=`/usr/bin/id -u`
