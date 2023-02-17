@@ -1,0 +1,86 @@
+#!/bin/bash
+
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
+VERSION="1.17.2"
+GROUP=empty
+[ "$1" != "" ] && GROUP="$1"
+SCRIPT=empty
+[ "$2" != "" ] && SCRIPT="$2"
+SUBGROUP=empty
+[ "$2" != "" ] && SUBGROUP="$2"
+n="${15:-20}"
+
+usage() {
+echo "updateos - $VERSION - USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
+for GROUP in `/usr/bin/curl -ls $BACKEND/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
+  do
+  echo ""
+  echo "$GROUP"
+  for script in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
+    do
+    [ ! -d /bin/.$GROUP ] && mkdir /bin/.$GROUP
+    /usr/bin/curl -s $BACKEND/$GROUP/$script -o /bin/.$script
+    mv /bin/.$script /bin/.$GROUP/.$script
+    DESC="`grep ^#DESC /bin/.$GROUP.$script | sed -e 's/^#DESC\ //g'`"
+    script="$script$(printf '%*s' "$n" "")"        
+    var="$(echo "${script}"|grep -Eo "^.{1,$n}")" 
+    echo -n " "
+    printf '%s' "${var}" 
+    echo ${DESC:0:58}
+    done
+  for SUBGROUP in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/`
+    do
+    echo " $SUBGROUP"
+    done
+  done
+exit 1
+}
+
+run_subgroup() {
+for script in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/`
+  do
+  echo "----> Running $GROUP $SUBGROUP $script..." | tee -a /tmp/updateos.log
+  /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$script -o /bin/.${script}
+  chmod +x /bin/.${script}
+  /bin/.${script} "$@" 2>&1 | tee -a /tmp/updateos.log
+  EXIT="${PIPESTATUS[0]}"
+  [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
+  echo "Success." | tee -a /tmp/updateos.log
+  echo "" | tee -a /tmp/updateos.log
+  rm -f /bin/.${script}
+  done
+exit $EXIT
+}
+
+run_script() {
+echo "----> Running $SCRIPT ..." | tee -a /tmp/updateos.log
+/usr/bin/curl -s $BACKEND/${GROUP}/${SCRIPT} -o /bin/.${SCRIPT}
+[ "`cat /bin/.${SCRIPT} | grep HTML`" != "" ] && echo "Script does not exist." | tee -a /tmp/updateos.log && echo "" | tee -a /tmp/updateos.log && rm -f /bin/.${SCRIPT} && usage
+chmod +x /bin/.${SCRIPT}
+/bin/.${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
+EXIT="${PIPESTATUS[0]}"
+[ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
+echo "Success." | tee -a /tmp/updateos.log
+echo "" | tee -a /tmp/updateos.log
+rm -f /bin/.${SCRIPT}
+exit $EXIT
+}
+
+# main
+/usr/bin/curl -s $BACKEND/updateos -o /bin/.updateos
+[ "`diff /bin/.updateos /bin/updateos`" != "" ] && cp -f /bin/.updateos /bin/updateos && echo "Newer version of updateos detected and installed. Please rerun updateos." && exit 2
+if [ "`echo $1 | grep help`" != "" ]
+then
+usage
+else
+for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT`
+  do
+  [ "`echo $file | grep \/`" != "" ] && run_subgroup
+  [ "`echo $file | grep -v \/`" != "" ] && run_script
+  done
+echo "updateos - $VERSION - USAGE: sudo updateos (groupname) (subgroupname|scriptname)"
+exit 1
+fi

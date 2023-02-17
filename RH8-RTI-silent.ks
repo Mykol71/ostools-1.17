@@ -114,5 +114,5 @@ systemctl enable sendmail
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
-openvt -s -w -- /usr/bin/updateos rh8 stage rh8-rti
+openvt -s -w -- /usr/bin/updateos stage
 %end

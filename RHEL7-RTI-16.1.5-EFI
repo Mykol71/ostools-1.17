@@ -216,5 +216,5 @@ systemctl enable sendmail
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
-openvt -s -w -- /usr/bin/updateos rh7 stage rh7-rti
+openvt -s -w -- /usr/bin/updateos stage
 %end
