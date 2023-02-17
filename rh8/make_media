@@ -1,0 +1,83 @@
+#!/bin/bash
+
+#DESC Make RH8 RTI install media.
+
+#Ask for usb device name.
+echo -n "Enter device name of usb stick. ex:sdb : "
+read DEVICE
+echo -n "This will wipe /dev/$DEVICE and create an RTI staging device. Are you sure? (y/n): "
+read ANSWER
+[ "$ANSWER" != "y" ] && exit 0
+
+echo "Creating RTI staging media on /dev/$DEVICE." | tee -o /tmp/updateos.log
+#Wipe usb stick.
+dd bs=512 if=/dev/zero seek=0 count=2048 of=/dev/$DEVICE
+dd bs=512 if=/dev/zero seek=15767552 count=2048 of=/dev/$DEVICE
+
+#Create GPT partition table.
+sfdisk --no-reread /dev/$DEVICE <<EOF
+label: gpt
+unit: sectors
+sector-size: 512
+1 : start=2048, size=15699968, type=EBD0A0A2-B9E5-4433-87C0-68B6B72699C7, name="multiboot"
+2 : start=15702016, size=65536, type=uefi, name="multiboot_EFI"
+3 : start=15767552, size=2015, type=21686148-6449-6E6F-744E-656564454649, name="multiboot_BIOS"
+EOF
+
+sfdisk --no-reread -Y dos /dev/$DEVICE <<EOF
+label: dos
+sector-size: 512
+1 : start=2048, size=15699968, type=0c, bootable
+2 : start=15702016, size=65536, type=ef
+3 : start=1, size=2047, type=ee
+EOF
+
+#Create filesystems.
+mkdosfs -n MULTIBOOT /dev/$DEVICE1
+mkdosfs /dev/$DEVICE2
+
+#Mount the partitions and install grub twice. (EFI64 and Legacy)
+pmount /dev/$DEVICE1 /media/boot
+mkdir /media/boot/boot
+pmount /dev/$DEVICE2 /media/efi
+
+grub-install --target=x86_64-efi --removable --no-nvram \
+  --root-directory=/media/boot \
+  --boot-directory=/media/boot/boot \
+  --efi-directory=/media/efi
+
+grub-install --target=i386-pc \
+  --root-directory=/media/boot \
+  --boot-directory=/media/boot/boot \
+  /dev/$DEVICE
+
+pumount /media/efi
+
+cat > /media/boot/boot/grub/grub.cfg <<EOF
+set default="1"
+
+function load_video {
+  insmod efi_gop
+  insmod efi_uga
+  insmod video_bochs
+  insmod video_cirrus
+  insmod all_video
+}
+
+load_video
+set gfxpayload=keep
+insmod gzio
+insmod part_gpt
+insmod ext2
+
+set timeout=60
+### END /etc/grub.d/00_header ###
+
+search --no-floppy --set=root -l 'RHEL-8.5 Server.x86_64'
+
+### BEGIN /etc/grub.d/10_linux ###
+menuentry 'Install RTI 16.1.5' --class fedora --class gnu-linux --class gnu --class os {
+	linuxefi /images/pxeboot/vmlinuz inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks inst.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms nomodeset biosdevname=0 net.ifnames=0 video=640x480
+	initrdefi /images/pxeboot/initrd.img
+}
+EOF
