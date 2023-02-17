@@ -44,4 +44,16 @@ cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
 chmod 700 /home/tfsupport/.ssh/authorized_keys
 chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
 
+echo "Fixing bbj and blm init.d service files to require networking first....."
+sed -i '1s/^/#Required-Start:\ \$network\n/' /etc/init.d/blm
+sed -i '1s/^/#Required-Start:\ blm\ \$network\n/' /etc/init.d/bbjsed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
+sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
+
+echo "Creating term.sh...."
+if [[ ! -e /etc/profile.d/term.sh ]]; then
+cat << xxxEOFxxx > /etc/profile.d/term.sh
+unicode_stop
+xxxEOFxxx
+fi
+
 exit $?

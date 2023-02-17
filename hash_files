@@ -8,3 +8,4 @@ echo $MD5 >$file.md5
 done
 rm ./rh7/stage/*.md5
 rm ./rh8/stage/*.md5
+rm ./README.md.md5
