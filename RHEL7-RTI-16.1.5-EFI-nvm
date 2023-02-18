@@ -44,8 +44,7 @@ part /boot/efi --ondisk=nvme0n1 --asprimary --fstype=efi --size=200
   part /usr2 --ondisk=nvme0n1 --asprimary --fstype=xfs --size=100 --grow
   part swap    --ondisk=nvme0n1 --asprimary --recommended
 %packages
-#@Base
-@Core
+@Base
 java
 samba
 cups
