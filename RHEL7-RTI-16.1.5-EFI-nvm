@@ -20,7 +20,7 @@ lang en_US
 logging --level=info
 # Use network installation
 #cdrom
-url --url=http://rtihardware.homelinux.com/rhel7.7_64_rti_uefi
+url --url=http://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-rpms
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Reboot after installation
@@ -44,7 +44,8 @@ part /boot/efi --ondisk=nvme0n1 --asprimary --fstype=efi --size=200
   part /usr2 --ondisk=nvme0n1 --asprimary --fstype=xfs --size=100 --grow
   part swap    --ondisk=nvme0n1 --asprimary --recommended
 %packages
-@Base
+#@Base
+@Core
 java
 samba
 cups
