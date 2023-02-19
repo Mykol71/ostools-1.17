@@ -3,7 +3,7 @@
 #DESC Creates a systemd service that will run after first reboot only. (After network starts.)
 #sed -i '/post_install.sh/d' /etc/crontab
 # create post install script
-cat > /tmp/post_install.sh <<EOF
+cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
 /usr/bin/updateos conf_firewall
@@ -25,11 +25,11 @@ After=network-online.target
 
 [Service]
 Type=idle
-ExecStart=/tmp/post_install.sh
+ExecStart=/usr/bin/post_install.sh
 
 [Install]
 WantedBy=network-online.target
 EOF
 
-chmod +x /tmp/post_install.sh
+chmod +x /usr/bin/post_install.sh
 systemctl enable post_install
