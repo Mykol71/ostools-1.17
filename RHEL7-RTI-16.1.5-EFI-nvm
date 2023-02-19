@@ -24,7 +24,7 @@ cdrom
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Reboot after installation
-reboot
+#reboot
 #Root password
 rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
 user --groups=wheel --name=tfsupport --password=$6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdmTdy4k2BTMv9Sw.mQOhrgtvMD5e8oo7t3uCtX2T005e/afw46a6TkODKkP8b9SrUgSAnjKxxfi1 --iscrypted --gecos="tfsupport"
