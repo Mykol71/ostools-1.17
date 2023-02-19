@@ -46,6 +46,7 @@ exit $EXIT
 }
 
 run_script() {
+SUBGROUP=""
 echo "----> `date` -  Running $SCRIPT ..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
 [ "`curl $BACKEND/$GROUP/$SCRIPT.mda`" != "`md5sum /usr/bin/.updateos/$SCRIPT`" ] && download_script
@@ -58,7 +59,7 @@ exit $EXIT
 }
 
 download_script () {
-/usr/bin/curl -s $BACKEND/$GROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT
+/usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT
 chmod +x /usr/bin/.updateos/${SCRIPT}
 }
 
