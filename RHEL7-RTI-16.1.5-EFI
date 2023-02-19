@@ -91,7 +91,6 @@ perl-Digest-MD5
 chrony
 ntp
 NetworkManager
--firewalld
 
 %end
 
