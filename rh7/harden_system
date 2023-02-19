@@ -17,7 +17,6 @@
 /usr2/ostools/bin/updateos.pl --motd
 /usr2/ostools/bin/harden_linux.pl --ids
 /usr2/ostools/bin/harden_linux.pl --pam
-/usr2/ostools/bin/updateos.pl --init-console-res
 /usr2/ostools/bin/updateos.pl --configure-grub2
 /usr2/ostools/bin/updateos.pl --default-password-hash
 /usr2/ostools/bin/updateos.pl --ups

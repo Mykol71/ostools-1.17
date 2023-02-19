@@ -1,7 +1,7 @@
 # System authorization information
 auth  --useshadow --passalgo=sha512
 # System bootloader configuration
-bootloader --location=mbr
+#bootloader --location=mbr
 # Clear the Master Boot Record
 zerombr
 # Partition clearing information
@@ -24,7 +24,7 @@ cdrom
 # Network information
 network --bootproto=dhcp --device=eth0 --onboot=on
 # Reboot after installation
-#reboot
+reboot
 #Root password
 rootpw --iscrypted $1$b2bDwXkz$ZpKi4Jx7tox779nrUdt8h1
 user --groups=wheel --name=tfsupport --password=$6$G/P1TGIsGMWZ9aak$Sm/HZ1fcdfdmTdy4k2BTMv9Sw.mQOhrgtvMD5e8oo7t3uCtX2T005e/afw46a6TkODKkP8b9SrUgSAnjKxxfi1 --iscrypted --gecos="tfsupport"
@@ -38,7 +38,7 @@ timezone  America/Chicago
 install
 # Disk partitioning information
   clearpart --all --initlabel --drives=sda
-  bootloader --location=mbr --driveorder=sda --append=nomodeset biosdevname=0 net.ifnames=0 video=640x480
+  bootloader --location=mbr --driveorder=sda --append=net.ifnames=0 video=640x480
 part /boot/efi --ondisk=sda --asprimary --fstype=efi --size=200
   part / --ondisk=sda --asprimary --fstype=xfs --size=30000
   part /usr2 --ondisk=sda --asprimary --fstype=xfs --size=100 --grow

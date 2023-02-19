@@ -6,14 +6,14 @@
 cat > /tmp/post_install.sh <<EOF
 #!/bin/bash
 
-/usr/bin/updateos rh7 conf_firewall
+/usr/bin/updateos conf_firewall
 rm -f /etc/yum.repos.d/*
 yum -y reinstall perl
-/usr/bin/updateos rh7 install_ostools-1.16
-/usr/bin/updateos rh7 install_tcc
+/usr/bin/updateos install_ostools-1.16
+/usr/bin/updateos install_tcc
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
-/usr/bin/updateos rh7 email_results
+/usr/bin/updateos email_results
 reboot
 EOF
 
