@@ -7,7 +7,6 @@ BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`grep 'Red Hat Enterprise Linux Server release 7.' /etc/redhat-release`" != "" ] && GROUP="rh7"
 [ "`grep 'Red Hat Enterprise Linux Server release 8.' /etc/redhat-release`" != "" ] && GROUP="rh8"
 SCRIPT="$1"
-#SUBGROUP="$1"
 n="${15:-20}"
 
 usage() {
@@ -64,7 +63,7 @@ chmod +x /usr/bin/.updateos/${SCRIPT}
 
 # main
 [ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
-[ "`echo $1 | grep help 2>/dev/null`" != "" ] && usage
+[ "$#" == "0" ] || [ "`echo $1 | grep help 2>/dev/null`" != "" ] && usage
 for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT | grep -v .md5`
   do
   [ "`echo $file | grep \/`" != "" ] && run_subgroup
