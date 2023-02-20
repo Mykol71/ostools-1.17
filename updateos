@@ -6,6 +6,7 @@ ID=$(/usr/bin/id -u)
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`grep 'Red Hat Enterprise Linux Server release 7.' /etc/redhat-release`" != "" ] && GROUP="rh7"
 [ "`grep 'Red Hat Enterprise Linux Server release 8.' /etc/redhat-release`" != "" ] && GROUP="rh8"
+[ "`grep 'Red Hat Enterprise Linux Server release 9.' /etc/redhat-release`" != "" ] && GROUP="rh9"
 SCRIPT="$1"
 n="${15:-20}"
 
