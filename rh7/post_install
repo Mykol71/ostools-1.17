@@ -7,6 +7,8 @@ cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
 /usr/bin/updateos conf_firewall
+systemctl enable iptables
+systemctl start iptables
 rm -f /etc/yum.repos.d/*
 yum -y reinstall perl
 /usr/bin/updateos install_ostools-1.16
@@ -14,6 +16,7 @@ yum -y reinstall perl
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 /usr/bin/updateos email_results
+hostnamectl set-hostname rh7-rti
 reboot
 EOF
 

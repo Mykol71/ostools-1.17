@@ -7,7 +7,7 @@ BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`grep 'Red Hat Enterprise Linux Server release 7.' /etc/redhat-release`" != "" ] && GROUP="rh7"
 [ "`grep 'Red Hat Enterprise Linux Server release 8.' /etc/redhat-release`" != "" ] && GROUP="rh8"
 SCRIPT="$1"
-SUBGROUP="$1"
+#SUBGROUP="$1"
 n="${15:-20}"
 
 usage() {
@@ -35,7 +35,7 @@ for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP 
   do
   echo "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-[ "`curl $BACKEND/$GROUP/$SUBGROUP/$SCRIPT.mda`" != "`md5sum /usr/bin/.updateos/$SCRIPT`" ] && download_script
+[ "`curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT.mda`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
   /usr/bin/.updateos/${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
@@ -46,10 +46,9 @@ exit $EXIT
 }
 
 run_script() {
-SUBGROUP=""
 echo "----> `date` -  Running $SCRIPT ..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-[ "`curl $BACKEND/$GROUP/$SCRIPT.mda`" != "`md5sum /usr/bin/.updateos/$SCRIPT`" ] && download_script
+[ "`curl -s $BACKEND/$GROUP/$SCRIPT.mda`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
 /usr/bin/.updateos/${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
@@ -59,7 +58,7 @@ exit $EXIT
 }
 
 download_script () {
-/usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT
+/usr/bin/curl -s $BACKEND/$GROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT
 chmod +x /usr/bin/.updateos/${SCRIPT}
 }
 
