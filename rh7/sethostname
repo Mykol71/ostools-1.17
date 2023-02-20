@@ -3,7 +3,7 @@
 #DESC Set the server's hostname.
 [ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
 
-hostnamectl set-hostname "$NAME"
+hostnamectl set-hostname $NAME
 
 IP="`hostname -I | cut -d" " -f1`"
 sed -i "/$IP/d" /etc/hosts
