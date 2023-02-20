@@ -1,17 +1,20 @@
 #!/bin/bash
 
 VERSION="1.17.4"
+BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
+
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
-BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
-[ "`grep 'Red Hat Enterprise Linux Server release 7.' /etc/redhat-release`" != "" ] && GROUP="rh7"
-[ "`grep 'Red Hat Enterprise Linux Server release 8.' /etc/redhat-release`" != "" ] && GROUP="rh8"
-[ "`grep 'Red Hat Enterprise Linux Server release 9.' /etc/redhat-release`" != "" ] && GROUP="rh9"
+[ "`grep ' release 7.' /etc/redhat-release`" != "" ] && GROUP="rh7"
+[ "`grep ' release 8.' /etc/redhat-release`" != "" ] && GROUP="rh8"
+[ "`grep ' release 9.' /etc/redhat-release`" != "" ] && GROUP="rh9"
 SCRIPT="$1"
 n="${15:-20}"
+[ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
 
 usage() {
 echo "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
+  echo ""
   echo "$GROUP"
   for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
     do
@@ -63,7 +66,6 @@ chmod +x /usr/bin/.updateos/${SCRIPT}
 }
 
 # main
-[ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
 [ "$#" == "0" ] || [ "`echo $1 | grep help 2>/dev/null`" != "" ] && usage
 for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT | grep -v .md5`
   do
