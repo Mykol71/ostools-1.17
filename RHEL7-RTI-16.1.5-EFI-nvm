@@ -9,7 +9,7 @@ clearpart --all --initlabel --drives=nvme0n1
 # Use text mode install
 text
 # Firewall configuration
-#firewall --enabled --ssh  --trust=eth0
+firewall --enabled --ssh  --trust=eth0
 # Run the Setup Agent on first boot
 firstboot --disable
 # System keyboard
