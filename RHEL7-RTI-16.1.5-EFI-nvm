@@ -215,5 +215,7 @@ systemctl enable sendmail
 systemctl enable smb
 systemctl enable cups
 systemctl enable iptables
+systemctl disable firewalld
+systemctl stop firewalld
 openvt -s -w -- /usr/bin/updateos stage
 %end
