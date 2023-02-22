@@ -37,7 +37,6 @@ exit 1
 }
 
 run_subgroup() {
-SUBGROUP=""
 for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
   do
   echo "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..." | tee -a /tmp/updateos.log
