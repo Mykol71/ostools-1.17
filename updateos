@@ -9,6 +9,7 @@ ID=$(/usr/bin/id -u)
 [ "`grep ' release 8.' /etc/redhat-release`" != "" ] && GROUP="rh8"
 [ "`grep ' release 9.' /etc/redhat-release`" != "" ] && GROUP="rh9"
 SCRIPT="$1"
+SUBGROUP="$1"
 n="${15:-20}"
 [ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
 
@@ -38,7 +39,7 @@ for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP 
   do
   echo "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-[ "`curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+[ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
   /usr/bin/.updateos/${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
