@@ -21,7 +21,11 @@ echo "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
   for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
     do
     [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-    [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+    ping -c 1 rhel8repo.centralus.cloudapp.azure.com
+    if [ "$?" == "0" ]
+      then
+      [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+    fi
     DESC="`grep ^#DESC /usr/bin/.updateos/$SCRIPT | sed -e 's/^#DESC\ //g'`"
     SCRIPT="$SCRIPT$(printf '%*s' "$n" "")"        
     var="$(echo "${SCRIPT}"|grep -Eo "^.{1,$n}")" 
@@ -40,8 +44,12 @@ run_subgroup() {
 for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5`
   do
   echo "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..." | tee -a /tmp/updateos.log
-[ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-[ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+  [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
+  ping -c 1 rhel8repo.centralus.cloudapp.azure.com
+  if [ "$?" == "0" ]
+    then
+    [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+  fi
   /usr/bin/.updateos/${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
@@ -55,7 +63,11 @@ run_script() {
 SUBGROUP=""
 echo "----> `date` -  Running $SCRIPT ..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-[ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+ping -c 1 rhel8repo.centralus.cloudapp.azure.com
+if [ "$?" == "0" ]
+  then
+  [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
+fi
 /usr/bin/.updateos/${SCRIPT} "$@" 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
