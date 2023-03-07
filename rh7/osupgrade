@@ -35,7 +35,10 @@ tar xvfz ./leapp-data17.tar.gz
 
 #remove unneeded kernel drivers
 modprobe -r pata_acpi
-modprobe -r btrfs
+mv /usr/lib/dracut/modules.d/90btrfs /tmp
+find /usr/lib/modules/. -name "*btrfs*" -type d -exec mv {} /tmp \.
+modprobe -r -v -b -f btrfs
+dracut -o btrfs -f
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
@@ -65,8 +68,8 @@ sed -i '/sendmail/d' /etc/hosts.allow
 
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
-mv -f /etc/hosts.allow /tmp
-mv -f /etc/hosts.deny /tmp
+[ -f /etc/hosts.allow ] && mv -f /etc/hosts.allow /tmp
+[ -f /etc/hosts.deny ] && mv -f /etc/hosts.deny /tmp
 
 #remove vsftpd.
 yum -y remove vsftpd
