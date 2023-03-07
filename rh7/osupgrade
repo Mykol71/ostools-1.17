@@ -54,7 +54,7 @@ confirm = True
 EOF
 
 #add script to run after reboot.
-updateos rh8 post_install
+updateos post_install
 
 #remove rh8 unsupported pam.d modules.
 sed -i '/pam_tally2/d' /etc/pam.d/*
@@ -72,7 +72,7 @@ mv -f /etc/hosts.deny /tmp
 yum -y remove vsftpd
 
 #change nic naming
-updateos rh8 change_nics
+updateos change_nics
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
