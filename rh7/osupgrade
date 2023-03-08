@@ -36,7 +36,7 @@ tar xvfz ./leapp-data17.tar.gz
 #remove unneeded kernel drivers
 modprobe -r pata_acpi
 mv /usr/lib/dracut/modules.d/90btrfs /tmp
-find /usr/lib/modules/. -name "*btrfs*" -type d -exec mv {} /tmp \.
+find /usr/lib/modules/. -name "*btrfs*" -type d -exec mv {} /tmp \;
 modprobe -r -v -b -f btrfs
 dracut -o btrfs -f
 
