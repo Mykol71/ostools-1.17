@@ -12,7 +12,6 @@ yum -y reinstall perl
 /usr/bin/updateos conf_firewall
 systemctl enable iptables
 systemctl start iptables
-hostnamectl set-hostname rh7-rti
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 reboot
