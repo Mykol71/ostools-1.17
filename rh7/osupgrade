@@ -37,6 +37,7 @@ tar xvfz ./leapp-data17.tar.gz
 modprobe -r pata_acpi
 modprobe -r -v -b -f btrfs
 dracut -o btrfs -f
+mv /lib/dracut/modules.d/90btrfs/ /tmp
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
