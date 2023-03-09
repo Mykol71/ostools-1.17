@@ -35,9 +35,9 @@ tar xvfz ./leapp-data17.tar.gz
 
 #remove unneeded kernel drivers
 modprobe -r pata_acpi
+modprobe -rfb btrfs -v
+dracut -o btrfs -f
 mv /lib/dracut/modules.d/90btrfs/ /tmp
-modprobe -r -a -i btrfs -v
-dracut -f
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
