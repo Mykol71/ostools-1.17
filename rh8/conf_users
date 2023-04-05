@@ -11,9 +11,9 @@ useradd odbc -G rti
 useradd delivery -G rti
 
 #creating smbusers file
-echo "tfsupport = tfsupport" >>/etc/samba/smbusers
-echo "rti = rti" >>/etc/samba/smbusers
-echo "odbc = odbc" >>/etc/samba/smbusers
+#echo "tfsupport = tfsupport" >>/etc/samba/smbusers
+#echo "rti = rti" >>/etc/samba/smbusers
+#echo "odbc = odbc" >>/etc/samba/smbusers
 
 cd /tmp 
 [ ! -f /tmp/tfsupport-authorized_keys ] && wget -q http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
