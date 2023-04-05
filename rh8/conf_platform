@@ -7,3 +7,5 @@
 [ ! -d /usr2/bbx/log ] && mkdir /usr2/bbx/log
 [ ! -d /usr2/bbx/config ] && mkdir /usr2/bbx/config
 [ ! -d /usr/java ] && mkdir /usr/java
+
+exit 0
