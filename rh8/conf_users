@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESC Add POS system accounts.
+useradd tfsupport
 groupadd rtiadmin
 groupadd rti
 groupadd uucp
@@ -8,6 +9,11 @@ useradd rti -g rti
 usermod tfsupport -g rtiadmin -G rti
 useradd odbc -G rti
 useradd delivery -G rti
+
+#creating smbusers file
+echo "tfsupport = tfsupport" >>/etc/samba/smbusers
+echo "rti = rti" >>/etc/samba/smbusers
+echo "odbc = odbc" >>/etc/samba/smbusers
 
 cd /tmp 
 [ ! -f /tmp/tfsupport-authorized_keys ] && wget -q http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
