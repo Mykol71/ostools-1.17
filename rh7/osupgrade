@@ -11,6 +11,7 @@ cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
 name=RH7extras
 baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
 enabled=1
+gpgcheck=0
 EOF
 
 # add leapp package
