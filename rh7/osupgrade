@@ -34,10 +34,17 @@ wget http://rhel8repo.centralus.cloudapp.azure.com/support/leapp-data17.tar.gz
 tar xvfz ./leapp-data17.tar.gz
 
 #remove unneeded kernel drivers
-modprobe -r pata_acpi
-modprobe -rfb btrfs -v
+modprobe --remove -v btrfs
+rmmod btrfs
+rmmod xor
+rmmod raid6_pq
+echo "blacklist btrfs" >> /etc/modprobe.d/btrfs-blacklist.conf
+echo "install btrfs /bin/false" >> /etc/modprobe.d/btrfs-blacklist.conf
 dracut --omit-drivers btrfs -f
 #mv /lib/dracut/modules.d/90btrfs/ /tmp
+sed -i '/^GRUB_CMDLINE_LINUX=/s/"$/ <module_name>.blacklist=1 rd.driver.blacklist=<module_name>"/' /etc/sysconfig/grub
+grub2-mkconfig -o /boot/grub2/grub.cfg 
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg 
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
