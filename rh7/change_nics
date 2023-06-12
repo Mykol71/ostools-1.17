@@ -35,6 +35,7 @@ dracut -f
 cp -f /etc/default/grub /tmp
 sed -i 's/net.ifnames=0//g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
 fi
 
 exit 0
