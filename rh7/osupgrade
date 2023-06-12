@@ -14,7 +14,7 @@ enabled=1
 EOF
 
 # add leapp package
-yum -y install leapp-upgrade
+yum -y install leapp-upgrade-el7toel8
 
 # add leapp repos
 cat > /etc/leapp/files/leapp_upgrade_repositories.repo << EOF
