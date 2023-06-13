@@ -83,6 +83,7 @@ yum -y remove vsftpd
 
 #change nic naming
 updateos change_nics
+systemctl restart network
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot

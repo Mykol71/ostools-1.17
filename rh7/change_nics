@@ -2,8 +2,6 @@
 
 #DESC change nic namings from ethX to tfethX.
 
-systemctl start NetworkManager
-
 #eth0
 if [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ]
 then
@@ -39,8 +37,5 @@ sed -i 's/net.ifnames=0//g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
 grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
 fi
-
-nmcli connection reload
-systemctl restart NetworkManager
 
 exit 0
