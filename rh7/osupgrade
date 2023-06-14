@@ -31,8 +31,8 @@ EOF
 
 #download leapp metadata
 cd /etc/leapp/files
-wget http://rhel8repo.centralus.cloudapp.azure.com/support/leapp-data17.tar.gz
-tar xvfz ./leapp-data17.tar.gz
+wget http://rhel8repo.centralus.cloudapp.azure.com/support/leapp-data-22.tar.gz
+tar xvfz ./leapp-data-22.tar.gz
 
 #remove unneeded kernel drivers
 modprobe --remove -v btrfs
