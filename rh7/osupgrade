@@ -82,9 +82,9 @@ yum -y remove tcp_wrappers
 yum -y remove vsftpd
 
 #change nic naming
+systemctl start NetworkManager
 updateos change_nics
 updateos install_ostools-1.16
-updateos update_bbj_19.pl
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
