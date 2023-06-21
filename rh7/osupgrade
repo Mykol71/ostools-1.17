@@ -5,6 +5,9 @@
 echo "---> Upgrading OS to RHEL8 ..." | tee -a /tmp/updateos.log
 echo "" | tee -a /tmp/updateos.log
 
+#check nics
+[ "`ifconfig | grep "^eth" | wc -l`" -ne "1" ] && echo "Os Cannot be upgraded until change_nics has been ran." && exit 1
+
 # add rh7 extras repo.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
 [RH7extras]
@@ -67,6 +70,7 @@ EOF
 updateos post_install
 
 #remove rh8 unsupported pam.d modules.
+cp -rp /etc/pam.d /tmp
 sed -i '/pam_tally2/d' /etc/pam.d/*
 sed -i '/pam_pkcs11/d' /etc/pam.d/*
 
@@ -81,10 +85,18 @@ yum -y remove tcp_wrappers
 #remove vsftpd.
 yum -y remove vsftpd
 
-#change nic naming
-systemctl start NetworkManager
-updateos change_nics
+#updates ostools to 1.16
 updateos install_ostools-1.16
 
 # run leap upgrade
 leapp upgrade --target 8.6 --no-rhsm --reboot
+
+#if we get here the upgrade failed the validation tests.
+#clean up since failed.
+systemctl disable post_install
+rm -f /etc/systemd/system/post_install.service
+yum -y install tcp_wrappers
+mv -f /tmp/hosts.allow /etc/hosts.allow
+mv -f /tmp/hosts.deny /etc/hosts.deny
+cp -rp /tmp/pam.d/* /etc/pam.d/.
+mail -s "OSUpgrade on `hostaname` failed." kpugh@teleflora.com,mgreen@mykol.com < /tmp/updateos.log
