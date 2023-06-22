@@ -99,4 +99,4 @@ yum -y install tcp_wrappers
 mv -f /tmp/hosts.allow /etc/hosts.allow
 mv -f /tmp/hosts.deny /etc/hosts.deny
 cp -rp /tmp/pam.d/* /etc/pam.d/.
-mail -s "OSUpgrade on `hostaname` failed." kpugh@teleflora.com,mgreen@mykol.com < /tmp/updateos.log
+mail -s "OSUpgrade on `hostname` failed." kpugh@teleflora.com,mgreen@mykol.com < /tmp/updateos.log
