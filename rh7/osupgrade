@@ -6,7 +6,7 @@ echo "---> Upgrading OS to RHEL8 ..." | tee -a /tmp/updateos.log
 echo "" | tee -a /tmp/updateos.log
 
 #check nics
-[ "`ifconfig | grep "^eth" | wc -l`" -ne "1" ] && echo "Os Cannot be upgraded until change_nics has been ran." && exit 1
+#[ "`ifconfig | grep "^eth" | wc -l`" -ne "1" ] && echo "Os Cannot be upgraded until change_nics has been ran." && exit 1
 
 # add rh7 extras repo.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
