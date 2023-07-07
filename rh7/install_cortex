@@ -16,4 +16,9 @@ chown root:root /etc/panw/cortex.conf
 # Install.
 yum -y localinstall ./cortex-7.7.2.66464.rpm
 
+# assign custom tag for the filter configured with IT.
+cd /opt/traps/bin
+./cytool endpoint_tags add "rtilinux"
+./cytool checkin
+
 exit $? 
