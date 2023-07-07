@@ -19,5 +19,6 @@ yum -y localinstall ./cortex-7.7.2.66464.rpm
 # assign custom tag for the filter configured with IT.
 /opt/traps/bin/cytool endpoint_tags add rtilinux
 systemctl restart traps_pmd.service
+/opt/traps/bin/cytool checkin
 
 exit $? 
