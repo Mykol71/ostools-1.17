@@ -21,4 +21,4 @@ yum -y localinstall ./cortex-7.7.2.66464.rpm
 systemctl restart traps_pmd.service
 /opt/traps/bin/cytool checkin
 
-exit $? 
+exit 0 
