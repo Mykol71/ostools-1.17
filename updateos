@@ -65,6 +65,7 @@ exit $EXIT
 }
 
 download_script () {
+rm -f /usr/bin/.updateos/$SCRIPT
 /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT
 chmod +x /usr/bin/.updateos/${SCRIPT}
 }
