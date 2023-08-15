@@ -48,12 +48,11 @@ echo "blacklist btrfs" >> /etc/modprobe.d/btrfs-blacklist.conf
 echo "blacklist pata_acpi" >> /etc/modprobe.d/pata_acpi-blacklist.conf
 echo "install btrfs /bin/false" >> /etc/modprobe.d/btrfs-blacklist.conf
 echo "install pata_acpi /bin/false" >> /etc/modprobe.d/pata_acpi-blacklist.conf
-#dracut --omit-drivers btrfs -f
-#dracut --omit-drivers pata_acpi -f
+dracut --omit-drivers "btrfs pata_acpi" -f
 #mv /lib/dracut/modules.d/90btrfs/ /tmp
 #sed -i '/^GRUB_CMDLINE_LINUX=/s/"$/ <module_name>.blacklist=1 rd.driver.blacklist=<module_name>"/' /etc/sysconfig/grub
-grub2-mkconfig -o /boot/grub2/grub.cfg 
-grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg 
+#grub2-mkconfig -o /boot/grub2/grub.cfg 
+#grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg 
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
