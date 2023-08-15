@@ -37,22 +37,33 @@ cd /etc/leapp/files
 wget http://rhel8repo.centralus.cloudapp.azure.com/support/leapp-data-22.tar.gz
 tar xvfz ./leapp-data-22.tar.gz
 
-#remove unneeded kernel drivers
-modprobe --remove -v btrfs
+#check for unsupported kernel drivers and remove if present.
+#btrfs
+if [ "`lsmod | grep btrfs`" != "" ]
+then
 rmmod btrfs
 rmmod xor
 rmmod raid6_pq
-modprobe --remove -v pata_acpi
-rmmod pata_acpi
 echo "blacklist btrfs" >> /etc/modprobe.d/btrfs-blacklist.conf
-echo "blacklist pata_acpi" >> /etc/modprobe.d/pata_acpi-blacklist.conf
 echo "install btrfs /bin/false" >> /etc/modprobe.d/btrfs-blacklist.conf
+[ ! -d /etc/dracut.conf.d ] && mkdir -p /etc/dracut.conf.d
+echo blacklist+=\" btrfs \" > /etc/dracut.conf.d/btrfs-blacklist.conf
+dracut -f
+grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+fi
+#pata_acpi
+if [ "`lsmod | grep pata_acpi`" != "" ]
+then
+rmmod pata_acpi
+echo "blacklist pata_acpi" >> /etc/modprobe.d/pata_acpi-blacklist.conf
 echo "install pata_acpi /bin/false" >> /etc/modprobe.d/pata_acpi-blacklist.conf
-dracut --omit-drivers "btrfs pata_acpi" -f
-#mv /lib/dracut/modules.d/90btrfs/ /tmp
-#sed -i '/^GRUB_CMDLINE_LINUX=/s/"$/ <module_name>.blacklist=1 rd.driver.blacklist=<module_name>"/' /etc/sysconfig/grub
-#grub2-mkconfig -o /boot/grub2/grub.cfg 
-#grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg 
+[ ! -d /etc/dracut.conf.d ] && mkdir -p /etc/dracut.conf.d
+echo blacklist+=\" pata_acpi \" > /etc/dracut.conf.d/pata_acpi-blacklist.conf
+dracut -f
+grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+fi
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
