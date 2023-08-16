@@ -2,3 +2,5 @@
 
 #DESC add a 30sec sleep to the start portion of rti service file.
 [ "`grep sleep /etc/rc.d/init.d/rti`" == "" ] && sed -i 's/\$RTI_DIR\/bin\/startbbx/sleep\ 30\ \;\ \$RTI_DIR\/bin\/startbbx/g' /etc/rc.d/init.d/rti
+
+exit 0
