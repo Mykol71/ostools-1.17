@@ -41,13 +41,11 @@ tar xvfz ./leapp-data-22.tar.gz
 #btrfs
 if [ "`lsmod | grep btrfs`" != "" ]
 then
-rmmod btrfs
-rmmod xor
-rmmod raid6_pq
+modprobe -r btrfs
 echo "blacklist btrfs" >> /etc/modprobe.d/btrfs-blacklist.conf
 echo "install btrfs /bin/false" >> /etc/modprobe.d/btrfs-blacklist.conf
 [ ! -d /etc/dracut.conf.d ] && mkdir -p /etc/dracut.conf.d
-echo omit_drivers+=\" btrfs xor raid6_pq \" > /etc/dracut.conf.d/btrfs-blacklist.conf
+echo omit_drivers+=\" btrfs \" > /etc/dracut.conf.d/btrfs-blacklist.conf
 dracut -f
 grub2-mkconfig -o /boot/grub2/grub.cfg
 grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
