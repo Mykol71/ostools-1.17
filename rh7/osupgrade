@@ -54,7 +54,7 @@ confirm = True
 EOF
 
 #add script to run after reboot.
-updateos post_install
+updateos post_install_rh8
 
 #remove rh8 unsupported pam.d modules.
 cp -rp /etc/pam.d /tmp
