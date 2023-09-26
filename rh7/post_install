@@ -13,6 +13,8 @@ yum -y reinstall perl
 systemctl enable iptables
 systemctl start iptables
 systemctl disable post_install
+systemctl disable NetworkManager
+systemctl stop NetworkManager
 update-crypto-policies --set LEGACY
 rm -f /etc/systemd/system/post_install.service
 reboot

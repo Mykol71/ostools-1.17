@@ -17,6 +17,8 @@ yum -y reinstall perl
 /usr/bin/updateos install_tcc
 update-crypto-policies --set LEGACY
 systemctl disable post_install
+systemctl disable NetworkManager
+systemctl stop NetworkManager
 rm -f /etc/systemd/system/post_install.service
 /usr/bin/updateos email_results
 reboot
