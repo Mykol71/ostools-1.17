@@ -1,0 +1,35 @@
+#!/bin/bash
+
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+#DESCBuild generics table for sendmail to prevent .teleflora.com from getting added tosystem email from addresses.
+
+[ -d /etc/mail/auth ] && echo "Sendgrid configured on this server. Exiting in success." && exit 0
+locate sendmail >>/dev/null
+[ "$?" != "0" ] && echo "sendmail not found!" && exit 1
+[ -f /etc/mail/genericstable ] && mv /etc/mail/genericstable /tmp/genericstable.bak
+
+EMAIL_FROM="posserver@`hostname | cut -d. -f1`.com"
+
+#4. Create generics table.
+if [ "$EMAIL_FROM" != "None" ]; then
+     echo "root $EMAIL_FROM">>/etc/mail/genericstable
+     echo "root@localhost $EMAIL_FROM">>/etc/mail/genericstable
+     echo "root@`hostname`    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "root@`hostname`.teleflora.com    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti@localhost $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti@`hostname`    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "rti@`hostname`.teleflora.com    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport@localhost $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport@`hostname`    $EMAIL_FROM">>/etc/mail/genericstable
+     echo "tfsupport@`hostname`.teleflora.com    $EMAIL_FROM">>/etc/mail/genericstable
+fi
+
+#8. Restart sendmail.
+service sendmail restart
+
+#9. Test email.
+echo "Done."

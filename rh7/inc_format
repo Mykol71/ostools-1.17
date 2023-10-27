@@ -1,0 +1,62 @@
+#!/bin/bash
+
+#DESC Formats sdb with 7 partitions for nightly backups.
+#USED AT BROADWAY
+# This script trusts your device is big enough for 7, seperate, 260GB partitions on your backup device, and that 50GB is large enough for your backup.
+# There will be seven partions on the backup device. The number of the partition corrisponds to the day of the week + 4. Example: Mon = /dev/sdX5; Tues = /dev/sdX6; etc.
+# Sample cron job
+# 05 03 * * * root (/usr/bin/test -e /usr2/bbx && . /etc/profile.d/rti.sh && /usr2/bbx/bin/rtibackup.pl --rti --configfile=/usr2/bbx/config/backups.config --device=/dev/sdb$(expr $(date +"\%u") + 4) --backup=all --verify --console)
+
+# Find device
+# check conf file first
+BACKUPDEVICE=`grep -i ^device=/dev/sd /usr2/bbx/config/backups.config`
+# assign default if none in conf file
+[ "$BACKUPDEVICE" == "" ] && BACKUPDEVICE=/dev/sdb
+# verify exists in /dev
+BACKUPDEVICE=`ls $BACKUPDEVICE 2>/dev/null`
+[ "$BACKUPDEVICE" == "" ] && echo "No backup device found." && exit 1
+# check for incremental installed already and ask for format only if so.
+#[ "`grep -i ^device=$BACKUPDEVICE\$((\`date +\"%u\"\` + 4))" /usr2/bbx/config/backups.config`" != "" ] && echo "Backup device already configured for incremental. Continue formatting $BACKUPDEVICE?" && read -n RESP
+[ "$RESP" == "n" ] && exit 0
+
+# Partition and format device
+# wipe exisiting partition table
+echo -n "About to format $BACKUPDEVICE. Proceed? (y/n): "
+read CONT
+[ "$CONT" == "n" ] && exit 0
+echo "Wiping partition table on $BACKUPDEVICE ..."
+wipefs -a $BACKUPDEVICE
+echo "Configuring $BACKUPDEVICE..."
+# create fist extended primary partition
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
+ n
+ e 
+ 4
+
+
+ w
+EOF
+# extended partitions
+for part in 5 6 7 8 9 10 11
+do
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk $BACKUPDEVICE
+ n
+ l
+
+ +260G
+ w
+EOF
+done
+# reread partition table
+partprobe $BACKUPDEVICE
+sleep 4
+# format
+for part in 5 6 7 8 9 10 11
+do
+mkfs.ext2 $BACKUPDEVICE$part
+done
+
+echo "$BACKUPDEVICE configured."
+
+echo "Done."
+exit 0
