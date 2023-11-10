@@ -217,7 +217,8 @@ systemctl enable cups
 systemctl enable iptables
 systemctl disable firewalld
 systemctl stop firewalld
-systemctl enable ntpd
-systemctl start ntpd
+systemctl disable ntpd
+systemctl enable ntpdate
+systemctl start ntpdate
 openvt -s -w -- /usr/bin/updateos stage
 %end
