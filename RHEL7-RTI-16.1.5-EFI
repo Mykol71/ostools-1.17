@@ -69,7 +69,7 @@ fetchmail
 net-snmp
 vlock
 sysstat
-ntp
+ntpdate
 procps
 e2fsprogs
 audit
@@ -88,7 +88,7 @@ biosdevname
 iptables-services
 perl-Digest
 perl-Digest-MD5
--chrony
+chrony
 ntp
 NetworkManager
 
@@ -217,7 +217,10 @@ systemctl enable cups
 systemctl enable iptables
 systemctl disable firewalld
 systemctl stop firewalld
+systemctl stop ntpd
 systemctl disable ntpd
+systemctl enable chronyd
+systemctl start chronyd
 systemctl enable ntpdate
 systemctl start ntpdate
 openvt -s -w -- /usr/bin/updateos stage
