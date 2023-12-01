@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#DESC Add new public ip address from TF jump box.
+[ "`grep 167.224.66 /etc/hosts.allow`" == "" ] && echo "sshd: 167.224.66." >>/etc/hosts.allow && echo "tfremote: 167.224.66.">>/etc/hosts.allow
+[ "`grep 167.224.67 /etc/hosts.allow`" == "" ] && echo "sshd: 167.224.67." >>/etc/hosts.allow && echo "tfremote: 167.224.67.">>/etc/hosts.allow
+[ "`grep 12.94.133.150 /etc/hosts.allow`" == "" ] && echo "sshd: 12.94.133.150" >>/etc/hosts.allow && echo "tfremote: 12.94.133.150">>/etc/hosts.allow
+exit 0
