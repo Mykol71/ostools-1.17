@@ -33,13 +33,9 @@ baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-r
 EOF
 
 #download leapp metadata
-cd /etc/leapp/files
-wget http://rhel8repo.centralus.cloudapp.azure.com/support/leapp-data-22.tar.gz
-tar xvfz ./leapp-data-22.tar.gz
-
-#fix for latest upgrade testing issue. fix per redhat support page.
-rm /etc/leapp/files/*.json
-yum reinstall leapp-upgrade-el7toel8
+#cd /etc/leapp/files
+#wget http://rhel8repo.centralus.cloudapp.azure.com/support/leapp-data-22.tar.gz
+#tar xvfz ./leapp-data-22.tar.gz
 
 #create leapp answer file
 cat > /var/log/leapp/answerfile << EOF
