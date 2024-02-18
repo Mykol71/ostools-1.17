@@ -39,3 +39,4 @@ EOF
 
 chmod +x /usr/bin/post_install.sh
 systemctl enable post_install
+exit 0
