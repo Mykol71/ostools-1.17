@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESC Set the server's hostname.
+[ -f /usr2/upgrade/hostname ] && NAME="`cat /usr2/upgrade/hostname`"
 [ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
 
 hostnamectl set-hostname "$NAME"
