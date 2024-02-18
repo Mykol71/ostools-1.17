@@ -17,6 +17,9 @@ yum -y reinstall perl
 /usr/bin/updateos install_ostools-1.16
 /usr/bin/updateos install_tcc
 update-crypto-policies --set LEGACY
+rm -f /etc/systemd/system/endpoint-*
+rm -rf /opt/Kaseya
+/usr/bin/updateos install_kaseya
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 /usr/bin/updateos email_results
