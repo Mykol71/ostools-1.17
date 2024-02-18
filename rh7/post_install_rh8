@@ -6,6 +6,7 @@
 cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
+/usr/bin/updateos sethostname
 /usr/bin/updateos conf_firewall
 /usr/bin/updateos register_insights
 aide -i
