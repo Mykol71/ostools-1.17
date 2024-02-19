@@ -12,7 +12,7 @@ systemctl restart iptables
 /usr/bin/updateos register_insights
 aide -i
 cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
-rm -f /etc/yum.repos.d/*
+rm -f /etc/yum.repos.d/rti*.repos
 /usr/bin/updateos rh8repo_install
 yum -y reinstall perl
 /usr/bin/updateos install_ostools-1.16
