@@ -5,10 +5,11 @@
 echo "---> Upgrading OS to RHEL8 ..." | tee -a /tmp/updateos.log
 echo "" | tee -a /tmp/updateos.log
 
-# save current hostname
+# save current hostname and firewall rules
 rm -rf /usr2/upgrade
 mkdir /usr2/upgrade
 hostname > /usr2/upgrade/hostname
+cp /etc/sysconfig/iptables /usr2/upgrade/.
 
 # add rh7 extras repo.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
@@ -79,4 +80,4 @@ updateos install_ostools-1.16
 
 # run leap upgrade
 leapp upgrade --no-rhsm --reboot
-exit 0
+exit 1

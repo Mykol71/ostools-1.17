@@ -7,7 +7,8 @@ cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
 /usr/bin/updateos sethostname
-/usr/bin/updateos conf_firewall
+[ -f /usr2/upgrade/iptables ] && cp -f /usr2/upgrade/iptables /etc/sysconfig/. 
+systemctl restart iptables
 /usr/bin/updateos register_insights
 aide -i
 cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
