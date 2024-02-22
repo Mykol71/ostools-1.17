@@ -1,9 +1,11 @@
 #!/bin/bash
 
+#DESC Configures Sendgrid. Need API Key and email from add.
+
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-#DESC Configure RTI Server for Sendgrid email relay.
+#--Configure RTI Server for Sendgrid email relay.
 
 #a. Get API Key.
 echo -n "Enter API Key: "

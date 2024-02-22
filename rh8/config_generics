@@ -3,7 +3,7 @@
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
-#DESCBuild generics table for sendmail to prevent .teleflora.com from getting added tosystem email from addresses.
+#DESC Build generics table for sendmail to prevent .teleflora.com from getting added tosystem email from addresses.
 
 tar cvfz /tmp/mail.tar.gz /etc/mail
 [ "`grep ^DS /etc/mail/sendmail.cf | cut -dS -f2`" != "" ] && echo "Relay already configured." && exit 1
