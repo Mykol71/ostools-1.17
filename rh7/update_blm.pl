@@ -5,7 +5,7 @@
 #
 # update_blm.pl
 #
-# Update Basis BLM for correct license address
+#DESC Update Basis BLM for correct license address
 #
 
 use strict;
