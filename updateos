@@ -15,6 +15,7 @@ n="${15:-20}"
 
 usage() {
 SUBGROUP=""
+rm -f /usr/bin/.updateos/*
 echo "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
   echo ""
   echo "$GROUP"
