@@ -2,6 +2,9 @@
 
 #DESC Inplace OS upgrade from RH7 to RH8 - RTI.
 
+#Make sure tfethX naming.
+[ "`ifconfig | grep tfeth`" == "" ] && echo "Run change_nics first....." && exit 1
+
 echo "---> Upgrading OS to RHEL8 ..." | tee -a /tmp/updateos.log
 echo "" | tee -a /tmp/updateos.log
 
