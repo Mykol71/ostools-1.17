@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC Email staging results.
+#DESC Email log file.
 EMAIL_LIST="kpugh@teleflora.com,mgreen@mykol.com"
 
 /usr/bin/hostnamectl status >>/tmp/updateos.log
