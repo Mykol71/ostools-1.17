@@ -1,0 +1,39 @@
+!/bin/bash
+
+#DESC Restore RTI from another on the same network.
+
+# Install required packages.
+yum install -y glib2 fuse3-libs
+yum install -y http://rhel8repo.centralus.cloudapp.azure.com/support/fuse-sshfs-2.8-7.el8.x86_64.rpm
+[ ! -d /SOURCE ] && mkdir /SOURCE
+
+echo -n "Source IP: " && read SOURCE
+ping -c 1 $SOURCE
+[ "$?" != "0" ] && echo "Can't see server." && exit 1
+sshfs tfsupport@$SOURCE:/ /SOURCE
+[ "$?" != "0" ] && echo "Can't access server." && exit 2
+
+echo Stopping rti...
+systemctl stop rti bbj blm cups samba iptables
+echo
+
+echo Copying data from...
+echo $SOURCE
+rsync -avhz --exclude '*.log' --exclude 'tcc*' /SOURCE/usr2 / && chown -R tfsupport:rti /usr2 
+rsync -avhz /SOURCE/etc / && chown -R root:root /etc 
+rsync -avhz /SOURCE/home / && chown -R tfsupport /home/tfsupport
+rsync -avhz /SOURCE/usr/java / && chown -R root:root /usr/java
+echo
+umount /SOURCE
+[ "$?" != "0" ] && echo "Can't umount source."
+
+echo Installing and disabling RTI realtime...
+updateos install_tcc
+updateos diable_realtime
+echo
+
+echo Starting systemd services...
+systemctl start blm bbj rti cups samba iptables
+echo
+
+exit 0
