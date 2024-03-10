@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC Restore RTI from another on the same network.
+#DESC Restore RTI from another server. (Must have root ssh enabled.)
 
 # Install required packages.
 yum install -y glib2 fuse3-libs
@@ -10,7 +10,7 @@ yum install -y http://rhel8repo.centralus.cloudapp.azure.com/support/fuse-sshfs-
 echo -n "Source IP: " && read SOURCE
 ping -c 1 $SOURCE
 [ "$?" != "0" ] && echo "Can't see server." && exit 1
-sshfs tfsupport@$SOURCE:/ /SOURCE
+sshfs root@$SOURCE:/ /SOURCE
 [ "$?" != "0" ] && echo "Can't access server." && exit 2
 
 echo Stopping rti...
