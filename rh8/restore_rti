@@ -20,7 +20,7 @@ echo
 echo Copying data from...
 echo $SOURCE
 rsync -avhz --exclude '*.log' --exclude 'tcc*' /SOURCE/usr2 / && chown -R tfsupport:rti /usr2 
-cp -rp /SOURCE/etc / && chown -R root:root /etc 
+rsync -avhz /SOURCE/etc / && chown -R root:root /etc 
 rsync -avhz /SOURCE/home / && chown -R tfsupport /home/tfsupport
 rsync -avhz /SOURCE/usr/java / && chown -R root:root /usr/java
 echo
@@ -29,7 +29,7 @@ umount /SOURCE
 
 echo Installing and disabling RTI realtime...
 updateos install_tcc
-updateos disable_realtime
+updateos realtime_disable
 echo
 
 echo Starting systemd services...
