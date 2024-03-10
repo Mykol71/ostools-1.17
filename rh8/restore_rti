@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 #DESC Restore RTI from another on the same network.
 
@@ -14,7 +14,7 @@ sshfs tfsupport@$SOURCE:/ /SOURCE
 [ "$?" != "0" ] && echo "Can't access server." && exit 2
 
 echo Stopping rti...
-systemctl stop rti bbj blm cups samba iptables
+systemctl stop rti bbj blm cups smb iptables
 echo
 
 echo Copying data from...
@@ -33,7 +33,7 @@ updateos diable_realtime
 echo
 
 echo Starting systemd services...
-systemctl start blm bbj rti cups samba iptables
+systemctl start blm bbj rti cups smb iptables
 echo
 
 exit 0
