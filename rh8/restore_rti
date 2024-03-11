@@ -20,7 +20,7 @@ echo
 echo Copying data from...
 echo $SOURCE
 rsync -avhz --exclude '*.log' --exclude 'tcc*' /SOURCE/usr2 / && chown -R tfsupport:rti /usr2 
-rsync -avhz --exclude '*ifcfg*' /SOURCE/etc / && chown -R root:root /etc 
+rsync -avhz --exclude '*ifcfg*' --exclude 'hosts' /SOURCE/etc / && chown -R root:root /etc 
 find /etc/ssh -name "*_key" -exec chmod 600 {} \;
 rsync -avhz /SOURCE/home / && chown -R tfsupport /home/tfsupport
 rsync -avhz /SOURCE/usr/java / && chown -R root:root /usr/java
