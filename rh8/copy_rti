@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC Restore RTI from another server. (Must have root ssh enabled.)
+#DESC Copy RTI from another server. (Must have root ssh enabled.)
 
 # Install required packages.
 yum install -y glib2 fuse3-libs
@@ -19,9 +19,10 @@ echo
 
 echo Copying data from...
 echo $SOURCE
-rsync -avhz --exclude '*.log' --exclude 'tcc*' /SOURCE/usr2 / && chown -R tfsupport:rti /usr2 
-rsync -avhz --exclude '*ifcfg*' --exclude 'hosts' /SOURCE/etc / && chown -R root:root /etc 
-find /etc/ssh -name "*_key" -exec chmod 600 {} \;
+rsync -avhz --exclude '*.log' --exclude 'tcc*' --exclude 'basis-old' --exclude '*backups*' --exclude 'basis.lic' /SOURCE/usr2 / && chown -R tfsupport:rti /usr2 
+rsync -avhz /SOURCE/etc/samba /samba && chown -R root:root /etc/samba
+rsync -avhz /SOURCE/etc/cups /cups && chown -R root:root /etc/cups
+rsync -avhz /SOURCE/etc/mail /mail && chown -R root:root /etc/mail
 rsync -avhz /SOURCE/home / && chown -R tfsupport /home/tfsupport
 rsync -avhz /SOURCE/usr/java / && chown -R root:root /usr/java
 echo
@@ -35,7 +36,6 @@ echo
 
 echo Starting systemd services...
 systemctl start blm bbj rti cups smb iptables
-systemctl restart sshd
 echo
 
 exit 0
