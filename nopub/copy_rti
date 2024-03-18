@@ -20,11 +20,11 @@ echo
 echo Copying data from...
 echo $SOURCE
 rsync -avhz --exclude '*.log' --exclude 'tcc*' --exclude 'basis-old' --exclude '*backups*' --exclude 'basis.lic' --exclude '*ostools*' /SOURCE/usr2 / && chown -R tfsupport:rti /usr2 
-rsync -avhz /SOURCE/etc/samba /samba && chown -R root:root /etc/samba
-rsync -avhz /SOURCE/etc/cups /cups && chown -R root:root /etc/cups
-rsync -avhz /SOURCE/etc/mail /mail && chown -R root:root /etc/mail
+rsync -avhz /SOURCE/etc/samba /etc && chown -R root:root /etc/samba
+rsync -avhz /SOURCE/etc/cups /etc && chown -R root:root /etc/cups
+rsync -avhz /SOURCE/etc/mail /etc && chown -R root:root /etc/mail
 rsync -avhz /SOURCE/home / && chown -R tfsupport /home/tfsupport
-rsync -avhz /SOURCE/usr/java / && chown -R root:root /usr/java
+rsync -avhz /SOURCE/usr/java /usr && chown -R root:root /usr/java
 cp -f /$SOURCE/etc/passwd /etc/passwd && chown root:root /etc/passwd
 cp -f /$SOURCE/etc/shadow /etc/shadow && chown root:root /etc/shadow
 cp -f /$SOURCE/etc/group /etc/group && chown root:root /etc/group
