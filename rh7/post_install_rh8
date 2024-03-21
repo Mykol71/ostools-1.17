@@ -6,6 +6,13 @@
 cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
+#Download and update updateos
+cd /tmp
+rm -rf /usr/bin/.updateos
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos
+chmod +x ./updateos
+cp -f ./updateos /usr/bin/.
+
 /usr/bin/updateos sethostname
 [ -f /usr2/upgrade/iptables ] && cp -f /usr2/upgrade/iptables /etc/sysconfig/. 
 systemctl restart iptables

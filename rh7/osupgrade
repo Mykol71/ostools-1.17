@@ -2,6 +2,13 @@
 
 #DESC Inplace OS upgrade from RH7 to RH8 - RTI.
 
+#Download and update updateos
+cd /tmp
+rm -rf /usr/bin/.updateos
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos
+chmod +x ./updateos
+cp -f ./updateos /usr/bin/.
+
 #Make sure tfethX naming.
 [ "`ifconfig | grep tfeth`" == "" ] && echo "Run change_nics first....." && exit 1
 
@@ -77,6 +84,7 @@ yum -y remove tcp_wrappers
 
 #remove vsftpd.
 yum -y remove vsftpd
+yum -y remove firewalld
 
 #updates ostools to 1.16
 updateos install_ostools-1.16
