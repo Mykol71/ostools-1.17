@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#DESC Disable RTI realtime.
+
+# check to see if already disabled via this process.
+[ -f /usr2/bbx/config/.rtoff ] && echo Real time already disabled. && exit 1
+
+# comment out rti background jobs.
+sed -i 's/^/#/g' /usr2/bbx/config/rtiBackgr
+
+# comment out system cron jobs.
+for file in `ls /etc/cron.d`
+do 
+sed -i 's/^/#/g' /etc/cron.d/$file
+done
+
+# commenting out users cron jobs.
+for file in `ls /var/spool/cron`
+do
+sed -i 's/^/#/g' /var/spool/cron/$file
+done
+
+# disable dove login.
+sed -i 's/^/#/g' /usr2/bbx/config/dove.ini
+
+# move off doveserver.pl
+mv /usr2/bbx/bin/doveserver.pl /usr2/bbx/bin/doveserver.pl.rtoff
+
+# move off tcc links.
+cd /usr2/
+find . -name "tcc" -exec mv {} /tmp \;
+find . -name "tcc_tws" -exec mv {} /tmp \;
+
+# stop services.
+systemctl stop rti
+systemctl stop bbj
+systemctl stop blm
+
+# prevent from starting on reboot.
+systemctl disable rti
+systemctl disable bbj
+systemctl disable blm
+
+# tell this process status.
+touch /usr2/bbx/config/.rtoff
+rm -f /usr2/bbx/config/.rton
+
+echo "Real time disabled."
+
+exit 0

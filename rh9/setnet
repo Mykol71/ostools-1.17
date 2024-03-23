@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#DESC Set/Change IP, DNS, and Gateway.
+
+IP=$1
+IP2=$4
+DNS=$2
+GATEWAY=$3
+
+[ "$IP" == "" ] && echo -n "Enter eth0 IP: " && read IP
+[ "$IP2" == "" ] && echo -n "Enter eth1 IP: " && read IP2
+[ "$DNS" == "" ] && echo -n "Enter DNS: " && read DNS
+[ "$GATEWAY" == "" ] && echo -n "Enter Gateway: " && read GATEWAY
+
+# use old ostools to make ifcfg-tfeth0 changes
+/usr2/ostools/bin/updateos.pl --ipaddr=$IP --gateway=$GATEWAY --netmask=255.255.255.0 --ifname=tfeth0
+/usr2/ostools/bin/updateos.pl --ipaddr=$IP2 --gateway=$GATEWAY --netmask=255.255.255.0 --ifname=tfeth1
+sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth0
+sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth1
+
+nmcli dev set tfeth0 managed yes
+nmcli dev mod tfeth0 ipv4.addr "$IP/24"
+nmcli dev mod tfeth0 ipv4.dns $DNS
+nmcli dev mod tfeth0 ipv4.gateway $GATEWAY
+nmcli dev set tfeth1 managed yes
+nmcli dev mod tfeth1 ipv4.addr "$IP2/24"
+nmcli dev mod tfeth1 ipv4.dns $DNS
+nmcli dev mod tfeth1 ipv4.gateway $GATEWAY
+nmcli connection reload
+systemctl restart NetworkManager
+
+#Update hosts file
+NAME="`hostname | cut -d"." -f1`"
+IP="`hostname -I | cut -d" " -f1`"
+sed -i "/$NAME/d" /etc/hosts
+echo "$IP       $NAME    $NAME.teleflora.com" >>/etc/hosts
+
+exit $?

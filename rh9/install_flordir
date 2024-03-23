@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#DESC Install the POS Electronic Directory.
+cd /tmp
+[ ! -f /tmp/rti-edir-tel-latest.patch ] && wget -q http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
+[ ! -f /tmp/applypatch.pl ] && wget -q http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
+chmod +x ./applypatch.pl
+./applypatch.pl ./rti-edir-tel-latest.patch

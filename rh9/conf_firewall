@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#DESC Configures iptables for use with linux POS systems.
+yum -y remove firewalld
+/usr2/ostools/bin/harden_linux.pl --iptables
+
+#additions because tcp_wrappers is not supporrted for rh8 and beyond.
+
