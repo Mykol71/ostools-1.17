@@ -16,7 +16,6 @@ cp -f ./updateos /usr/bin/.
 /usr/bin/updateos sethostname
 [ -f /usr2/upgrade/iptables ] && cp -f /usr2/upgrade/iptables /etc/sysconfig/. 
 systemctl restart iptables
-/usr/bin/updateos register_insights
 aide -i
 cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 rm -f /etc/yum.repos.d/*
@@ -26,6 +25,7 @@ update-crypto-policies --set LEGACY
 rm -f /etc/systemd/system/endpoint-*
 rm -rf /opt/Kaseya
 /usr/bin/updateos install_kaseya
+/usr/bin/updateos register_insights
 systemctl disable post_install
 rm -f /etc/systemd/system/post_install.service
 /usr/bin/updateos email_results
