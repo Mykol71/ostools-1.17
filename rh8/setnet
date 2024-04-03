@@ -17,6 +17,8 @@ GATEWAY=$3
 /usr2/ostools/bin/updateos.pl --ipaddr=$IP2 --gateway=$GATEWAY --netmask=255.255.255.0 --ifname=tfeth1
 sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth0
 sed -i "/NM_CONTROLLED=/d" /etc/sysconfig/network-scripts/ifcfg-tfeth1
+echo "NM_CONTROLLED=yes" >> /etc/sysconfig/network-scripts/ifcfg-tfeth0
+echo "NM_CONTROLLED=yes" >> /etc/sysconfig/network-scripts/ifcfg-tfeth1
 
 nmcli dev set tfeth0 managed yes
 nmcli dev mod tfeth0 ipv4.addr "$IP/24"
