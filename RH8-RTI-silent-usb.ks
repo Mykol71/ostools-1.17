@@ -48,6 +48,7 @@ grub2-tools-efi
 sendmail
 crypto-policies-scripts
 mutt
+NetworkManager
 %end
 
 # Keyboard layouts
