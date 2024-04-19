@@ -85,6 +85,7 @@ yum -y remove tcp_wrappers
 #remove vsftpd.
 yum -y remove vsftpd
 yum -y remove firewalld
+yum -y install NetworkManager
 
 #updates ostools to 1.16
 updateos install_ostools-1.16
