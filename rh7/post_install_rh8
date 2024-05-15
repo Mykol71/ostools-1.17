@@ -29,6 +29,7 @@ rm -rf /opt/Kaseya
 #systemctl disable post_install
 #rm -f /etc/systemd/system/post_install.service
 /usr/bin/updateos email_results
+/usr/bin/updateos conf_chrony
 #reboot
 EOF
 
