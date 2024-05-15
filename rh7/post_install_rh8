@@ -26,26 +26,26 @@ rm -f /etc/systemd/system/endpoint-*
 rm -rf /opt/Kaseya
 /usr/bin/updateos install_kaseya
 /usr/bin/updateos register_insights
-systemctl disable post_install
-rm -f /etc/systemd/system/post_install.service
+#systemctl disable post_install
+#rm -f /etc/systemd/system/post_install.service
 /usr/bin/updateos email_results
-reboot
+#reboot
 EOF
 
 # add post install service file to run after network starts.
-cat > /etc/systemd/system/post_install.service <<EOF
-[Unit]
-Description=Post install script for staging.
-After=network-online.target
-
-[Service]
-Type=idle
-ExecStart=/usr/bin/post_install.sh
-
-[Install]
-WantedBy=network-online.target
-EOF
-
+#cat > /etc/systemd/system/post_install.service <<EOF
+#[Unit]
+#Description=Post install script for staging.
+#After=network-online.target
+#
+#[Service]
+#Type=idle
+#ExecStart=/usr/bin/post_install.sh
+#
+#[Install]
+#WantedBy=network-online.target
+#EOF
+#
 chmod +x /usr/bin/post_install.sh
-systemctl enable post_install
+#systemctl enable post_install
 exit 0
