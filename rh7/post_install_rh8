@@ -6,47 +6,33 @@
 cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
-#Download and update updateos
-cd /tmp
-rm -rf /usr/bin/.updateos
-wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos
-chmod +x ./updateos
-cp -f ./updateos /usr/bin/.
-
 /usr/bin/updateos sethostname
 [ -f /usr2/upgrade/iptables ] && cp -f /usr2/upgrade/iptables /etc/sysconfig/. 
 systemctl restart iptables
-aide -i
-cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 rm -f /etc/yum.repos.d/*
 /usr/bin/updateos rh8repo_install
 /usr/bin/updateos install_tcc
 update-crypto-policies --set LEGACY
-rm -f /etc/systemd/system/endpoint-*
-rm -rf /opt/Kaseya
-/usr/bin/updateos install_kaseya
-/usr/bin/updateos register_insights
-#systemctl disable post_install
-#rm -f /etc/systemd/system/post_install.service
-/usr/bin/updateos email_results
+systemctl disable post_install
 /usr/bin/updateos conf_chrony
-#reboot
+/usr/bin/updateos email_results
+rm -f /etc/systemd/system/post_install.service
 EOF
 
 # add post install service file to run after network starts.
 #cat > /etc/systemd/system/post_install.service <<EOF
-#[Unit]
-#Description=Post install script for staging.
-#After=network-online.target
-#
-#[Service]
-#Type=idle
-#ExecStart=/usr/bin/post_install.sh
-#
-#[Install]
-#WantedBy=network-online.target
-#EOF
-#
+[Unit]
+Description=Post install script for staging.
+After=network-online.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/post_install.sh
+
+[Install]
+WantedBy=network-online.target
+EOF
+
 chmod +x /usr/bin/post_install.sh
-#systemctl enable post_install
+systemctl enable post_install
 exit 0
