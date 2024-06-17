@@ -21,7 +21,7 @@ rm -f /etc/systemd/system/post_install.service
 EOF
 
 # add post install service file to run after network starts.
-#cat > /etc/systemd/system/post_install.service <<EOF
+cat > /etc/systemd/system/post_install.service <<EOF
 [Unit]
 Description=Post install script for staging.
 After=network-online.target
