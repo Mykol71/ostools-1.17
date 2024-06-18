@@ -91,6 +91,8 @@ systemctl enable NetworkManager
 #updates ostools to 1.16
 updateos install_ostools-1.16
 
+updateos rti_email_fix
+
 # run leap upgrade
 leapp upgrade --no-rhsm --reboot
 exit 0

@@ -12,7 +12,6 @@ systemctl restart iptables
 rm -f /etc/yum.repos.d/*
 /usr/bin/updateos rh8repo_install
 /usr/bin/updateos install_tcc
-/usr/bin/updateos rti_email_fix
 update-crypto-policies --set LEGACY
 systemctl disable post_install
 /usr/bin/updateos conf_chrony
