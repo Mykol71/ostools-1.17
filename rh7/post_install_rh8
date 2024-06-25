@@ -6,7 +6,6 @@
 cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
-[ "`grep 8. /etc/redhat-release`" == "" ] && systemctl disable post_install && exit 0
 [ -f /usr/bin/.updateos/osup1 ] && rm -f /usr/bin/.updateos/osup1 && exit 0
 
 /usr/bin/updateos sethostname
