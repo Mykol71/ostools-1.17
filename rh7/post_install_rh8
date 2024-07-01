@@ -6,8 +6,8 @@
 cat > /usr/bin/post_install.sh <<EOF
 #!/bin/bash
 
-sleep 15
 [ -f /usr/bin/.updateos/osup1 ] && rm -f /usr/bin/.updateos/osup1 && exit 0
+sleep 15
 
 /usr/bin/updateos sethostname
 [ -f /usr2/upgrade/iptables ] && cp -f /usr2/upgrade/iptables /etc/sysconfig/. 
