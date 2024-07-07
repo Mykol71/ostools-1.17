@@ -9,6 +9,10 @@
 #chmod +x ./updateos
 #cp -f ./updateos /usr/bin/.
 
+#check for passport
+ls | /dev | grep sd > /tmp/drives.out
+[ "`ls /dev | grep sdb`" != "" ] && mail -s "`hostname` - passport may be connected. upgrade halted." mgreen@teleflora.com,kpugh@teleflora.com,tshilling@teleflora.com < /tmp/drives.out && exit 1 
+
 #Make sure tfethX naming.
 [ "`ifconfig | grep tfeth`" == "" ] && echo "Run change_nics first....." && exit 1
 
