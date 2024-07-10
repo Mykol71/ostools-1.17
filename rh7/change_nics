@@ -6,6 +6,9 @@
 ifconfig > /tmp/ifconf.out
 [ "`ifconfig | grep idrac`" != "" ] && mail -s "`hostname` - change_nics failed. idrac nic running." mgreen@teleflora.com,kpugh@teleflora.com,tshilling@teleflora.com < /tmp/ifconf.out && exit 1
 
+#Check if already been done.
+[ "`ifconfig | grep tfeth`" != "" ] && echo "change_nics already done....." && exit 1
+
 #eth0
 if [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ]
 then
