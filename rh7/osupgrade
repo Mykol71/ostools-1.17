@@ -98,5 +98,7 @@ updateos install_ostools-1.16
 updateos rti_email_fix
 
 # run leap upgrade
-leapp upgrade --no-rhsm --reboot --resume
+leapp upgrade --no-rhsm 
+# note: the --reboot and --resume options actually made things worse for us.
+reboot
 exit 0
