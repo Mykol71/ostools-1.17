@@ -20,7 +20,7 @@ name=RTIRepo
 enabled=1
 gpgcheck=1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
-baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-rpms/
+baseurl=http://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-rpms/
 EOF
 [ $? -ne 0 ] && echo "Could not create rtirepo file." && exit 3
 
