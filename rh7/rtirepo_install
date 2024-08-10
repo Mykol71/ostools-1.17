@@ -28,4 +28,5 @@ EOF
 yum -y update
 [ $? -ne 0 ] && echo "Could not install updates." && exit 4
 
+#blehbleh
 exit 0
