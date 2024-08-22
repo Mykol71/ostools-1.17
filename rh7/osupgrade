@@ -29,7 +29,7 @@ cp /etc/sysconfig/iptables /usr2/upgrade/.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
 [RH7extras]
 name=RH7extras
-baseurl=https://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
+baseurl=http://tfrhelrepo.centralus.cloudapp.azure.com/rhel-7-server-extras-rpms
 enabled=1
 gpgcheck=0
 EOF
