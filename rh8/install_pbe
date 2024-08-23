@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#DESC Installs Proxmox backup client.
+
+dnf copr enable derenderkeks/proxmox-backup-client
+dnf -y install proxmox-backup-client
+
+proxmox-backup-client
+exit 0
