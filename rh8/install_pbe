@@ -1,9 +1,47 @@
 #!/bin/bash
 
-#DESC Installs Proxmox backup client.
+#DESC Installs RTI Backup solution.
+ 
+#Solution uses Proxmox Enterprise Backups and Relax and Recover to provide for physical or virtual system-wide backups.
+#Restoration can be of a single file, multiple files, or recover and entire system from bare metal.
+#Restoration can also be onto either same hardware, or different hardware.
+#No need for a locally attached usb large drive for data.
+#Only need a usb stick for recovery/migration media.
+#Proxmox handles (out of the box) data deduplication, incremental backups methods, and encryption of backup datasets.
+#Rear handles bare metal recovery.
+#Note: no matter how good a disaster recovery solution is, it does no good without regular testing of the process.
 
+#Install Proxmox backup client.
 dnf -y copr enable derenderkeks/proxmox-backup-client
 dnf -y install proxmox-backup-client
+dnf -y copr disable derenderkeks/proxmox-backup-client
 
-proxmox-backup-client
-exit 0
+#Install Relax and recover install.
+yum -y install rear
+
+#Integrate rear and proxmox backup client.
+#rear-external backup type
+
+#Create proxmox access keys/passphrases for backup server access as well as encrypting backups.
+#passphrases to be serial number of physical server.
+
+#Create and schedule recovery media creation.
+#monthly
+#keep most recent only
+
+#Create and schedule root filesystem backups.
+#nightly
+#keep 7 days
+
+#Create and schedule usr2 filesystem backups.
+#hourly
+#keep 25 hours
+#keep 1 for each day up to 7 days
+
+#Create purge jobs for cleaning up old backups (retension per above).
+
+#Verify jobs.
+
+#Notifications.
+ 
+exit ?
