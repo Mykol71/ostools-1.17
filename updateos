@@ -66,6 +66,7 @@ exit $EXIT
 }
 
 download_script () {
+[ "`curl -s $BACKEND/ | grep updateos`" == "" ] && echo "Backend not reachable. Using local copy." && return 0 
 rm -f /usr/bin/.updateos/$SCRIPT
 /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT
 chmod +x /usr/bin/.updateos/${SCRIPT}
