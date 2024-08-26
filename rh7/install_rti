@@ -12,7 +12,7 @@ cd /tmp
 [ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" >/etc/profile.d/term.sh && chmod +x /etc/profile.d/term.sh
 
 echo "Installing bbj...."
-./update_bbj_21.pl --java --bbj21
+./update_bbj_19.pl --java --bbj19
 
 echo "Adding multiserver.pwd fix....."
 cp -f /tmp/multiserver.pwd /usr2/bbx/config/
