@@ -1,11 +1,10 @@
 #!/usr/bin/perl
 #
-# $Revision$
+# $Revision: 1.1 $
 # Copyright 2022 Teleflora.
 #
 # Update BBj to our accepted Revision
 #
-#DESC Install and/or upgrade BBJ and Java.
 
 use strict;
 use warnings;
@@ -69,6 +68,9 @@ my $java_win_19 = "OpenJDK11U-jre_x64_windows_hotspot_11.0.7_10.zip";
 my $java_win_21 = "OpenJDK11U-jre_x64_windows_hotspot_11.0.16.1_1.zip";
 my $java_win = $java_win_21;
 my $java_win_old = $java_win_19;
+my $windeployline = "";
+my $url = "http://tposlinux.blob.core.windows.net/rtibbjupdate";
+
 #
 my $bbj15_tar = "bbj15update.tar";
 my $bbj15_jar = "BBj1511_09-28-2015_1801.jar";
@@ -108,6 +110,7 @@ my $MSSQL_JAR = "mssql-jdbc-11.2.0.jre11.jar";
 my $MSSQL_JAR_NEEDED = "";
 my $RTITWS_JAR = "rtitws.jar"; 
 my $RTITWS_JAR_NEEDED = ""; 
+my $BBJ21PROGS = ""; # "bbj21specProgs.tgz";
 
 
 # Create a timestamp   
@@ -121,7 +124,7 @@ my $timestamp = POSIX::strftime("%Y%m%d%H%M%S", localtime(time));
 #
 
 my %installflags = (
-        java => -1,
+	java => -1,
 );
 
 GetOptions(
@@ -135,36 +138,42 @@ GetOptions(
 	"bbj21" => \$BBJ21,
 	"bbjdv" => \$BBJDV,
    "skipbackup" => \$SKIPBACKUP,
-        "java!" => \$installflags{'java'},
+	"java!" => \$installflags{'java'},
 );
 
 
 
 # --version
-if($VERSION != 0) {
-	print("$0 " . '$Revision$' . "\n");
+if($VERSION != 0)
+{
+	print("$0 " . '$Revision: 1.1 $' . "\n");
 	exit(0);
 }
 
 # --help
-if($HELP != 0) {
+if($HELP != 0)
+{
 	usage();
 	exit(0);
 }
 
-if($BBJ15 == 0 and $BBJ16 == 0 and $BBJ17 == 0 and $BBJ18 == 0 and $BBJ19 == 0 and $BBJ21 == 0 and $BBJDV == 0) {
-        print("$0 " . "No BBj Version Selected, Exiting \n");
-        exit(0);
+if($BBJ15 == 0 and $BBJ16 == 0 and $BBJ17 == 0 and $BBJ18 == 0 and $BBJ19 == 0 and $BBJ21 == 0 and $BBJDV == 0)
+{
+	print("$0 " . "No BBj Version Selected, Exiting \n");
+	exit(0);
 }
 #
 
 # Which Processor are we using?
 open(PIPE, "uname -i |");
-while(<PIPE>) {
-	if(/i.86/) {
+while(<PIPE>)
+{
+	if(/i.86/)
+	{
 		$ARCH = "x86";
 	}
-	if(/x86_64/) {
+	if(/x86_64/)
+	{
 		$ARCH = "x64";
 	}
 }
@@ -172,21 +181,24 @@ close(PIPE);
 
 # What IP to check blm
 open(PIPE, "hostname -i |");
-while(<PIPE>) {
+while(<PIPE>)
+{
 	$Host_IP = $_;
+	chomp $Host_IP;
 }
 close(PIPE);
 
 # How much RAM for setting -Xmx and -Xms
 open(PIPE, "free -h |");
-while(<PIPE>){
-  if ($_ =~ /^Mem:/)
-  {
-    $MEM = index ($_, 'G');
-    $MEM = substr $_, 6, $MEM-6;
-    $MEM = $MEM + 0;
-    $XMEM = int ($MEM * 1024 / 2);
-  }
+while(<PIPE>)
+{
+	if ($_ =~ /^Mem:/)
+	{
+		$MEM = index ($_, 'G');
+		$MEM = substr $_, 6, $MEM-6;
+		$MEM = $MEM + 0;
+		$XMEM = int ($MEM * 1024 / 2);
+	}
 }
 close(PIPE);
 
@@ -197,150 +209,174 @@ loginfo("System has $MEM GB of memory, Architecture: $ARCH ");
 loginfo("Checking for available disk space");
 
 open(PIPE, "df -Pm /|");
-while(<PIPE>){
-    if ($_ !~ /^Filesystem/)
-    {
-        my @df = split(' ', $_ );
-        $availfs = $df[3];
-    }
+while(<PIPE>)
+{
+	if ($_ !~ /^Filesystem/)
+	{
+		my @df = split(' ', $_ );
+		$availfs = $df[3];
+	}
 }
 close(PIPE);
 loginfo("Need $tmp_MBs_needed and have $availfs ");
 if ( $availfs >= $tmp_MBs_needed )
 {
-   $tmpDir = "/tmp/";
-   loginfo("Ok to load on root partition in $tmpDir ");
-} else {
-   loginfo("Not enough space on root partition, checking /usr2 \n");
-   $availfs = "";
+	$tmpDir = "/tmp/";
+	loginfo("Ok to load on root partition in $tmpDir ");
+}
+else
+{
+	loginfo("Not enough space on root partition, checking /usr2 \n");
+	$availfs = "";
 
-   open(PIPE, "df -Pm /usr2|");
-   while(<PIPE>){
-     if ($_ !~ /^Filesystem/)
-     {
-        my @df = split(' ', $_ );
-        $availfs = $df[3];
-     }
-   }
-   close(PIPE);
+	open(PIPE, "df -Pm /usr2|");
+	while(<PIPE>)
+	{
+		if ($_ !~ /^Filesystem/)
+		{
+			my @df = split(' ', $_ );
+			$availfs = $df[3];
+		}
+	}
+	close(PIPE);
 
-   loginfo("Need $tmp_MBs_needed and have $availfs ");
-   
-   if ( $availfs >= $tmp_MBs_needed )
-   {
-     $tmpDir = "/usr2/tmp/";
-     loginfo("Ok to load on /usr2 partition in $tmpDir ");
-     if ( -d "/usr2/tmp/")
-     {
-       loginfo("$tmpDir exists, continuing ");
-     } else {
-       loginfo("$tmpDir does not exists, creating ");
-       mysystem ("mkdir /usr2/tmp");
-       $created_tmpDir = "true";
-     }
-   } else {
-     loginfo("Not enough space on /usr2 partition, exiting ");
-     exit 22
-   }
+	loginfo("Need $tmp_MBs_needed and have $availfs ");
+
+	if ( $availfs >= $tmp_MBs_needed )
+	{
+		$tmpDir = "/usr2/tmp/";
+		loginfo("Ok to load on /usr2 partition in $tmpDir ");
+		if ( -d "/usr2/tmp/")
+		{
+			loginfo("$tmpDir exists, continuing ");
+		}
+		else
+		{
+			loginfo("$tmpDir does not exists, creating ");
+			mysystem ("mkdir /usr2/tmp");
+			$created_tmpDir = "true";
+		}
+	}
+	else
+	{
+		loginfo("Not enough space on /usr2 partition, exiting ");
+		exit 22
+	}
 }
 
 
 # We must be root to do these things.
-if($EUID == 0) {
+if($EUID == 0)
+{
 
-	if($BBJ15 != 0) {
-                $BBJ = $bbj15_tar;
-                $BBJ_INSTALL_FILE = $bbj15_jar;
+	if($BBJ15 != 0)
+	{
+		$BBJ = $bbj15_tar;
+		$BBJ_INSTALL_FILE = $bbj15_jar;
 
-                $java_rel = $java_rel_latest_15;
-                $java_ver = $java_ver_latest_15;
+		$java_rel = $java_rel_latest_15;
+		$java_ver = $java_ver_latest_15;
 	}
 
-	if($BBJ16 != 0) {
-                $BBJ = $bbj16_tar;
-                $BBJ_INSTALL_FILE = $bbj16_jar;
+	if($BBJ16 != 0)
+	{
+$BBJ = $bbj16_tar;
+$BBJ_INSTALL_FILE = $bbj16_jar;
 
-                $java_rel = $java_rel_latest_16_17;
-                $java_ver = $java_ver_latest_16_17;
+$java_rel = $java_rel_latest_16_17;
+$java_ver = $java_ver_latest_16_17;
 	}
 
-	if($BBJ17 != 0) {
-                $BBJ = $bbj17_tar;
-                $BBJ_INSTALL_FILE = $bbj17_jar;
+	if($BBJ17 != 0)
+	{
+		$BBJ = $bbj17_tar;
+		$BBJ_INSTALL_FILE = $bbj17_jar;
 
-                $java_rel = $java_rel_latest_16_17;
-                $java_ver = $java_ver_latest_16_17;
+		$java_rel = $java_rel_latest_16_17;
+		$java_ver = $java_ver_latest_16_17;
 	}
 
-	if($BBJ18 != 0) {
-                $BBJ = $bbj18_tar;
-                $BBJ_INSTALL_FILE = $bbj18_jar;
+	if($BBJ18 != 0)
+	{
+		$BBJ = $bbj18_tar;
+		$BBJ_INSTALL_FILE = $bbj18_jar;
 
-                $java_rel = $java_rel_latest_18_19;
-                $java_ver = $java_ver_latest_18_19;
+		$java_rel = $java_rel_latest_18_19;
+		$java_ver = $java_ver_latest_18_19;
 	}
 
-	if($BBJ19 != 0) {
-                $BBJ = $bbj19_tar;
-                $BBJ_INSTALL_FILE = $bbj19_jar;
+	if($BBJ19 != 0)
+	{
+		$BBJ = $bbj19_tar;
+		$BBJ_INSTALL_FILE = $bbj19_jar;
 
-                $java_rel = $java_rel_latest_19;
-                $java_ver = $java_ver_latest_19;
+		$java_rel = $java_rel_latest_19;
+		$java_ver = $java_ver_latest_19;
 	}
 
-	if($BBJ21 != 0) {
-                $BBJ = $bbj21_tar;
-                $BBJ_INSTALL_FILE = $bbj21_jar;
+	if($BBJ21 != 0)
+	{
+		$BBJ = $bbj21_tar;
+		$BBJ_INSTALL_FILE = $bbj21_jar;
 
-                $java_rel = $java_rel_latest_21;
-                $java_ver = $java_ver_latest_21;
+		$java_rel = $java_rel_latest_21;
+		$java_ver = $java_ver_latest_21;
 	}
 
-	if($BBJDV != 0) {
-                $BBJ = $bbjdv_tar;
-                $BBJ_INSTALL_FILE = $bbjdv_jar;
+	if($BBJDV != 0)
+	{
+		$BBJ = $bbjdv_tar;
+		$BBJ_INSTALL_FILE = $bbjdv_jar;
 
-                $java_rel = $java_rel_latest_18_19;
-                $java_ver = $java_ver_latest_18_19;
+		$java_rel = $java_rel_latest_18_19;
+		$java_ver = $java_ver_latest_18_19;
 	}
 
 	$BBJRV = substr $BBJ_INSTALL_FILE, 3, 2;
 	$BBJRV .= "." . substr $BBJ_INSTALL_FILE, 5, 2;
 	loginfo("Installing BBj Rev $BBJRV Software Dependencies...");
 
-	loginfo("Starting update_bbj_ver.pl " . '$Revision$' . "\n");
+	loginfo("Starting update_bbj_ver.pl " . '$Revision: 1.1 $' . "\n");
 	# --bbj15, --bbj16, --bbj17, --bbj18, --bbj19, --bbj21, or --bbjdv (daily dev)
 	if($BBJ19 != 0)
-		{
-			$jdir_link="jdk-11.0.7+10";
-			$JDK_X64 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.7_10.tar.gz";
-			$JDK_X86 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.7_10.tar.gz";
-			install_java();
-			install_bbj_packages();
-		}
+	{
+		$jdir_link="jdk-11.0.7+10";
+		$JDK_X64 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.7_10.tar.gz";
+		$JDK_X86 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.7_10.tar.gz";
+		install_java();
+		install_bbj_packages();
+	}
 			
 	if($BBJ21 != 0)
+	{
+		$jdir_link="jdk-11.0.16.1+1";
+		$JDK_X64 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.16.1_1.tar.gz";
+		$JDK_X86 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.16.1_1.tar.gz";
+		install_java();
+		if("$BBJ21PROGS" ne "")
 		{
-			$jdir_link="jdk-11.0.16.1+1";
-			$JDK_X64 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.16.1_1.tar.gz";
-			$JDK_X86 = "OpenJDK11U-jdk_x64_linux_hotspot_11.0.16.1_1.tar.gz";
-			install_java();
-			install_bbj_packages();
+			install_spec_progs();
 		}
+		install_bbj_packages();
+	}
 			
-	if($BBJ15 != 0 or $BBJ16 != 0 or $BBJ17 != 0 or $BBJ18 != 0 or $BBJDV != 0) {
+	if($BBJ15 != 0 or $BBJ16 != 0 or $BBJ17 != 0 or $BBJ18 != 0 or $BBJDV != 0)
+	{
 		$jdir_link = "jdk" . $java_ver;
 
 		$JDK_X64 = "jdk-" . $java_rel . "-linux-x64.tar.gz";
 		$JDK_X86 = "jdk-" . $java_rel . "-linux-i586.tar.gz";
 
-        	# Install Java
-        	if ($installflags{'java'} != 0) {
+		# Install Java
+		if ($installflags{'java'} != 0)
+		{
 
-			if (is_java_already_installed($java_ver)) {
+			if (is_java_already_installed($java_ver))
+			{
 				loginfo("Java $java_ver is installed, skipping Java update");
 			}
-			else {
+			else
+			{
 				loginfo("Removing old Java rpm packages...");
 				mysystem("rm $tmpDir/jre-$java_rel-linux*.rpm");
 				mysystem("rpm -e jre-$java_ver");
@@ -349,11 +385,11 @@ if($EUID == 0) {
 				loginfo("Java $java_ver is NOT installed, beginning Java update");
 				install_java();
 			}
-        	}
-
-		else {
-                	loginfo("--nojava specified. Skipping Java Update.");
-        	}
+		}
+		else
+		{
+			loginfo("--nojava specified. Skipping Java Update.");
+		}
 
 		install_bbj_packages();
 	}
@@ -397,31 +433,40 @@ sub install_bbj_packages
 	my $line = "";
 
 	# Install BBj
-	if(-d "/usr2/basis") {
-		if($SKIPBACKUP == 0) {
+	if(-d "/usr2/basis")
+	{
+		if($SKIPBACKUP == 0)
+		{
 			loginfo("Removing current /usr2/basis-old ");
 			mysystem("rm -rf /usr2/basis-old");
 			loginfo("Copying current /usr2/basis/ to /usr2/basis-old/...");
 			mysystem("cp -pr /usr2/basis /usr2/basis-old");
-			if($returnval != 0) {
+			if($returnval != 0)
+			{
 				logerror("Terminating update_bbj with return code $returnval.");
 				exit($returnval);
 			}
-		} else {
+		}
+		else
+		{
 			loginfo("Skip remove of and backup to /usr2/basis-old ")
 		}
-	} else {
+	}
+	else
+	{
 		loginfo("/usr2/basis/ did not previously exist...");
 	}
 
 
 	
 	loginfo("Installing BBj v" . $BBJRV . "...");
-	if(! -f "$tmpDir/$BBJ.gz" && ! -f "$tmpDir/$BBJ") {
+	if(! -f "$tmpDir/$BBJ.gz" && ! -f "$tmpDir/$BBJ")
+	{
 		loginfo("Retrieving $BBJ.gz to $tmpDir/$BBJ.gz ");
-		mysystem("wget --proxy=off --cache=off --progress=dot:mega -O $tmpDir/$BBJ.gz http://tposlinux.blob.core.windows.net/rtibbjupdate/$BBJ.gz");
-		if(! -f "$tmpDir/$BBJ.gz") {
-			logerror("Could not download file http://tposlinux.blob.core.windows.net/rtibbjupdate/$BBJ.gz");
+		mysystem("wget --proxy=off --cache=off --progress=dot:mega -O $tmpDir/$BBJ.gz $url/$BBJ.gz");
+		if(! -f "$tmpDir/$BBJ.gz")
+		{
+			logerror("Could not download file $url/$BBJ.gz");
 			exit(1);
 		}
 	}
@@ -429,37 +474,44 @@ sub install_bbj_packages
 #Basis license Info
 ####
 	loginfo("Checking for License Manager Local or Remote.....");
-	if (-f "/usr2/basis/basis.lic") {
+	if (-f "/usr2/basis/basis.lic")
+	{
 		loginfo("Checking basis.lic file");
 		open BBJLIC, "</usr2/basis/basis.lic";
-		while (<BBJLIC>) {
-			if ($BLM_Address eq "") {
+		while (<BBJLIC>)
+		{
+			if ($BLM_Address eq "")
+			{
 				loginfo("line being checked: $_ ");
-				if ($_ =~ /^server[ ]{1,}.{1,}/i ) {
+				if ($_ =~ /^server[ ]{1,}.{1,}/i )
+				{
 					loginfo("found server line: $_ ");
 					my @blm_lic = split(' ', $_);
 					$BLM_Address = $blm_lic[1];
-					if ($BLM_Address =~ /localhost/i || $BLM_Address =~ /127.0.0.1/i || $BLM_Address =~ /$Host_IP/i || $BLM_Address =~ /$Host_ID/i ) {
+					if ($BLM_Address =~ /localhost/i || $BLM_Address =~ /127.0.0.1/i || $BLM_Address =~ /$Host_IP/i || $BLM_Address =~ /$Host_ID/i )
+					{
 						$BLM_Address = "";
 					}
 				}	
 			}
 		}
 		close BBJLIC;
-		if ("$BLM_Address" ne "") {
+		if ("$BLM_Address" ne "")
+		{
 			$BLM_Remote = "true";
 			$License_Type = "blm";
 			$BLM_Start_Type = "manual";
-       			loginfo("Remote blm server at $BLM_Address ");
+			loginfo("Remote blm server at $BLM_Address ");
 		}
 	}
 
 	loginfo("Getting AuthNumber for Basis License......");
- 	if (! -f "//usr2/basis/blm/Register.properties")
+	if (! -f "//usr2/basis/blm/Register.properties")
 	{
-                loginfo("No Register.properties file exists...");
-        }
-         else {
+		loginfo("No Register.properties file exists...");
+	}
+	else
+	{
 		$authnumtest = `grep AuthNum\= /usr2/basis/blm/Register.properties 2>/dev/null`;
 		chomp $authnumtest;
 		if ($authnumtest ne "")
@@ -467,11 +519,11 @@ sub install_bbj_packages
 			my @authnum=split(/\=/, $authnumtest);
 			$Auth_Number=$authnum[$#authnum];
 		}
-        	if ( "$Auth_Number" eq "" )
-        	{ 
-           		loginfo("Auth_Number is blank, set DEMOLIC to true ");
-           		$DemoTrueFalse = "true";
-        	}
+		if ( "$Auth_Number" eq "" )
+		{ 
+			loginfo("Auth_Number is blank, set DEMOLIC to true ");
+			$DemoTrueFalse = "true";
+		}
 		loginfo("Auth_Number = $Auth_Number");
 
 		loginfo("Getting Serial Number..... ");	
@@ -755,7 +807,7 @@ EM_ADMINPORT=
 ";
 ##EOF
 		open(BBJINST, "> $tmpDir/bbjinstallsettings.txt");
-        	print BBJINST $bbjinstallsettings;
+		print BBJINST $bbjinstallsettings;
 		close(BBJINST);
 
 
@@ -813,29 +865,35 @@ DATA=/usr2/bbx/bbxd/
 DATEFORMAT=
 AUTO_ANALYZE_TABLES=false";
 open(BBJCFG, "> /usr2/bbx/config/config.ini");
-        print BBJCFG $config_ini;
-        close(BBJCFG);
+	print BBJCFG $config_ini;
+	close(BBJCFG);
 	mysystem("chmod 775 /usr2/bbx/config/config.ini"); 
 	mysystem("chown tfsupport:rtiadmins /usr2/bbx/config/config.ini"); 
 	if( (-f "$tmpDir/$BBJ.gz" || -f "$tmpDir/$BBJ")
-	&&  (-f "$tmpDir/bbjinstallsettings.txt")
-	) {
+	&&  (-f "$tmpDir/bbjinstallsettings.txt"))
+	{
 		loginfo("Stopping RTI Programs.....");
 		mysystem("/sbin/service rti stop");
 		loginfo("Stopping BBj Services.....");
 		mysystem ("$POSDIR/bin/bbjservice.pl --stop");
 		loginfo("Stopping Basis License Manager.....");
 		mysystem ("/sbin/service blm stop");
-		if (-d "/usr2/install_bbj"){
+		if (-d "/usr2/install_bbj")
+		{
 			loginfo("Directory /usr2/install_bbj exists.....");
-		} else {
+		}
+		else
+		{
 			loginfo("Creating /usr2/install_bbj directory.....");
 			mysystem ("mkdir /usr2/install_bbj");
 		}
-		if (-f "$tmpDir/$BBJ"){
+		if (-f "$tmpDir/$BBJ")
+		{
 			loginfo("Moving $BBJ to /usr2/install_bbj directory.....");
 			mysystem ("mv $tmpDir/$BBJ /usr2/install_bbj/");
-		} else {
+		}
+		else
+		{
 			loginfo("Moving $BBJ.gz to /usr2/install_bbj directory.....");
 			mysystem ("mv $tmpDir/$BBJ.gz /usr2/install_bbj/");
 		}
@@ -844,13 +902,15 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 		{
 			loginfo("Gunziping and untar $BBJ......");
 			mysystem("gunzip /usr2/install_bbj/$BBJ.gz");
-			if($returnval != 0) {
+			if($returnval != 0)
+			{
 				logerror("Terminating update_bbj with return code $returnval.");
 				exit($returnval);
 			}
 		}
 		mysystem ("tar xvf /usr2/install_bbj/$BBJ -C /usr2/install_bbj/");
-		if($returnval != 0) {
+		if($returnval != 0)
+		{
 			logerror("Terminating update_bbj with return code $returnval.");
 			exit($returnval);
 		}
@@ -860,7 +920,8 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 		loginfo("Untaring $BBJ.......");
 		loginfo("Installing $BBJ......");
 		mysystem("/usr/java/latest/bin/java -jar /usr2/install_bbj/$BBJ_INSTALL_FILE -p /usr2/install_bbj/bbjinstallsettings.txt");
-		if($returnval != 0) {
+		if($returnval != 0)
+		{
 			logerror("Terminating update_bbj with return code $returnval.");
 			exit($returnval);
 		}
@@ -880,46 +941,54 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 	 loginfo("Copy new librxtxSerial.so to /usr2/basis/lib/ .....");
 		mysystem("cp -pr /usr2/install_bbj/librxtxSerial.so /usr2/basis/lib/");
 	# If BBjBootstrap_RTI_latest.jar included, rename and replace the one in  /usr2/basis/lib 
-	if ( -f "/usr2/install_bbj/BBjBootstrap_RTI_latest.jar" ) {
+	if ( -f "/usr2/install_bbj/BBjBootstrap_RTI_latest.jar" )
+	{
 	        loginfo("Replacing BBjBootstrap ...");
-                mysystem("cp -pr /usr2/basis/lib/BBjBootstrap.jar /usr2/basis/lib/BBjBootstrap_from_install.jar");
-                mysystem("cp /usr2/install_bbj/BBjBootstrap_RTI_latest.jar /usr2/basis/lib/BBjBootstrap.jar"); 
+		mysystem("cp -pr /usr2/basis/lib/BBjBootstrap.jar /usr2/basis/lib/BBjBootstrap_from_install.jar");
+		mysystem("cp /usr2/install_bbj/BBjBootstrap_RTI_latest.jar /usr2/basis/lib/BBjBootstrap.jar"); 
 	}
 	# if not already present, get latest (mssql-jdbc-11.2.0.jre11.jar) from cloud storage (RTI_MONITOR needs it to write to outside database
-	if ( -f "/usr2/bbx/jars/$MSSQL_JAR" ) {
-          loginfo("The $MSSQL_JAR file already in /usr2/bbx/jars, skipping");
-          } else {
-	  loginfo("Downloading $MSSQL_JAR from cloud storage...");
-	  mysystem("wget --proxy=off --cache=off --progress=dot:mega -O /usr2/install_bbj/$MSSQL_JAR http://tposlinux.blob.core.windows.net/rtibbjupdate/$MSSQL_JAR");	
-	  loginfo("Done downloading $MSSQL_JAR ...");
-          mysystem("cp /usr2/install_bbj/$MSSQL_JAR /usr2/bbx/jars/$MSSQL_JAR");
-          loginfo("Copied $MSSQL_JAR /usr2/bbx/jars/ ");
-        }
+	if ( -f "/usr2/bbx/jars/$MSSQL_JAR" )
+	{
+		loginfo("The $MSSQL_JAR file already in /usr2/bbx/jars, skipping");
+	}
+	else
+	{
+	  	loginfo("Downloading $MSSQL_JAR from cloud storage...");
+	  	mysystem("wget --proxy=off --cache=off --progress=dot:mega -O /usr2/install_bbj/$MSSQL_JAR $url/$MSSQL_JAR");	
+	  	loginfo("Done downloading $MSSQL_JAR ...");
+		mysystem("cp /usr2/install_bbj/$MSSQL_JAR /usr2/bbx/jars/$MSSQL_JAR");
+		loginfo("Copied $MSSQL_JAR /usr2/bbx/jars/ ");
+	}
 
-        if ( $java_win ne "" ) {
-          if ( -f "/usr2/bbx/config/$java_win" ) {
-            loginfo("Windows JRE present, skipping download");
-          } else {
-	    loginfo("Downloading Windows JRE needed for App Deployment....");
-	    mysystem("wget --proxy=off --cache=off --progress=dot:mega -O /usr2/bbx/config/$java_win http://tposlinux.blob.core.windows.net/rtibbjupdate/$java_win");
-          }
-        }
+	if ( $java_win ne "" )
+	{
+		if ( -f "/usr2/bbx/config/$java_win" )
+		{
+			loginfo("Windows JRE present, skipping download");
+		}
+		else
+		{
+	    		loginfo("Downloading Windows JRE needed for App Deployment....");
+	    		mysystem("wget --proxy=off --cache=off --progress=dot:mega -O /usr2/bbx/config/$java_win $url/$java_win");
+		}
+	}
 
 	# If rtitws.jar included, rename and replace the one in /usr2/bbx/jars 
-	if ( -f "/usr2/install_bbj/rtitws.jar" ) {
+	if ( -f "/usr2/install_bbj/rtitws.jar" )
+	{
 	        loginfo("Copying rtitws.jar to backups and replacing ...");
-                mysystem("cp -pr /usr2/bbx/jars/rtitws.jar /usr2/bbx/backups/rtitws.jar." . $timestamp);
-                mysystem("cp /usr2/install_bbj/rtitws.jar /usr2/bbx/jars/rtitws.jar"); 
+		mysystem("cp -pr /usr2/bbx/jars/rtitws.jar /usr2/bbx/backups/rtitws.jar." . $timestamp);
+		mysystem("cp /usr2/install_bbj/rtitws.jar /usr2/bbx/jars/rtitws.jar"); 
 	}
 	#
 	# loginfo("Copy new jnlp.pl to /var/www/cgi-bin/ .....");
 #		mysystem("cp -pr /usr2/install_bbj/bin/jnlp.pl /var/www/cgi-bin/");
 #		mysystem("chmod 775 /var/www/cgi-bin/jnlp.pl");
- 
 
 	open BBJPROP, "</usr2/basis/cfg/BBj.properties";
 	open BBJPROPOUT, ">/usr2/basis/cfg/BBj.properties.tmp"; 	
-	while (<BBJPROP>) 
+	while (<BBJPROP>)
 	{
 		if ($_ =~ /com.basis.appdeployment.jre.defaultWindows/ && $java_win ne "" )
 		{
@@ -980,7 +1049,7 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 			}
 			if ($_ !~ m/\-Djxbrowser.ipc.external\\=true/)
 			{
-				$_ =~ s/$/ \-Djxbrowser.ipc.external\\=tru /;
+				$_ =~ s/$/ \-Djxbrowser.ipc.external\\=true/;
 			}
 			if ($_ !~ m/\-Djxbrowser.browser.type\\=LIGHTWEIGHT/)
 			{
@@ -994,10 +1063,10 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 			#{
 				#$_ =~ s/$/ \-XX\:IgnoreUnrecognizedVMOptions/;
 			#}
-			if ($_ !~ m/\-XX\\:\+UseStringDeduplication/)
-			{
-				$_ =~ s/$/ \-XX\\:\+UseStringDeduplication/;
-			}
+			#if ($_ !~ m/\-XX\\:\+UseStringDeduplication/)
+			#{
+			#	$_ =~ s/$/ \-XX\\:\+UseStringDeduplication/;
+			#}
 			if ($_ !~ m/\-Xlog\\:gc\*\:file\=\/usr2\/basis\/log\/BBjServices_gc.log\\:tags,uptime,level\\:filecount\\=10,filesize\\=25m/)
 			{
 				$_ =~ s/$/ \-Xlog\\:gc\*\:file\=\/usr2\/basis\/log\/BBjServices_gc.log\\:tags,uptime,level\\:filecount\\=10,filesize\\=25m/;
@@ -1021,6 +1090,11 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 			{
 				$_ =~ s/usr\/java\/..*\/bin\/java/usr\/java\/latest\/bin\/java/g;
 			}
+		}
+
+		if ($_ =~ m/^com.basis.jetty.host\=[A-Za-z]/)
+		{
+			$_ =~ s/com.basis.jetty.host\=..*/com.basis.jetty.host\=${Host_IP}/;
 		}
 
 		$_ =~ s/com.basis.server.admin.1.useSSL\=false/com.basis.server.admin.1.useSSL\=true/g;
@@ -1082,22 +1156,22 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 		{
 			$basis_ide = "true";
 		}
-	}
-	if ($foundulimit ne "true")
-	{
-		print BBJPROPOUT "bbjservices.ulimit.filedescriptors=16384\n";
-	}
-	if ($console_rmi ne "true")
-	{
-		print BBJPROPOUT "com.basis.bbj.console.rmi=false\n";
-	}
-	if ($basis_ide ne "true")
-	{
-		print BBJPROPOUT "basis.java.args.BasisIDE\\=\-XX\\:CompileCommandFile\\=/usr2/basis/cfg/.hotspot_compiler \-XX\\:MaxPermSize\\=160m\n";
-	}
-	if ($windeployline ne "true")
-	{
-		print BBJPROPOUT "com.basis.appdeployment.jre.defaultWindows\=$java_win\n";
+		if ($foundulimit ne "true")
+		{
+			print BBJPROPOUT "bbjservices.ulimit.filedescriptors=16384\n";
+		}
+		if ($console_rmi ne "true")
+		{
+			print BBJPROPOUT "com.basis.bbj.console.rmi=false\n";
+		}
+		if ($basis_ide ne "true")
+		{
+			print BBJPROPOUT "basis.java.args.BasisIDE\\=\-XX\\:CompileCommandFile\\=/usr2/basis/cfg/.hotspot_compiler \-XX\\:MaxPermSize\\=160m\n";
+		}
+		if ($windeployline ne "true")
+		{
+			print BBJPROPOUT "com.basis.appdeployment.jre.defaultWindows\=$java_win\n";
+		}
 	}
 		
 	close BBJPROP;
@@ -1109,51 +1183,53 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 		
 	loginfo("Checking GC Logrotate setting in bbjservices ...");
 	$returnval=mysystem("grep doRotateGCLog\=0 /usr2/basis/bin/bbjservices >/dev/null 2>/dev/null");
-       	if($returnval != 0)
+	if($returnval != 0)
 	{
-       		open BBJPROP, "</usr2/basis/bin/bbjservices";
-       		open BBJPROPOUT, ">/usr2/basis/bin/bbjservices.tmp";
-       		while (<BBJPROP>)
-       		{
-             		print BBJPROPOUT $_;
-       			if ($_ =~ / Start Custom Definitions \(DO NOT REMOVE THIS LINE\) /)
+		open BBJPROP, "</usr2/basis/bin/bbjservices";
+		open BBJPROPOUT, ">/usr2/basis/bin/bbjservices.tmp";
+		while (<BBJPROP>)
+		{
+			print BBJPROPOUT $_;
+			if ($_ =~ / Start Custom Definitions \(DO NOT REMOVE THIS LINE\) /)
 			{
 				print BBJPROPOUT "doRotateGCLog=0\n";
-					}
 			}
-			close BBJPROP;
-			close BBJPROPOUT;
-		
-			loginfo("Disabled doRotateGCLog for bbj, java now does it ");
-			mysystem("mv /usr2/basis/bin/bbjservices /usr2/basis/bin/bbjservices.bak");
-			mysystem("mv /usr2/basis/bin/bbjservices.tmp /usr2/basis/bin/bbjservices");
-			mysystem("chmod 644 /usr2/basis/bin/bbjservices");
-
 		}
-	}
+		close BBJPROP;
+		close BBJPROPOUT;
+	
+		loginfo("Disabled doRotateGCLog for bbj, java now does it ");
+		mysystem("mv /usr2/basis/bin/bbjservices /usr2/basis/bin/bbjservices.bak");
+		mysystem("mv /usr2/basis/bin/bbjservices.tmp /usr2/basis/bin/bbjservices");
+		mysystem("chmod 644 /usr2/basis/bin/bbjservices");
 
+	}
 
 # Adding /usr2/bbx/bin to the /usr2/basis/cfg/.envsetup file 
 	$returnval=mysystem ("grep \"/usr2/bbx/bin\"/ /usr2/basis/bin/.envsetup > /dev/null 2> /dev/null");
-	if($returnval != 0) {
-           loginfo("Add /usr2/bbx/bin to the Basis env setup PATH.");
-           mysystem("cp -p /usr2/basis/bin/.envsetup /usr2/basis/bin/.envsetup.bak");
-           open ENVOLD, "< /usr2/basis/bin/.envsetup.bak";
-           open ENVNEW, "> /usr2/basis/bin/.envsetup";
-           while(<ENVOLD>) {
-                my $line = $_;
-                if ($line =~ m/PATH=/) {
-                     print ENVNEW $line;
-                     $line = "PATH=\"\$PATH:\${bbjHome}/bin:\${bbjHome}/lib:/usr2/bbx/bin/\"\n";
-                }
-                print ENVNEW $line;
-           }
-           close ENVNEW;
-           close ENVOLD;
-           mysystem("chmod 775 /usr2/basis/bin/.envsetup");
-           mysystem("rm -f /usr2/basis/bin/.envsetup.bak");
-     	}
-	if ( "$BLM_Remote" eq "true"){
+	if($returnval != 0)
+	{
+		loginfo("Add /usr2/bbx/bin to the Basis env setup PATH.");
+		mysystem("cp -p /usr2/basis/bin/.envsetup /usr2/basis/bin/.envsetup.bak");
+		open ENVOLD, "< /usr2/basis/bin/.envsetup.bak";
+		open ENVNEW, "> /usr2/basis/bin/.envsetup";
+		while(<ENVOLD>)
+		{
+			my $line = $_;
+			if ($line =~ m/PATH=/)
+			{
+				print ENVNEW $line;
+				$line = "PATH=\"\$PATH:\${bbjHome}/bin:\${bbjHome}/lib:/usr2/bbx/bin/\"\n";
+			}
+		print ENVNEW $line;
+		}
+		close ENVNEW;
+		close ENVOLD;
+		mysystem("chmod 775 /usr2/basis/bin/.envsetup");
+		mysystem("rm -f /usr2/basis/bin/.envsetup.bak");
+	}
+	if ( "$BLM_Remote" eq "true")
+	{
 		loginfo("Restoring basis.lic for remote license...");
 		mysystem("cp -p /usr2/basis/basis.lic /usr2/basis/basis_lic_install");
 		mysystem("cp -p /usr2/basis-old/basis.lic /usr2/basis/basis.lic");
@@ -1190,25 +1266,29 @@ open(BBJCFG, "> /usr2/bbx/config/config.ini");
 
 sub is_java_already_installed
 {
-    my ($java_chk) = @_;
+	my ($java_chk) = @_;
 
-    my $java_root = '/usr/java';
-    my $java_jre_dir = "$java_root/jre" . $java_chk;
-    my $java_jdk_dir = "$java_root/jdk" . $java_chk;
+	my $java_root = '/usr/java';
+	my $java_jre_dir = "$java_root/jre" . $java_chk;
+	my $java_jdk_dir = "$java_root/jdk" . $java_chk;
 
-    if (-d $java_root) {
-	if (-d $java_jre_dir || -d $java_jdk_dir) {
-	    my $link = readlink "$java_root/latest";
-	    if (index($link, $java_root) != 0) {
-		$link = $java_root . "/" . $link;
-	    }
-	    if ($link eq $java_jre_dir || $link eq $java_jdk_dir) {
-		return(1);
-	    }
+	if (-d $java_root)
+	{
+		if (-d $java_jre_dir || -d $java_jdk_dir)
+		{
+	    		my $link = readlink "$java_root/latest";
+	    		if (index($link, $java_root) != 0)
+			{
+				$link = $java_root . "/" . $link;
+	    		}
+	    		if ($link eq $java_jre_dir || $link eq $java_jdk_dir)
+			{
+				return(1);
+	    		}
+		}
 	}
-    }
 
-    return(0);
+	return(0);
 }
 
 
@@ -1222,16 +1302,17 @@ sub get_and_load_java
 {
 	my ($java_file) = @_;
 
-	my $url = "http://tposlinux.blob.core.windows.net/rtibbjupdate";
-	my $java_no_gz_test = $java_file ;
-       	 	chomp $java_no_gz_test;
-        	my @java_no_gz=split('.gz', $java_no_gz_test);
-        	my $java_no_gz=$java_no_gz[$#java_no_gz];
+	my $java_no_gz_test = $java_file;
+	chomp $java_no_gz_test;
+	my @java_no_gz=split('.gz', $java_no_gz_test);
+	my $java_no_gz=$java_no_gz[$#java_no_gz];
 
-	unless (-f "$tmpDir/$java_file" || -f "$tmpDir/$java_no_gz") {
+	unless (-f "$tmpDir/$java_file" || -f "$tmpDir/$java_no_gz")
+	{
 		mysystem("wget --proxy=off --cache=off --progress=dot:mega -O $tmpDir/$java_file $url/$java_file");
 	}
-	unless (-f "$tmpDir/$java_file" || -f "$tmpDir/$java_no_gz") {
+	unless (-f "$tmpDir/$java_file" || -f "$tmpDir/$java_no_gz")
+	{
 		logerror("Could not download file $url/$java_file");
 		exit(1);
 	}
@@ -1242,23 +1323,26 @@ sub get_and_load_java
 		mysystem("chmod a+rx $tmpDir/$java_file");
 		##mysystem("mv $tmpDir/$java_file /usr/java/");
 		mysystem("cd /usr/java/ && gunzip $tmpDir/$java_file");
-                if($returnval != 0) {
-                    logerror("Terminating update_bbj with return code $returnval.");
-                    exit($returnval);
-                }
+		if($returnval != 0)
+		{
+			logerror("Terminating update_bbj with return code $returnval.");
+			exit($returnval);
+		}
 
 	} 
 	mysystem("cd /usr/java/ && tar xvf $tmpDir/$java_no_gz");
-        if($returnval != 0) {
-            logerror("Terminating update_bbj with return code $returnval.");
-            exit($returnval);
-        }
+	if($returnval != 0)
+	{
+		logerror("Terminating update_bbj with return code $returnval.");
+		exit($returnval);
+	}
 
-        mysystem("rm -rf $tmpDir/$java_no_gz");
+	mysystem("rm -rf $tmpDir/$java_no_gz");
 	mysystem("cd /usr/java/ && rm -r latest");
 	mysystem("cd /usr/java/ && ln -s " . $jdir_link . " latest");
-        #mysystem("if [ ! -h /usr/bin/java ]; then ln -s /usr/java/latest/bin/java /usr/bin/java; fi");
-	if ($returnval != 0) {
+	#mysystem("if [ ! -h /usr/bin/java ]; then ln -s /usr/java/latest/bin/java /usr/bin/java; fi");
+	if ($returnval != 0)
+	{
 		logerror("Java install returned non-zero exitstatus: $returnval.");
 		exit($returnval);
 	}
@@ -1271,26 +1355,30 @@ sub get_and_load_java
 	if (-d "/usr2/tmp/" && "$tmpDir" eq "/usr2/tmp/")
 	{
 		open(PIPE, "df -Pm /usr/java|");
-		while(<PIPE>){
-    			if ($_ !~ /^Filesystem/)
-    			{
-        			my @df = split(' ', $_ );
-        			$availfs = $df[3];
-    			}
+		while(<PIPE>)
+		{
+			if ($_ !~ /^Filesystem/)
+			{
+				my @df = split(' ', $_ );
+				$availfs = $df[3];
+			}
 		}
 		close(PIPE);
 
 		open(PIPE,"du -m $tmpDir/$java_no_gz|");
-		while(<PIPE>){
-        			my @df = split(' ', $_ );
-        			$du_java = $df[0];
+		while(<PIPE>)
+		{
+				my @df = split(' ', $_ );
+				$du_java = $df[0];
 		}
 
 		if ( $availfs >= $du_java )
 		{
 			mysystem("mv $tmpDir/$java_no_gz /usr/java");
 			loginfo("Moved $java_no_gz to /usr/java ");
-		} else {
+		}
+		else
+		{
 			loginfo("Not enough space in /usr/java for $java_no_gz, leaving in $tmpDir\n");
 			$created_tmpDir = "false";
 		}
@@ -1302,15 +1390,49 @@ sub install_java
 {
 	loginfo("Installing Java JDK...");
 
-	if("$ARCH" eq "x86") {
+	if("$ARCH" eq "x86")
+	{
 	    get_and_load_java($JDK_X86);
 	}
-
-	else {
+	else
+	{
 	    get_and_load_java($JDK_X64);
 	}
 }
 
+sub install_spec_progs
+{ 
+	mysystem("wget --proxy=off --cache=off --progress=dot:mega -O $tmpDir/$BBJ21PROGS $url/$BBJ21PROGS");
+
+	my $file = "";
+	my $filename = "";
+	my @filenm = ();
+
+	if (-f "$tmpDir/$BBJ21PROGS")
+	{
+		open(PIPE, "tar -tzf $tmpDir/$BBJ21PROGS |");
+		while(<PIPE>)
+		{
+			$file = $_;
+			chomp $file;
+			@filenm = split('\/', $file);
+			$filename = $filenm[1];
+			if ( -f "$POSDIR/$file" )
+			{
+				loginfo("Copying $filename to backups");
+				mysystem("cp -pr $POSDIR/$file $POSDIR/backups/$filename" . "." . $timestamp);
+			}
+			loginfo("Placing $file ");
+			mysystem("tar -C $POSDIR -xzf $tmpDir/$BBJ21PROGS $file");
+			mysystem("chown tfsupport:rtiadmins $POSDIR/$file 2>/dev/null");
+			mysystem("chmod 555 $POSDIR/$file 2>/dev/null");
+		}
+		
+		mysystem("rm -rf $tmpDir/$BBJ21PROGS");
+	}
+	loginfo("Done with special programs install ");
+
+}
 
 #
 #
@@ -1349,13 +1471,13 @@ sub logerror
 #
 sub mysystem
 {
-        my $command = $_[0];
+	my $command = $_[0];
 	my $LOG_FILE = "$POSDIR/log/RTI-Patches.log";
 
-        system($command . ">> $LOG_FILE 2>> $LOG_FILE");
-        $returnval = WEXITSTATUS($?);
-        loginfo($command . " Returned $returnval");
+	system($command . ">> $LOG_FILE 2>> $LOG_FILE");
+	$returnval = WEXITSTATUS($?);
+	loginfo($command . " Returned $returnval");
 
-        return ($returnval)
+	return ($returnval)
 }
 
