@@ -32,8 +32,8 @@ ERROR() {
 # -- reverse the order
 # -- if the address does not match these criteria the variable 'reverse will be empty'
 
-#reverse=$(echo $1 |
-reverse=$(echo 167.224.81.15 |
+reverse=$(echo $1 |
+#reverse=$(echo 167.224.81.15 |
   sed -ne "s~^\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)$~\4.\3.\2.\1~p")
 
 if [ "x${reverse}" = "x" ] ; then
@@ -55,9 +55,11 @@ fi
 # This evaluates to true, so the script will call the ERROR function and quit
 
 # -- do a reverse ( address -> name) DNS lookup
-REVERSE_DNS=$(dig +short -x 167.224.81.15)
+#REVERSE_DNS=$(dig +short -x 167.224.81.15)
+REVERSE_DNS=$(dig +short -x $1)
 
-echo IP 167.224.81.15 NAME ${REVERSE_DNS:----}
+#echo IP 167.224.81.15 NAME ${REVERSE_DNS:----}
+echo IP $1 NAME ${REVERSE_DNS:----}
 
 # -- cycle through all the blacklists
 for BL in ${BLISTS} ; do

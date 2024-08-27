@@ -5,6 +5,7 @@
 #
 # Update BBj to our accepted Revision
 #
+##DESC Installs/Upgrades BBj and java.
 
 use strict;
 use warnings;
