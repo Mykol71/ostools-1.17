@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#DESC create access to idrac console.
+
+#Install and configure the idrac software
+cd /tmp
+rm -rf ./*iDRACTools*
+wget http://rhel8repo.centralus.cloudapp.azure.com/support/DellEMC-iDRACTools-Web-LX-10.1.0.0-4566_A00.tar.gz
+tar -xvf DellEMC-iDRACTools-Web-LX-10.1.0.0-4566_A00.tar.gz
+cd /tmp/iDRACTools/racadm
+./install_racadm.sh
+racadm getsysinfo
