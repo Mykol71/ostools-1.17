@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#DESC Reports information about the server.
+
+echo "-----"
+echo "Hostname:        `hostnamectl status`"
+echo
+echo "Public IP:       `curl -s ifconfig.me && echo`"
+
+echo "-----"
+
+exit 0
