@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#DESC create access to idrac console.
+
+#Install and configure the idrac software
+cd /tmp
+wget http://rhel8repo.centralus.cloudapp.azure.com/support/DellEMC-iDRACTools-Web-LX-10.1.0.0-4566_A00.tar.gz
+tar -xvf DellEMC-iDRACTools-Web-LX-10.1.0.0-4566_A00.tar.gz
+./tmp/iDRACTools/racadm/install_racadm.sh
+racadm getsysinfo
+racadm set iDRAC.NIC.Selection LOM1
+
+#Enable port forwarding and routing for nic.
+sysctl net.ipv4.conf.tfeth0.forwarding=1
+sysctl net.ipv4.conf.tfeth0.route_localnet=1
+
+#Create iptables rules to forward requests to idrac ip.
+iptables -t nat -A PREROUTING -p tcp -i tfeth0 --dport 80 -j DNAT --to-destination 192.168.0.20:80
+iptables -A POSTROUTING -t nat -p tcp -d 192.168.1.21 --dport 80 -j MASQUERADE
+iptables -A FORWARD -p tcp -d 192.168.0.20 --dport 80 -s 192.168.1.21 --sport 80 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
