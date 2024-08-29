@@ -17,6 +17,6 @@ sysctl net.ipv4.conf.tfeth0.route_localnet=1
 
 #Create iptables rules to forward requests to idrac ip.
 iptables -t nat -A PREROUTING -p tcp -i tfeth0 --dport 80 -j DNAT --to-destination 192.168.1.20:80
-iptables -A POSTROUTING -t nat -p tcp -d 192.168.1.21 --dport 80 -j MASQUERADE
-iptables -A FORWARD -p tcp -d 192.168.1.20 --dport 80 -s 192.168.1.21 --sport 80 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+iptables -A POSTROUTING -t nat -p tcp -d 192.168.1.20 --dport 80 -j MASQUERADE
+iptables -A FORWARD -p tcp -d 192.168.1.20 --dport 80 -s any --sport 80 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
