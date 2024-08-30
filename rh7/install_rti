@@ -6,13 +6,13 @@ cd /tmp
 [ ! -f /tmp/RTI-16.3.8-Linux.iso ] && wget -q http://rhel8repo.centralus.cloudapp.azure.com/support/RTI-16.3.8-Linux.iso.gz
 [ ! -f /tmp/multiserver.pwd ] && wget -q http://rtihardware.homelinux.com/t1800/multiserver.pwd
 #[ ! -f /tmp/librxtxSerial.so ] && wget -q http://rtihardware.homelinux.com/ostools/librxtxSerial.so
-[ ! -f /tmp/update_bbj_21.pl ] && wget -q http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh8/update_bbj_21.pl && chmod +x /tmp/update_bbj_21.pl
+[ ! -f /tmp/update_bbj_21.pl ] && wget -q http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/rh8/update_bbj_19.pl && chmod +x /tmp/update_bbj_21.pl
 [ ! -f /tmp/tfsupport-authorized_keys ] && wget -q http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
 [ ! -f /tmp/twofactor-20090723.tar ] && wget -q http://rtihardware.homelinux.com/t1800/twofator-20090723.tar
 [ ! -f /etc/profile.d/term.sh ] && echo "unicode_stop" >/etc/profile.d/term.sh && chmod +x /etc/profile.d/term.sh
 
 echo "Installing bbj...."
-./update_bbj_21.pl --java --bbj21
+./update_bbj_19.pl --java --bbj19
 
 echo "Adding multiserver.pwd fix....."
 cp -f /tmp/multiserver.pwd /usr2/bbx/config/
