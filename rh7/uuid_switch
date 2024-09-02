@@ -5,6 +5,7 @@
 #HELP For every device that has a block id per $blkid, /etc/fstab is checked, and if the device is listed, replaces the drive with the uuid identifier.
 
 cd /tmp
+[ ! -d /usr2/upgrade ] && mkdir /usr2/upgrade
 cp /etc/fstab /usr2/upgrade/fstab.orig
 blkid>blkidfile
 
