@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION="1.17.6"
+VERSION="1.17.8"
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
-CMDLINEVARS="`echo $@ | cut -d" " -f2-`"
+[ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
 
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
@@ -39,7 +39,8 @@ exit 1
 }
 
 run_subgroup() {
-for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub`
+for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$SUBGROUP/ | grep -v $SUBGROUP | sed 's/<a\ href=/~/g'  | grep 
+-v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub`
   do
   echo "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..." | tee -a /tmp/updateos.log
   [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
@@ -58,7 +59,6 @@ SUBGROUP=""
 echo "----> `date` -  Running $SCRIPT ..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
   [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
-[ "`echo $2 | grep -i help`" != "" ] && script_help
 /usr/bin/.updateos/${SCRIPT} $CMDLINEVARS 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
@@ -68,13 +68,9 @@ exit $EXIT
 }
 
 script_help() {
-for line in `grep ^#HELP $SCRIPT`
-  do
-  echo "$SCRIPT Help     -"
-  echo "------------------" 
-  echo "`echo $line | cut -d" " -f2-`" 
-  done
-exit 0
+
+    echo "`cat /usr/bin/.updateos/$SCRIPT | grep ^#HELP /usr/bin/.updateos/$SCRIPT | sed -e 's/^#HELP\ //g'`"
+    exit 0
 }
 
 download_script () {
@@ -89,7 +85,7 @@ chmod +x /usr/bin/.updateos/${SCRIPT}
 for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT | grep -v .md5 | grep -v nopub`
   do
   [ "`echo $file | grep \/`" != "" ] && run_subgroup
+  [ "`echo $CMDLINEVARS | grep help`" != "" ] && script_help
   [ "`echo $file | grep -v \/`" != "" ] && run_script
   done
 echo "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
-exit 1
