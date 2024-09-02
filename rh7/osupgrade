@@ -77,6 +77,9 @@ sed -i '/pam_pkcs11/d' /etc/pam.d/*
 #remove sendmail reference in hosts.allow.
 sed -i '/sendmail/d' /etc/hosts.allow
 
+#switch to uuid ids in /etc/fstab
+updateos uuid_switch
+
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
 [ -f /etc/hosts.allow ] && mv -f /etc/hosts.allow /tmp
