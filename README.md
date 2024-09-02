@@ -139,6 +139,7 @@ _Contrib Info_
 - if a new script is added, it is automatically available to all installations of ostools-1.17.
 - if a change is checked in is related to a PCI/PA-DSS rule, note the PA-DSS rule in the commit info.
 - if a change needs to be made, create a ticket in azure devops, and explain the details including the related pci rule etc.
+- "*help*" as 2nd cmdline var displays all the lines that begin with #HELP in the script itself. 
 
 _Repos_
 

@@ -85,7 +85,7 @@ chmod +x /usr/bin/.updateos/${SCRIPT}
 for file in `/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep $SCRIPT | grep -v .md5 | grep -v nopub`
   do
   [ "`echo $file | grep \/`" != "" ] && run_subgroup
-  [ "`echo $CMDLINEVARS | grep help`" != "" ] && script_help
+  [ "`echo $CMDLINEVARS | grep -i help`" != "" ] && script_help
   [ "`echo $file | grep -v \/`" != "" ] && run_script
   done
 echo "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
