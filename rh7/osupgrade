@@ -80,6 +80,9 @@ sed -i '/sendmail/d' /etc/hosts.allow
 #switch to uuid ids in /etc/fstab
 updateos uuid_switch
 
+#remove nodejs from nodesource repo. (conflicts with rh8 packages.)
+yum -y remove nodejs nodesource-release
+
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
 [ -f /etc/hosts.allow ] && mv -f /etc/hosts.allow /tmp
