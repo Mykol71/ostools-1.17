@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC create access to idrac console.
+#DESC Install Dell's racadm software.
 
 #Install and configure the idrac software
 cd /tmp
