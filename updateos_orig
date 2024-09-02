@@ -2,7 +2,7 @@
 
 VERSION="1.17.6"
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
-CMDLINEVARS="`echo $@ | cut -d" " -f2-`"
+CMDLINEVARS="$2 $3 $4 $5"
 
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
@@ -58,23 +58,12 @@ SUBGROUP=""
 echo "----> `date` -  Running $SCRIPT ..." | tee -a /tmp/updateos.log
 [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
   [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && download_script
-[ "`echo $2 | grep -i help`" != "" ] && script_help
 /usr/bin/.updateos/${SCRIPT} $CMDLINEVARS 2>&1 | tee -a /tmp/updateos.log
 EXIT="${PIPESTATUS[0]}"
 [ "$EXIT" != "0" ] && echo "Failed." | tee -a /tmp/updateos.log && echo "" && exit $EXIT
 echo "----> `date` - Success." | tee -a /tmp/updateos.log
 echo "" | tee -a /tmp/updateos.log
 exit $EXIT
-}
-
-script_help() {
-for line in `grep ^#HELP $SCRIPT`
-  do
-  echo "$SCRIPT Help     -"
-  echo "------------------" 
-  echo "`echo $line | cut -d" " -f2-`" 
-  done
-exit 0
 }
 
 download_script () {

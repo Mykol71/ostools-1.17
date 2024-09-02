@@ -2,6 +2,10 @@
 # -- $Id: blcheck.xml,v 1.8 2007/06/17 23:38:00 j65nko Exp $ --
 
 #DESC Check common blacklists for public IP.
+#HELP Takes public IP command line arg.
+#HELP If none, uses current public IP.
+#HELP Example: \$sudo updateos blcheck 42.43.44.45 
+
 # Check if an IP address is listed on one of the following blacklists
 # The format is chosen to make it easy to add or delete
 # The shell will strip multiple whitespace
