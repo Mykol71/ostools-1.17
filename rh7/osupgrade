@@ -83,6 +83,10 @@ updateos uuid_switch
 #remove nodejs from nodesource repo. (conflicts with rh8 packages.)
 yum -y remove nodejs nodesource-release
 
+#multipath fix
+yum -y install device-mapper-multipath
+/usr/sbin/mpathconf --enable
+
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
 [ -f /etc/hosts.allow ] && mv -f /etc/hosts.allow /tmp
