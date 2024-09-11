@@ -18,6 +18,13 @@ mkdir /usr2/upgrade
 hostname > /usr2/upgrade/hostname
 cp /etc/sysconfig/iptables /usr2/upgrade/.
 
+# clear out repos and install current rh7 OS repos
+rm -f /etc/yum/repos.d/*
+updateos rtirepo_install
+
+# save off ups conf file if there.
+[ -f /etc/apcupsd/apcupsd.conf ] && cp -f /etc/apcupsd/apcupsd.conf /usr2/upgrade/apcupsd.conf
+
 # add rh7 extras repo.
 cat > /etc/yum.repos.d/tfrhel7extras.repo << EOF
 [RH7extras]
@@ -105,6 +112,5 @@ updateos rti_email_fix
 
 # run leap upgrade
 leapp upgrade --no-rhsm 
-# note: the --reboot and --resume options actually made things worse for us.
 reboot
 exit 0
