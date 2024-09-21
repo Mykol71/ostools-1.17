@@ -6,7 +6,7 @@
 [ ! -d /usr2/tsr ] && mkdir /usr2/tsr
 [ -f /etc/cron.d/tsr ] && echo "Already installed." && exit 0
 echo "0 19 * * * root (cd /opt/dell/srvadmin/sbin && ./racadm techsupreport collect -t SysInfo,TTYLog)" > /etc/cron.d/tsr
-echo "15 19 * * * root (rm -rf /usr2/tsr/* && cd /opt/dell/srvadmin/sbin && ./racadm techsupreport export -f /usr2/tsr/tsr.zip) && cd /usr2/tsr && unzip *.zip && unzip *.pl.zip" >> /etc/cron.d/tsr
+echo "15 19 * * * root (rm -rf /usr2/tsr/* && cd /opt/dell/srvadmin/sbin && ./racadm techsupreport export -f /usr2/tsr/tsr.zip && cd /usr2/tsr && unzip *.zip && unzip *.pl.zip)" >> /etc/cron.d/tsr
 echo "Installed."
 
 exit 0

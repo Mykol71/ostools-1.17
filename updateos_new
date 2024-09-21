@@ -44,7 +44,9 @@ usage() {
       printf '%s' "${var}" 
       echo ${DESC:0:58}
     done
-  echo
+#subgroup list
+    [ "$NETUP" == "Y" ] && /usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5 | grep -v nopub
+    echo
 exit 0
 }
 
@@ -85,7 +87,7 @@ download_script () {
 
 # main
   [ "$#" == "0" ] || [ "`echo $1 | grep -i help 2>/dev/null`" != "" ] && usage
-  [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
+  [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
   for file in `echo $SCRIPT_LIST | grep $SCRIPT`
    do
     [ "`echo $file | grep \/`" != "" ] && run_subgroup
