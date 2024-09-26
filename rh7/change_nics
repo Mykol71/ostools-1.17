@@ -2,6 +2,16 @@
 
 #DESC change nic namings from ethX to tfethX.
 
+#Install updateos.
+cd /tmp
+rm -f updateos
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos
+chmod +x ./updateos
+cp ./updateos /usr/bin/.
+
+#Install repos and update.
+updateos rtirepo_install
+
 #Check for idrac
 ifconfig > /tmp/ifconf.out
 [ "`ifconfig | grep idrac`" != "" ] && mail -s "`hostname` - change_nics failed. idrac nic running." mgreen@teleflora.com,kpugh@teleflora.com,tshilling@teleflora.com < /tmp/ifconf.out && exit 1
