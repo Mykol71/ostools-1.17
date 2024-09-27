@@ -19,7 +19,6 @@ BLISTS="
     zen.spamhaus.org
     b.barracudacentral.org
     bl.mailspike.net
-    ipbl.mailhosts.org
 "
 
 # simple shell function to show an error message and exit
