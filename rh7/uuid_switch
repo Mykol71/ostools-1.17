@@ -13,13 +13,13 @@ blkid>blkidfile
 DEV=sda
 [ "`grep sda blkidfile | wc -l`" != "3" ] && DEV=sdb
 
-uuid_fstab_line="`cat ./blkidfile | grep $DEV1 | cut -d" " -f2`"
+uuid_fstab_line="`cat ./blkidfile | grep ${DEV}1 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda1/$uuid_fstab_line/g" /etc/fstab
 
-uuid_fstab_line="`cat ./blkidfile | grep $DEV2 | cut -d" " -f2`"
+uuid_fstab_line="`cat ./blkidfile | grep ${DEV}2 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda2/$uuid_fstab_line/g" /etc/fstab
 
-uuid_fstab_line="`cat ./blkidfile | grep $DEV3 | cut -d" " -f2`"
+uuid_fstab_line="`cat ./blkidfile | grep ${DEV}3 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda3/$uuid_fstab_line/g" /etc/fstab
 
 exit 0
