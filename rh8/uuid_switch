@@ -22,4 +22,11 @@ sed -i "s/\/dev\/sda2/$uuid_fstab_line/g" /etc/fstab
 uuid_fstab_line="`cat ./blkidfile | grep ${DEV}3 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda3/$uuid_fstab_line/g" /etc/fstab
 
-exit 0
+systemctl daemon-reload
+mount -a
+[ "$?" == "0" ] && echo "Success." && exit 0
+
+cp -f /usr2/upgrade/fstab.orig /etc/fstab
+systemctl daemon-reload
+
+exit 1
