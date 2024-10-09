@@ -5,19 +5,21 @@
 #HELP For every device that has a block id per $blkid, /etc/fstab is checked, and if the device is listed, replaces the drive with the uuid identifier.
 
 cd /tmp
+rm -f /tmp/blkidfile
 [ ! -d /usr2/upgrade ] && mkdir /usr2/upgrade
 cp /etc/fstab /usr2/upgrade/fstab.orig
 blkid>blkidfile
 
-[ "`grep sda blkidfile`" == "" ] && echo "sda not found in blkid......exiting." && exit 1
+DEV=sda
+[ "`grep sda blkidfile | wc -l`" != "3" ] && DEV=sdb
 
-uuid_fstab_line="`cat ./blkidfile | grep sda1 | cut -d" " -f2`"
+uuid_fstab_line="`cat ./blkidfile | grep $DEV1 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda1/$uuid_fstab_line/g" /etc/fstab
 
-uuid_fstab_line="`cat ./blkidfile | grep sda2 | cut -d" " -f2`"
+uuid_fstab_line="`cat ./blkidfile | grep $DEV2 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda2/$uuid_fstab_line/g" /etc/fstab
 
-uuid_fstab_line="`cat ./blkidfile | grep sda3 | cut -d" " -f2`"
+uuid_fstab_line="`cat ./blkidfile | grep $DEV3 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda3/$uuid_fstab_line/g" /etc/fstab
 
 exit 0
