@@ -20,6 +20,8 @@ systemctl disable post_install
 systemctl disable NetworkManager
 systemctl stop NetworkManager
 rm -f /etc/systemd/system/post_install.service
+rm -f /etc/hosts.allow
+rm -f /etc/hosts.deny
 /usr/bin/updateos email_results
 reboot
 EOF

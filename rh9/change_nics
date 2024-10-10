@@ -2,6 +2,13 @@
 
 #DESC change nic namings from ethX to tfethX.
 
+#Check for idrac
+ifconfig > /tmp/ifconf.out
+[ "`ifconfig | grep idrac`" != "" ] && mail -s "`hostname` - change_nics failed. idrac nic running." mgreen@teleflora.com,kpugh@teleflora.com,tshilling@teleflora.com < /tmp/ifconf.out && exit 1
+
+#Check if already been done.
+[ "`ifconfig | grep tfeth`" != "" ] && echo "change_nics already done....." && exit 1
+
 #eth0
 if [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ]
 then
@@ -35,6 +42,7 @@ dracut -f
 cp -f /etc/default/grub /tmp
 sed -i 's/net.ifnames=0//g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
 fi
 
 exit 0
