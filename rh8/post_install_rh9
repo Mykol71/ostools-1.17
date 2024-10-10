@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#DESC Creates a systemd service that will run after first reboot only. (After network starts.)
+#sed -i '/post_install.sh/d' /etc/crontab
+# create post install script
+cat > /usr/bin/post_install.sh <<EOF
+#!/bin/bash
+
+[ -f /usr/bin/.updateos/osup1 ] && rm -f /usr/bin/.updateos/osup1 && exit 0
+sleep 15
+
+/usr/bin/updateos sethostname
+[ -f /usr2/upgrade/iptables ] && cp -f /usr2/upgrade/iptables /etc/sysconfig/. 
+systemctl restart iptables
+rm -f /etc/yum.repos.d/*
+/usr/bin/updateos rockyrepo_install
+/usr/bin/updateos install_tcc
+update-crypto-policies --set LEGACY
+systemctl disable post_install
+/usr/bin/updateos conf_chrony
+/usr/bin/updateos email_results
+rm -f /etc/systemd/system/post_install.service
+EOF
+
+# add post install service file to run after network starts.
+cat > /etc/systemd/system/post_install.service <<EOF
+[Unit]
+Description=Post install script for staging.
+After=network-online.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/post_install.sh
+
+[Install]
+WantedBy=network-online.target
+EOF
+
+chmod +x /usr/bin/post_install.sh
+systemctl enable post_install
+touch /usr/bin/.updateos/osup1
+
+exit 0
