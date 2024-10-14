@@ -22,6 +22,8 @@ sed -i "s/\/dev\/sda2/$uuid_fstab_line/g" /etc/fstab
 uuid_fstab_line="`cat ./blkidfile | grep ${DEV}3 | cut -d" " -f2`"
 sed -i "s/\/dev\/sda3/$uuid_fstab_line/g" /etc/fstab
 
+sed -i "s/^device=/\#device=/g" /usr2/bbx/config/backups.config
+
 systemctl daemon-reload
 mount -a
 [ "$?" == "0" ] && echo "Success." && exit 0
