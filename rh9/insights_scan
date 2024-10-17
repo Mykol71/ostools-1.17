@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#DESC Run a full insights scan. Includes compliance and malware scans.
+
+#HELP Run this instead of register_insights to run scans if already registered.
+
+insights-client --checkin
+insights-client --compliance
+insights-client --collector malware-detection
+
+exit 0
