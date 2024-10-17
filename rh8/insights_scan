@@ -4,6 +4,7 @@
 
 #HELP Run this instead of register_insights to run scans if already registered.
 
+yum -y install yara
 insights-client --checkin
 insights-client --compliance
 insights-client --collector malware-detection
