@@ -5,8 +5,26 @@
 
 #HELP updateos dss4.0_harden
 
-#Ensure pam enforces minimum digit chars.
+#
+#Sourced from redhat insights.
+#Fix rpm file permissions.
+for file in `rpm -Va | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'`
+do
+PACKAGENAME=`rpm -qf $file`
+rpm --setugids $PACKAGENAME
+done
 
+#system-wide crypto
+update-crypto-policies --set
+
+#sudoers config
+[ "`grep use_pty /etc/sudoers`" == "" ] && echo "Defaults use_pty" >> /etc/sudoers
+[ "`grep timestamp_timeout=5 /etc/sudoers`" == "" ] && echo "Defaults timestamp_timeout=5" >> /etc/sudoers
+
+
+#
+#Below sourced from scada.
+#Ensure pam enforces minimum digit chars.
 # Remediation is applicable only in certain platforms
 
 if rpm --quiet -q pam; then
