@@ -4,7 +4,10 @@
 
 #HELP Run this instead of register_insights to run scans if already registered.
 
+#install malware app supported by insights.
 yum -y install yara
+sed -i "s/test_scan:\ true/test_scan:\ false/g" /etc/insights-client/malware-detection-config.yml
+
 insights-client --checkin
 insights-client --compliance
 insights-client --collector malware-detection
