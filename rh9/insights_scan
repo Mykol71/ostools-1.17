@@ -9,4 +9,4 @@ insights-client --checkin
 insights-client --compliance
 insights-client --collector malware-detection
 
-exit 0
+exit $?
