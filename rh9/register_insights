@@ -4,6 +4,7 @@
 # TF POS Linux insights registration.
 
 yum -y install scap-security-guide*
+yum -y install yara
 
 # verify root
 ID=`/usr/bin/id -u`
@@ -27,6 +28,7 @@ sed -i 's/\#password=/password=erpoithxciujhnbmxhgkvhasw/g' /etc/insights-client
 insights-client --unregister
 insights-client --register
 insights-client --compliance
+insights-client --collector malware-detection
 insights-client --enable-schedule
 insights-client --checkin
 [ $? -ne 0 ] && echo "Error with registration." && exit 4
