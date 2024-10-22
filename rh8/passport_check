@@ -6,9 +6,9 @@
 #HELP it will determine which device name the external drive is on and update /usr2/bbx/config/backups.config accordingly.
 
 #sdb
-[ "`df -h | grep sda3`" != "" ] && [ "`ls -l /dev | grep sdb | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sd?/device=\/dev\/sdb/g" /usr2/bbx/config/backups.config
+[ "`df -h | grep sda`" != "" ] && [ "`ls -l /dev | grep sdb | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sd?/device=\/dev\/sdb/g" /usr2/bbx/config/backups.config
 
 #sda
-[ "`df -h | grep sdb3`" != "" ] && [ "`ls -l /dev | grep sda | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sd?/device=\/dev\/sda/g" /usr2/bbx/config/backups.config
+[ "`df -h | grep sdb`" != "" ] && [ "`ls -l /dev | grep sda | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sd?/device=\/dev\/sda/g" /usr2/bbx/config/backups.config
 
 exit 0
