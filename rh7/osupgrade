@@ -104,7 +104,7 @@ yum -y remove tcp_wrappers
 
 #remove vsftpd.
 yum -y remove vsftpd
-#yum -y remove firewalld
+yum -y remove firewalld
 yum -y install NetworkManager
 systemctl enable NetworkManager
 
