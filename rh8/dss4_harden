@@ -579,7 +579,8 @@ else
 fi
 
 #enable authselect
-var_authselect_profile='sssd'
+#var_authselect_profile='sssd'
+var_authselect_profile='legacy'
 
 
 authselect select "$var_authselect_profile"
