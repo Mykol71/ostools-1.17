@@ -94,6 +94,9 @@ yum -y remove nodejs nodesource-release
 yum -y install device-mapper-multipath
 /usr/sbin/mpathconf --enable
 
+#pata_ahci on vmservers
+[ "`lsmod | grep pata_ahci`" != "" ] && rmmod pata_ahci && echo "blacklist pata_ahci" >/etc/modprobe.d/acpi-blacklist.conf
+
 #remove tcp_wrappers no longer supported.
 yum -y remove tcp_wrappers
 [ -f /etc/hosts.allow ] && mv -f /etc/hosts.allow /tmp
