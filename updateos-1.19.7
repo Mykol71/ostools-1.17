@@ -68,7 +68,7 @@ run_script() {
   SUBGROUP=""
   log "----> `date` -  Running $SCRIPT ..."
   download_script
-  [ "`grep \^\#PRDyes /usr/bin/.updateos/${SCRIPT}`" != "" ] && echo -n "Script not labelled as prod ready. Contine? y/n " && read YN && [ "$YN" != "y" ] && return 1
+  [ "`grep ^#PRDno /usr/bin/.updateos/${SCRIPT}`" != "" ] && echo -n "Script not labelled as prod ready. Contine? y/n " && read YN && [ "$YN" != "y" ] && return 1
   /usr/bin/.updateos/${SCRIPT} $CMDLINEVARS 2>&1 | tee -a $LOG_FILE
   EXIT="${PIPESTATUS[0]}"
   [ "$EXIT" != "0" ] && log "Failed." && exit $EXIT
