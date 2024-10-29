@@ -11,7 +11,7 @@ BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
 SCRIPT="$1"
 SUBGROUP="$1"
-n="${15:-20}"
+n="${10:-25}"
 [ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
 
 #OS Check.
@@ -38,11 +38,14 @@ usage() {
     do
       download_script
       DESC="`grep ^#DESC /usr/bin/.updateos/$SCRIPT | sed -e 's/^#DESC\ //g'`"
+      [ "`grep ^#PRDno /usr/bin/.updateos/${SCRIPT} 2>/dev/null`" != "" ] && PRD="-" || PRD='^'
       SCRIPT="$SCRIPT$(printf '%*s' "$n" "")"        
       var="$(echo "${SCRIPT}"|grep -Eo "^.{1,$n}")" 
       echo -n " "
       printf '%s' "${var}" 
-      echo ${DESC:0:58}
+      echo -n ${PRD:0:58}
+      echo -n " "
+      echo ${DESC:0:70}
     done
 #subgroup list
     [ "$NETUP" == "Y" ] && /usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5 | grep -v nopub
