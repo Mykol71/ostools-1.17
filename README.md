@@ -25,10 +25,10 @@ o hold training class
 ~ updateos 1.9.2
 ----------------
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
-~ add indicator to help dialog if script is not prod ready.
++ add indicator to help dialog if script is not prod ready.
 o documentation example; pa-dss4 group with 1 script labeled for each pci rule.
 o group desc. (displays readme DESC for group.) $updateos help group
-o group script calling another group? (nested groups)
+~ group script calling another group? (nested groups)
 o when running a group, check for another group matching serial and run that group as well. (for handling one-offs)
 
 
@@ -55,7 +55,7 @@ o when running a group, check for another group matching serial and run that gro
 - #HELP in the script shows those lines in $updateos script help.
 - Script must be able to run many times but only make changes once.
 - group scripts with no user interaction.
-- 
+- #PRDno in script triggers a warning before exec.
 
 
 = Repo Locations
