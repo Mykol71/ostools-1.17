@@ -16,20 +16,28 @@ o Incomplete
 
 > updateos x.x.x
 ----------------
-? run now trigger
-? remote ssh access
-o update to padss-4 hardening 
-o hold training class
+? consider an agent
+  - run now trigger
+  - on-demand remote ssh access
+o training
+  - general use
+  - contrib
+? server status
+  - patches available
+  - malware
+  - scada compliance
+  - last backup status
 
 
 ~ updateos 1.9.2
 ----------------
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 + add indicator to help dialog if script is not prod ready.
-o documentation example; pa-dss4 group with 1 script labeled for each pci rule.
+~ docu example; wknoll group with his customs.
 o group desc. (displays readme DESC for group.) $updateos help group
 ~ group script calling another group? (nested groups)
-o when running a group, check for another group matching serial and run that group as well. (for handling one-offs)
+~ update to padss-4 hardening 
+o 
 
 
 * updateos 1.8.3

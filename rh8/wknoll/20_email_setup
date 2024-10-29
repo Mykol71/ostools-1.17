@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#DESC Walter uses postix relaying through an AWS relay instead of sendmail.
+
+yum -y remove sendmail
+yum -y install postfix
+
+exit 0

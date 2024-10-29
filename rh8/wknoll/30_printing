@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#DESC Walter uses a product call unform to route his printing through.
+
+echo "Walter uses unform to route printing through. Make sure the unform product is installed and started."
+
+exit 0
