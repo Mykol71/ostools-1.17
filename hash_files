@@ -1,11 +1,9 @@
 #!/bin/bash
 
 find . -name "*.md5" -exec rm {} \;
-for file in `find . -type f`
+for file in `find . -type f | grep -v hash_files | grep -v README`
 do
 MD5="`md5sum $file | cut -d' ' -f1`"
 echo $MD5 >$file.md5
 done
-rm ./rh7/stage/*.md5
-rm ./rh8/stage/*.md5
-rm ./README.md.md5
+rm ./rh*/stage/*.md5
