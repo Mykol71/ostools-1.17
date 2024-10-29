@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #DESC Add POS system accounts.
+#PRDyes
+
 useradd tfsupport
 groupadd rtiadmin
 groupadd rti
