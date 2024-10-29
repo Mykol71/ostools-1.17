@@ -15,14 +15,13 @@ o Incomplete
 
 > updateos x.x.x
 ----------------
-o script type? config; name of config file. config item. service name. restart?
-o this readme.txt begins.
-o enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 o run now trigger?
+o
 
 
 ~ updateos 1.9.2
 ----------------
++ enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 o documentation example; pa-dss4 group with 1 script labeled for each pci rule.
 o group desc. (displays readme DESC for group.) $updateos help group
 o group help. (displays readme HELP for group.) $updateos group help
