@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESC Makes security related system changes based on openscap rules for PCI-DSS4.0.
+#PRDno
 
 #HELP updateos dss4.0_harden
 

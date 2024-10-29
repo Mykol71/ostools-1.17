@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESC Disable RTI realtime.
+#PRDno
 
 # check to see if already disabled via this process.
 [ -f /usr2/bbx/config/.rtoff ] && echo Real time already disabled. && exit 1

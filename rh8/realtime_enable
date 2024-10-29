@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESC Enable RTI Real time. (had to be  disabled by realtime_disable)
+#PRDno
 
 # check to see if disabled.
 [ -f /usr2/bbx/config/.rton ] && echo "Real time already enabled." && exit 1

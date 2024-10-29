@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESC Inplace OS upgrade from RH8 to RH9 - RTI.
+#PRDno
 
 #Make sure tfethX naming.
 [ "`ifconfig | grep tfeth`" == "" ] && echo "Run change_nics first....." && exit 1
