@@ -1,5 +1,20 @@
 updateos
 --------
+
+Purpose
+-------
+This script/repo hopefully address a few issues.
+  - Convert from perl to a much simpler to mainting bash env for config management.
+  - Handle the repetative coding, like logging, allowing the supporting scripts to just make changes.
+  - Keep a central repo of methods to make changes that will promote everyone using the same method.
+  - Provide a method to track one-off customers for customers that have them.
+  - Allow for a much faster start-to-end time developing OS changes for customers. (From the time the script is checked into the repo, it is available on all customers servers.)
+  - Hopefully this core script will not change much after it gets to a certain point.
+  - Allow for anyone to contribute to the scripts supporting the systems if they wish.
+  - Staging media doesnt have to change to make changes to the staging process.
+  - Speed up the total time it takes to convert from major os version to version.
+
+
 ```
 Key
 ---
