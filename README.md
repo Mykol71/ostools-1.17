@@ -1,7 +1,6 @@
---------------
--- updateos --
---------------
-
+updateos
+--------
+```
 = Key
 -----
 > Future 
@@ -12,10 +11,11 @@ o Incomplete
 = Information
 - List item
 ? Unsure
-
+```
 
 > updateos x.x.x
 ----------------
+```
 ? consider an agent
   - run now trigger
   - on-demand remote ssh access
@@ -27,10 +27,11 @@ o training
   - malware
   - scada compliance
   - last backup status
-
+```
 
 ~ updateos 1.9.2
 ----------------
+```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 + add indicator to help dialog if script is not prod ready.
 ~ docu example; wknoll group with his customs.
@@ -38,24 +39,27 @@ o group desc. (displays readme DESC for group.) $updateos help group
 ~ group script calling another group? (nested groups)
 ~ update to padss-4 hardening 
 o 
-
+```
 
 * updateos 1.8.3
 ----------------
+```
 + pass command line vars through to sub script.
 + added "help" for sub scripts. (searches for HELP in script.)
 + only download if md5 sums are different.
 + work if no network. (via the scripts stored in /usr/bin/.updateos)
 + streamline/cleanup code a bit. 
-
+```
 
 * updateos-1.17.2
 -----------------
+```
 - Initial Release.
-
+```
 
 = Script Contrib Info 
 ---------------------
+```
 - Exit 0 if success, non-0 is fail.
 - if test for already done and is, exit 0 success.
 - command line args 2-* are passed to sub script command line args.
@@ -64,15 +68,17 @@ o
 - Script must be able to run many times but only make changes once.
 - group scripts with no user interaction.
 - #PRDno in script triggers a warning before exec.
-
+```
 
 = Repo Locations
 ----------------
+```
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
 http://rhel8repo.centralus.cloudapp.azure.com/support/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
+```
 
 
 = Install Media / Staging
