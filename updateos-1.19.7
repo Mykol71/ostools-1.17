@@ -50,9 +50,9 @@ usage() {
 #subgroup list
     [ "$NETUP" == "Y" ] && GROUP_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5 | grep -v nopub`
     echo "groups"
- for GROUP in $GROUP_LIST
+ for SUBGROUP in $GROUP_LIST
    do
-    echo "  $GROUP"
+    echo " $SUBGROUP"
    done
 exit 0
 }
