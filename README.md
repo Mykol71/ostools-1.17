@@ -3,18 +3,14 @@ updateos
 ```
 = Key
 -----
-> Future 
 ~ In progress
 o Incomplete
-* Current
 + Completed
-= Information
-- List item
 ? Unsure
 ```
 
-= updateos x.x.x
-----------------
+updateos x.x.x
+--------------
 ```
 ? consider an agent
   - run now trigger
@@ -29,8 +25,8 @@ o training
   - last backup status
 ```
 
-= updateos 1.9.2
-----------------
+updateos 1.9.2
+--------------
 ```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 + add indicator to help dialog if script is not prod ready
@@ -39,8 +35,8 @@ o group desc. (displays readme DESC for group.) $updateos help group
 ~ group script calling another group? (nested groups)
 ```
 
-= updateos 1.8.3
-----------------
+updateos 1.8.3
+--------------
 ```
 + pass command line vars through to sub script
 + added "help" for sub scripts. (searches for HELP in script.)
@@ -49,14 +45,17 @@ o group desc. (displays readme DESC for group.) $updateos help group
 + streamline/cleanup code a bit 
 ```
 
-= updateos-1.17.2
------------------
+updateos-1.17.2
+---------------
 ```
-- initial release
++ initial release
 ```
 
-= Script Contrib Info 
----------------------
+
+
+
+Script Contrib Info 
+-------------------
 ```
 - Exit 0 if success, non-0 is fail
 - if test for already done and is, exit 0 success
@@ -68,8 +67,8 @@ o group desc. (displays readme DESC for group.) $updateos help group
 - #PRDno in script triggers a warning before exec
 ```
 
-= Repo Locations
-----------------
+Repo Locations
+--------------
 ```
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
@@ -79,8 +78,8 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 ```
 
 
-= Install Media / Staging
--------------------------
+Install Media / Staging
+-----------------------
 - Download the RTI RH8.x install media iso  
 
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
@@ -95,16 +94,16 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
 
-= Installation and Information
-------------------------------
+Installation and Information
+----------------------------
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
 - If a script fails during a "group" run, updateos exits non-zero immediately.
 - Logging for updateos is in /tmp/updateos.log.
 
 
-= Custom Install Media
-----------------------
+Custom Install Media
+--------------------
 - Download boot.iso from redhat, and mount it with
 ```
  mount -o loop ./boot.iso /mnt .
@@ -126,6 +125,6 @@ sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux
 - The resulting 900ish meg iso file can be then burned to a usb stick with any utility. i.e. rufus.
 
 
-= Maintainer(s)
----------------
+Maintainer
+----------
 mgreen@teleflora.com
