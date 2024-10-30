@@ -7,10 +7,11 @@ updateos
 o Incomplete
 + Completed
 ? Unsure
+> Current
 ```
 
-updateos x.x.x
---------------
+updateos future
+---------------
 ```
 ? consider an agent
   - run now trigger
@@ -35,7 +36,7 @@ o training
 + group script calling another group? (nested groups)
 ```
 
-updateos 1.8.3
+> updateos 1.8.3
 --------------
 ```
 + pass command line vars through to sub script
@@ -65,6 +66,20 @@ Script Contrib Info
 - Script must be able to run many times but only make changes once
 - group scripts with no user interaction
 - #PRDno in script triggers a warning before exec
+```
+
+Script Example
+--------------
+```
+#!/bin/bash
+
+#DESC Script that serves this purpose
+#PRDno 
+#HELP usage: $updateos testscript
+
+echo "This will show in stout and the logfile."
+
+exit 0
 ```
 
 Repo Locations
