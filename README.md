@@ -34,11 +34,9 @@ cp ./updateos-1.19.7 /usr/bin/updateos
 updateos help
 ```
 
-ex help
--------
+help
+----
 ```
-[tfsupport@RTIQA25 tmp]$ sudo updateos help
-[sudo] password for tfsupport: 
 updateos - 1.19.7 - USAGE: sudo updateos (groupname|scriptname)
 rh8
  blcheck                  ^ Check common blacklists for public IP.
@@ -95,8 +93,8 @@ groups
 - this help checks all local copies of scripts and updates them if they have changed.
 - the identifier before the description is the prod ready flag. ^=prod ready -=not.
 
-ex script exec
---------------
+script exec
+-----------
 ```
 [tfsupport@RTIQA25 tmp]$ sudo updateos blcheck
 [sudo] password for tfsupport: 
@@ -112,8 +110,8 @@ IP 50.115.255.202 NAME ---
 [tfsupport@RTIQA25 tmp]$
 ```
 
-ex group exec 
--------------
+group exec 
+----------
 ```
 bash-4.2$ ls -ltr ./rh8/wknoll | grep -v md5
 total 20
@@ -127,8 +125,6 @@ total 20
 
 ```
 [tfsupport@RTIQA25 tmp]$ sudo updateos wknoll
-[sudo] password for tfsupport: 
-Sorry, try again.
 [sudo] password for tfsupport: 
 ----> Wed Oct 30 10:59:06 CDT 2024 - Running rh8 wknoll 20_email_setup...
 No match for argument: sendmail
@@ -249,8 +245,8 @@ lrwxrwxrwx. 1 mgreen rti  14 Oct 15 10:11 77_uuid_switch -> ../uuid_switch
 - Use numbering at the front of the file or link name to force ordering of script exec.
 - Do not use any scripts that are flagged "PRDno". Staging should be a totally silent install.
 
-repo locations
---------------
+repos
+-----
 ```
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.16/
@@ -259,8 +255,8 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 ```
 
-install media / staging
------------------------
+rti staging
+-----------
 - Download the RTI RH8.x install media iso  
 ```
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
@@ -274,13 +270,11 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
-server-side install/information
--------------------------------
-- This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
+server-side info
+----------------
+- This updateos repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
-- After that, use your altered updateos for the install.
-- If a script fails during a "group" run, updateos exits non-zero immediately.
-- Logging for updateos is in /tmp/updateos.log.
+- After that, use your altered updateos script for the install.
 
 maintainer
 ----------
