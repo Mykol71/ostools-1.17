@@ -46,7 +46,7 @@ updateos 1.9.2
 + streamline/cleanup code a bit 
 ```
 
-updateos-1.17.2
+updateos 1.17.2
 ---------------
 ```
 + initial release
