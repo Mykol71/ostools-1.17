@@ -14,7 +14,6 @@ This script/repo hopefully address a few issues.
   - Staging media doesnt have to change to make changes to the staging process.
   - Speed up the total time it takes to convert from major os version to version.
 
-
 ```
 Key
 ---
@@ -72,9 +71,6 @@ updateos-1.17.2
 + initial release
 ```
 
-
-
-
 script contrib info 
 -------------------
 ```
@@ -111,7 +107,6 @@ total 20
 -rwxrwxrwx. 1 mgreen rti 144 Oct 29 17:45 20_email_setup
 -rwxrwxrwx. 1 mgreen rti 201 Oct 29 17:48 30_printing
 ```
-
 - The above example uses a group to track differences from the standard setup for a specific customer.
 - Right now, they do nothing but echo information. But that could be enough. Just check the log file after you run for instructions.
 - The person that stages the system would check $updateos help to see if a group for the customer exists, and if so, run that group. ($updateos wknoll). Then check the logs.
@@ -183,9 +178,9 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 install media / staging
 -----------------------
 - Download the RTI RH8.x install media iso  
-
+```
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
-
+```
 - Use rufus or other utility to burn the iso to a blank usb stick 
 - Boot from usb stick  
 - At the grub boot menu, select "Install RTI on RHEL8"  
@@ -206,4 +201,6 @@ installation and information
 
 maintainer
 ----------
+```
 mgreen@teleflora.com
+```
