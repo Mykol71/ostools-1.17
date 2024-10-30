@@ -16,7 +16,6 @@
 #    under the License.
 
 #DESC Check network speed.
-#PRDno
 
 import csv
 import datetime
