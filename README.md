@@ -35,8 +35,8 @@ o training
 + group script calling another group? (nested groups)
 ```
 
-+ updateos 1.8.3
-----------------
+updateos 1.8.3
+--------------
 ```
 + pass command line vars through to sub script
 + added "help" for sub scripts. (searches for HELP in script.)
@@ -45,8 +45,8 @@ o training
 + streamline/cleanup code a bit 
 ```
 
-+ updateos-1.17.2
------------------
+updateos-1.17.2
+---------------
 ```
 + initial release
 ```

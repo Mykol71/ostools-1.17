@@ -1,5 +1,0 @@
-#!/bin/bash
-
-#DESC Test for nested groups.
-
-/usr/bin/updateos wknoll
