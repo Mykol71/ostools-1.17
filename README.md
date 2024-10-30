@@ -3,7 +3,7 @@ updateos
 
 about
 -----
-This script/repo hopefully address a few issues.
+This script/repo hopefully improve a few areas.
   - Convert from perl to a much simpler to mainting bash env for config management.
   - Handle the repetative coding, like logging, allowing the supporting scripts to just make changes.
   - Keep a central repo of methods to make changes that will promote everyone using the same method.
@@ -22,10 +22,11 @@ o Incomplete
 + Completed
 ? Unsure
 = Current
+^ Prod ready
 ```
 
-example help
-------------
+ex help
+-------
 ```
 [tfsupport@RTIQA25 tmp]$ sudo updateos help
 [sudo] password for tfsupport: 
@@ -85,24 +86,39 @@ groups
 - this help checks all local copies of scripts and updates them if they have changed.
 - the identifier before the description is the prod ready flag. ^=prod ready -=not.
 
-updateos future
----------------
+ex exec
+-------
 ```
-? consider an agent
-  - run now trigger
-  - on-demand remote ssh access
+[tfsupport@RTIQA25 tmp]$ sudo updateos blcheck
+[sudo] password for tfsupport: 
+----> Wed Oct 30 13:35:01 CDT 2024 -  Running blcheck ...
+IP 50.115.255.202 NAME ---
+2024-10-30_18:35:02_UTC 202.255.115.50.cbl.abuseat.org.        ---
+2024-10-30_18:35:02_UTC 202.255.115.50.dnsbl.sorbs.net.        ---
+2024-10-30_18:35:03_UTC 202.255.115.50.bl.spamcop.net.         ---
+2024-10-30_18:35:03_UTC 202.255.115.50.zen.spamhaus.org.       ---
+2024-10-30_18:35:03_UTC 202.255.115.50.b.barracudacentral.org. ---
+2024-10-30_18:35:03_UTC 202.255.115.50.bl.mailspike.net.       ---
+----> Wed Oct 30 13:35:03 CDT 2024 - Success.
+[tfsupport@RTIQA25 tmp]$
+```
+
+future
+------
+```
+- consider an agent
+  ? run now trigger
+  ? on-demand remote ssh access
 o training
   - general use
   - contrib
-? major feature ideas
-  - patches available
-  - malware
-  - scada compliance
-  - backup status
-  - sonarcube?
-o documentation
-  - help for supporting scripts
-o logfile rotation and retention
+- major feature ideas
+  ? patches available
+  ? malware
+  ? scada compliance
+  ? backup status
+  ? sonarcube?
+o logfile location, rotation, and retention
 ```
 
 updateos-1.9.2
@@ -159,8 +175,8 @@ script example
 exit ?
 ```
 
-group example for customs
--------------------------
+ex group 
+--------
 ```
 bash-4.2$ ls -ltr ./rh8/wknoll | grep -v md5
 total 20
@@ -194,8 +210,8 @@ Walter uses unform to route printing through. Make sure the unform product is in
 ----> Wed Oct 30 10:59:14 CDT 2024 - Success.
 ```
 
-group example for staging
--------------------------
+ex staging group
+----------------
 ```
 bash-4.2$ ls -ltr ./rh8/stage
 total 4
