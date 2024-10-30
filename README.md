@@ -1,8 +1,8 @@
 updateos
 --------
 ```
-= Key
------
+Key
+---
 ~ In progress
 o Incomplete
 + Completed
