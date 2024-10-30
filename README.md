@@ -37,7 +37,8 @@ updateos help
 help
 ----
 ```
-updateos - 1.19.7 - USAGE: sudo updateos (groupname|scriptname)
+@  updateos - 1.19.7
+)~ USAGE: sudo updateos (groupname|scriptname|help)
 rh8
  blcheck                  ^ Check common blacklists for public IP.
  change_nics              ^ change nic namings from ethX to tfethX.
@@ -85,13 +86,14 @@ rh8
  update_blm.pl            ^ Update Basis BLM for correct license address
  uuid_switch              ^ Changes drive references in /etc/fstab to uuids instead of device name
 groups
-  padss4/
-  stage/
-  wknoll/
+ padss4/
+ stage/
+ wknoll/
 ```
 - only supporting scripts for the os version running are shown from the repo.
 - this help checks all local copies of scripts and updates them if they have changed.
 - the identifier before the description is the prod ready flag. ^=prod ready -=not.
+- by default logging is in /tmp/updateos.log
 
 script exec
 -----------
@@ -184,7 +186,6 @@ o training
   ? malware
   ? scada compliance
   ? backup status
-  ? sonarcube?
 o logfile location, rotation, and retention
 ```
 
