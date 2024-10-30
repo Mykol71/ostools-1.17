@@ -1,8 +1,8 @@
 updateos
 --------
 
-purpose
--------
+about
+-----
 This script/repo hopefully address a few issues.
   - Convert from perl to a much simpler to mainting bash env for config management.
   - Handle the repetative coding, like logging, allowing the supporting scripts to just make changes.
@@ -23,6 +23,67 @@ o Incomplete
 ? Unsure
 = Current
 ```
+
+example help
+------------
+```
+[tfsupport@RTIQA25 tmp]$ sudo updateos help
+[sudo] password for tfsupport: 
+updateos - 1.19.7 - USAGE: sudo updateos (groupname|scriptname)
+rh8
+ blcheck                  ^ Check common blacklists for public IP.
+ change_nics              ^ change nic namings from ethX to tfethX.
+ check_compliance         ^ Must have already assigned this server to a compliance profile on the
+ conf_chrony              ^ Configures, starts, and enables chrony time sync.
+ conf_firewall            ^ Configures iptables for use with linux POS systems.
+ conf_platform            ^ Creates folders need by the POS installation.
+ conf_users               ^ Add POS system accounts.
+ config_sendgrid          ^ Configures Sendgrid. Need API Key and email from add.
+ create_media             - Creates baremetal recovery usb stick.
+ dss4_harden              - Makes security related system changes based on openscap rules for PCI-
+ email_results            ^ Email log file.
+ gfree_rules              - Firewall rules added for gravity free.
+ harden_system            ^ Harden the system per PCI/PADSS guidelines.
+ inc_format               ^ Formats sdb with 7 partitions for nightly backups.
+ insights_scan            ^ Run a full insights scan. Includes compliance and malware scans.
+ install_cortex           ^ Installs Cortex for IT managed malware protection.
+ install_flordir          ^ Install the POS Electronic Directory.
+ install_kaseya           ^ Install TF's kaseya agent.
+ install_ostools-1.16     ^ Install legacy ostools.
+ install_pbe              - Installs RTI Backup solution.
+ install_racadm           ^ Install Dell's racadm software.
+ install_rti              ^ Installs RTI 16.3.8 and all deps.
+ install_tcc              ^ Install TF's CC processing program. (Used by POS software)
+ install_ups              ^ Install the APC UPS Daemon.
+ osupgrade                - Inplace OS upgrade from RH8 to RH9 - RTI.
+ passport_check           ^ Checks external device name and updates backups.config if needed.
+ post_install             ^ Creates a systemd service that will run after first reboot only. (Afte
+ post_install_rh9         ^ Creates a systemd service that will run after first reboot only. (Afte
+ realtime_disable         - Disable RTI realtime.
+ realtime_enable          - Enable RTI Real time. (had to be disabled by realtime_disable)
+ register_insights        ^ Register system with TF's Redhat insights account.
+ rh8repo_install          ^ Configure system to receive patches from TF's repo server.
+ rti_email_fix            ^ add email fix for rh8 rti.
+ rti_service_sleep        ^ add a 30sec sleep to the start portion of rti service file.
+ sethostname              ^ Set the server's hostname.
+ setnet                   ^ Set/Change IP, DNS, and Gateway.
+ smb_passwords            ^ Set samba passwords for app users.
+ speedtest                ^ Check network speed.
+ sysinfo                  ^ Reports information about the server.
+ system_auth              ^ System authentication configuration.
+ tsr_install              ^ Adds a cron job to run the Dell TSR report and export it to the /usr2/
+ update_bbj_19.pl         ^ Install and/or upgrade BBJ and Java.
+ update_bbj_21.pl         ^ Installs/Upgrades BBj and java.
+ update_blm.pl            ^ Update Basis BLM for correct license address
+ uuid_switch              ^ Changes drive references in /etc/fstab to uuids instead of device name
+groups
+  padss4/
+  stage/
+  wknoll/
+```
+- only supporting scripts for the os version running are shown from the repo.
+- this help checks all local copies of scripts and updates them if they have changed.
+- the identifier before the description is the prod ready flag. ^=prod ready -=not.
 
 updateos future
 ---------------
@@ -95,7 +156,7 @@ script example
 
   echo "This will show in stout and the logfile."
 
-exit 0
+exit ?
 ```
 
 group example for customs
