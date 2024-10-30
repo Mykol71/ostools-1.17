@@ -31,6 +31,13 @@ log() {
 
 usage() {
   SUBGROUP=""
+LGGRN='\033[1;32m'
+    BLUE='\033[1;34m'
+    GREY='\033[0;37m'
+    CYAN=''
+    NC='\033[0m'
+    echo -e "\u2503${BLUE} @ ${NC}"
+    printf '\u2503'${LGGRN}' )~ '${NC}'\n'
   log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
   echo "$GROUP"
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
