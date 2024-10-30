@@ -55,7 +55,7 @@ updateos 1.17.2
 
 
 
-Script Contrib Info 
+script contrib info 
 -------------------
 ```
 - Exit 0 if success, non-0 is fail
@@ -68,7 +68,7 @@ Script Contrib Info
 - #PRDno in script triggers a warning before exec
 ```
 
-Script Example
+script example
 --------------
 ```
 #!/bin/bash
@@ -77,12 +77,12 @@ Script Example
 #PRDno 
 #HELP usage: $updateos testscript
 
-echo "This will show in stout and the logfile."
+  echo "This will show in stout and the logfile."
 
 exit 0
 ```
 
-Repo Locations
+repo locations
 --------------
 ```
 http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/
@@ -93,7 +93,7 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 ```
 
 
-Install Media / Staging
+install media / staging
 -----------------------
 - Download the RTI RH8.x install media iso  
 
@@ -109,7 +109,7 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
 
-Installation and Information
+installation and information
 ----------------------------
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
@@ -117,7 +117,7 @@ Installation and Information
 - Logging for updateos is in /tmp/updateos.log.
 
 
-Custom Install Media
+custom install media
 --------------------
 - Download boot.iso from redhat, and mount it with
 ```
@@ -140,6 +140,6 @@ sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux
 - The resulting 900ish meg iso file can be then burned to a usb stick with any utility. i.e. rufus.
 
 
-Maintainer
+maintainer
 ----------
 mgreen@teleflora.com
