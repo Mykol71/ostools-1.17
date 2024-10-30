@@ -39,6 +39,9 @@ o training
   - malware
   - scada compliance
   - last backup status
+o documentation
+  - help for supporting scripts
+o logfile rotation and retention
 ```
 
 updateos-1.9.2
@@ -49,6 +52,7 @@ updateos-1.9.2
 + wknoll group with his customs
 ~ group desc. (displays readme DESC for group.) $updateos help group
 + group script calling another group? (nested groups)
+o psdss4 group for pci rule related changes
 ```
 
 = updateos-1.8.3
