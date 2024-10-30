@@ -1,7 +1,7 @@
 updateos
 --------
 
-Purpose
+purpose
 -------
 This script/repo hopefully address a few issues.
   - Convert from perl to a much simpler to mainting bash env for config management.
