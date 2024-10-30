@@ -111,10 +111,32 @@ total 20
 -rwxrwxrwx. 1 mgreen rti 144 Oct 29 17:45 20_email_setup
 -rwxrwxrwx. 1 mgreen rti 201 Oct 29 17:48 30_printing
 ```
+
 - The above example uses a group to track differences from the standard setup for a specific customer.
 - Right now, they do nothing but echo information. But that could be enough. Just check the log file after you run for instructions.
 - The person that stages the system would check $updateos help to see if a group for the customer exists, and if so, run that group. ($updateos wknoll). Then check the logs.
 
+```
+[tfsupport@RTIQA25 tmp]$ sudo updateos wknoll
+[sudo] password for tfsupport: 
+Sorry, try again.
+[sudo] password for tfsupport: 
+----> Wed Oct 30 10:59:06 CDT 2024 - Running rh8 wknoll 20_email_setup...
+No match for argument: sendmail
+No packages marked for removal.
+Dependencies resolved.
+Nothing to do.
+Complete!
+Last metadata expiration check: 2:39:06 ago on Wed 30 Oct 2024 08:20:04 AM CDT.
+Package postfix-2:3.5.8-7.el8.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+----> Wed Oct 30 10:59:14 CDT 2024 - Success.
+----> Wed Oct 30 10:59:14 CDT 2024 - Running rh8 wknoll 30_printing...
+Walter uses unform to route printing through. Make sure the unform product is installed and started.
+----> Wed Oct 30 10:59:14 CDT 2024 - Success.
+```
 
 group example for staging
 -------------------------
