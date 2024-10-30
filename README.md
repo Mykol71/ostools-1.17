@@ -7,7 +7,7 @@ This script/repo hopefully address a few issues.
   - Convert from perl to a much simpler to mainting bash env for config management.
   - Handle the repetative coding, like logging, allowing the supporting scripts to just make changes.
   - Keep a central repo of methods to make changes that will promote everyone using the same method.
-  - Provide a method to track one-off customers for customers that have them.
+  - Provide a method to track one-off customers for customers that have them. (So we don't get caught with misconfigured systems for days after a major upgrade of some kind.)
   - Allow for a much faster start-to-end time developing OS changes for customers. (From the time the script is checked into the repo, it is available on all customers servers.)
   - Hopefully this core script will not change much after it gets to a certain point.
   - Allow for anyone to contribute to the scripts supporting the systems if they wish.
@@ -34,11 +34,12 @@ updateos future
 o training
   - general use
   - contrib
-? server status
+? major feature ideas
   - patches available
   - malware
   - scada compliance
-  - last backup status
+  - backup status
+  - sonarcube?
 o documentation
   - help for supporting scripts
 o logfile rotation and retention
@@ -93,13 +94,58 @@ script example
 #!/bin/bash
 
 #DESC Script that serves this purpose
-#PRDno 
+#PRDno To prompt before execing the script warning of non-prod use.
 #HELP usage: $updateos testscript
 
   echo "This will show in stout and the logfile."
 
 exit 0
 ```
+
+group example for customs
+-------------------------
+```
+bash-4.2$ ls -ltr ./rh8/wknoll | grep -v md5
+total 20
+-rw-rw-rw-. 1 mgreen rti  28 Oct 29 17:41 README.md
+-rwxrwxrwx. 1 mgreen rti 144 Oct 29 17:45 20_email_setup
+-rwxrwxrwx. 1 mgreen rti 201 Oct 29 17:48 30_printing
+```
+- The above example uses a group to track differences from the standard setup for a specific customer.
+- Right now, they do nothing but echo information. But that could be enough. Just check the log file after you run for instructions.
+- The person that stages the system would check $updateos help to see if a group for the customer exists, and if so, run that group. ($updateos wknoll). Then check the logs.
+
+
+group example for staging
+-------------------------
+```
+bash-4.2$ ls -ltr ./rh8/stage
+total 4
+lrwxrwxrwx. 1 mgreen rti  16 Apr 23  2024 zz_email_results -> ../email_results
+lrwxrwxrwx. 1 mgreen rti  15 Apr 23  2024 yz_post_install -> ../post_install
+lrwxrwxrwx. 1 mgreen rti  14 Apr 23  2024 70_conf_chrony -> ../conf_chrony
+lrwxrwxrwx. 1 mgreen rti  17 Apr 23  2024 65_install_kaseya -> ../install_kaseya
+lrwxrwxrwx. 1 mgreen rti  20 Apr 23  2024 60_rti_service_sleep -> ../rti_service_sleep
+lrwxrwxrwx. 1 mgreen rti  14 Apr 23  2024 50_change_nics -> ../change_nics
+lrwxrwxrwx. 1 mgreen rti  14 Apr 23  2024 46_system_auth -> ../system_auth
+lrwxrwxrwx. 1 mgreen rti  16 Apr 23  2024 45_harden_system -> ../harden_system
+lrwxrwxrwx. 1 mgreen rti  14 Apr 23  2024 43_install_ups -> ../install_ups
+lrwxrwxrwx. 1 mgreen rti  14 Apr 23  2024 20_install_tcc -> ../install_tcc
+lrwxrwxrwx. 1 mgreen rti  16 Apr 23  2024 17_smb_passwords -> ../smb_passwords
+lrwxrwxrwx. 1 mgreen rti  14 Apr 23  2024 15_install_rti -> ../install_rti
+lrwxrwxrwx. 1 mgreen rti  23 Apr 23  2024 14_install_ostools-1.16 -> ../install_ostools-1.16
+-rwxrwxrwx. 1 mgreen rti 278 Apr 23  2024 13_sethostname
+lrwxrwxrwx. 1 mgreen rti  13 Apr 23  2024 10_conf_users -> ../conf_users
+lrwxrwxrwx. 1 mgreen rti  16 Apr 23  2024 04_conf_platform -> ../conf_platform
+lrwxrwxrwx. 1 mgreen rti  18 Apr 23  2024 01_rh8repo_install -> ../rh8repo_install
+lrwxrwxrwx. 1 mgreen rti  16 Jun 17 16:02 75_rti_email_fix -> ../rti_email_fix
+lrwxrwxrwx. 1 mgreen rti  16 Aug 29 13:35 85_install_idrac -> ../install_idrac
+lrwxrwxrwx. 1 mgreen rti  14 Oct 15 10:11 77_uuid_switch -> ../uuid_switch
+```
+- Only make copies of scripts if you plan to alter the one in the parent folder. Otherwise use a symlink.
+- Use numbering at the front of the file or link name to force ordering of script exec.
+- Do not use any scripts that are flagged "PRDno". Staging should be a totally silent install.
+
 
 repo locations
 --------------
