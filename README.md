@@ -25,6 +25,15 @@ o Incomplete
 ^ Prod ready
 ```
 
+install
+-------
+```
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos-1.19.7
+chmod +x ./updateos-1.19.7 
+cp ./updateos-1.19.7 /usr/bin/updateos
+updateos help
+```
+
 ex help
 -------
 ```
@@ -86,8 +95,8 @@ groups
 - this help checks all local copies of scripts and updates them if they have changed.
 - the identifier before the description is the prod ready flag. ^=prod ready -=not.
 
-ex exec
--------
+ex script exec
+--------------
 ```
 [tfsupport@RTIQA25 tmp]$ sudo updateos blcheck
 [sudo] password for tfsupport: 
@@ -103,80 +112,8 @@ IP 50.115.255.202 NAME ---
 [tfsupport@RTIQA25 tmp]$
 ```
 
-future
-------
-```
-- consider an agent
-  ? run now trigger
-  ? on-demand remote ssh access
-o training
-  - general use
-  - contrib
-- major feature ideas
-  ? patches available
-  ? malware
-  ? scada compliance
-  ? backup status
-  ? sonarcube?
-o logfile location, rotation, and retention
-```
-
-updateos-1.9.2
---------------
-```
-+ enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
-+ add indicator to help dialog if script is not prod ready
-+ wknoll group with his customs
-~ group desc. (displays readme DESC for group.) $updateos help group
-+ group script calling another group? (nested groups)
-o psdss4 group for pci rule related changes
-```
-
-= updateos-1.8.3
-----------------
-```
-+ pass command line vars through to sub script
-+ added "help" for sub scripts. (searches for HELP in script.)
-+ only download if md5 sums are different
-+ work if no network. (via the scripts stored in /usr/bin/.updateos)
-+ streamline/cleanup code a bit 
-```
-
-updateos-1.17.2
----------------
-```
-+ initial release
-```
-
-script contrib info 
--------------------
-```
-- Exit 0 if success, non-0 is fail
-- if test for already done and is, exit 0 success
-- command line args 2-* are passed to sub script command line args
-- #DESC in the script shows as the desc in $updateos help
-- #HELP in the script shows those lines in $updateos script help
-- Script must be able to run many times but only make changes once
-- group scripts with no user interaction
-- #PRDno in script triggers a warning before exec
-```
-
-script example
---------------
-```
-#!/bin/bash
-
-#DESC Script that serves this purpose
-#PRDno To prompt before execing the script warning of non-prod use.
-#HELP usage: $updateos testscript
-
-  echo "This will show in stout and the logfile."
-
-exit ?
-```
-
-ex group 
---------
+ex group exec 
+-------------
 ```
 bash-4.2$ ls -ltr ./rh8/wknoll | grep -v md5
 total 20
@@ -210,6 +147,78 @@ Walter uses unform to route printing through. Make sure the unform product is in
 ----> Wed Oct 30 10:59:14 CDT 2024 - Success.
 ```
 
+updateos-1.9.2
+--------------
+```
++ enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
++ add indicator to help dialog if script is not prod ready
++ wknoll group with his customs
+~ group desc. (displays readme DESC for group.) $updateos help group
++ group script calling another group? (nested groups)
+o psdss4 group for pci rule related changes
+```
+
+= updateos-1.8.3
+----------------
+```
++ pass command line vars through to sub script
++ added "help" for sub scripts. (searches for HELP in script.)
++ only download if md5 sums are different
++ work if no network. (via the scripts stored in /usr/bin/.updateos)
++ streamline/cleanup code a bit 
+```
+
+updateos-1.17.2
+---------------
+```
++ initial release
+```
+
+future
+------
+```
+- consider an agent
+  ? run now trigger
+  ? on-demand remote ssh access
+o training
+  - general use
+  - contrib
+- major feature ideas
+  ? patches available
+  ? malware
+  ? scada compliance
+  ? backup status
+  ? sonarcube?
+o logfile location, rotation, and retention
+```
+
+contrib info 
+------------
+```
+- Exit 0 if success, non-0 is fail
+- if test for already done and is, exit 0 success
+- command line args 2-* are passed to sub script command line args
+- #DESC in the script shows as the desc in $updateos help
+- #HELP in the script shows those lines in $updateos script help
+- Script must be able to run many times but only make changes once
+- group scripts with no user interaction
+- #PRDno in script triggers a warning before exec
+```
+
+ex script
+---------
+```
+#!/bin/bash
+
+#DESC Script that serves this purpose
+#PRDno To prompt before execing the script warning of non-prod use.
+#HELP usage: $updateos testscript
+
+  echo "This will show in stout and the logfile."
+
+exit ?
+```
+
 ex staging group
 ----------------
 ```
@@ -240,7 +249,6 @@ lrwxrwxrwx. 1 mgreen rti  14 Oct 15 10:11 77_uuid_switch -> ../uuid_switch
 - Use numbering at the front of the file or link name to force ordering of script exec.
 - Do not use any scripts that are flagged "PRDno". Staging should be a totally silent install.
 
-
 repo locations
 --------------
 ```
@@ -250,7 +258,6 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 ```
-
 
 install media / staging
 -----------------------
@@ -267,14 +274,13 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
-
-installation and information
-----------------------------
+server-side install/information
+-------------------------------
 - This ostools repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
 - Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
+- After that, use your altered updateos for the install.
 - If a script fails during a "group" run, updateos exits non-zero immediately.
 - Logging for updateos is in /tmp/updateos.log.
-
 
 maintainer
 ----------
