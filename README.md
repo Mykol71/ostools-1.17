@@ -7,7 +7,7 @@ updateos
 o Incomplete
 + Completed
 ? Unsure
-> Current
+= Current
 ```
 
 updateos future
@@ -26,8 +26,8 @@ o training
   - last backup status
 ```
 
-~ updateos 1.9.2
-----------------
+updateos 1.9.2
+--------------
 ```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 + add indicator to help dialog if script is not prod ready
@@ -36,9 +36,9 @@ o training
 + group script calling another group? (nested groups)
 ```
 
-```
-> updateos 1.8.3
+= updateos 1.8.3
 ----------------
+```
 + pass command line vars through to sub script
 + added "help" for sub scripts. (searches for HELP in script.)
 + only download if md5 sums are different
@@ -46,9 +46,9 @@ o training
 + streamline/cleanup code a bit 
 ```
 
-```
 updateos-1.17.2
 ---------------
+```
 + initial release
 ```
 
