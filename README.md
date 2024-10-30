@@ -13,7 +13,7 @@ o Incomplete
 ? Unsure
 ```
 
-> updateos x.x.x
+= updateos x.x.x
 ----------------
 ```
 ? consider an agent
@@ -29,45 +29,43 @@ o training
   - last backup status
 ```
 
-~ updateos 1.9.2
+= updateos 1.9.2
 ----------------
 ```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
-+ add indicator to help dialog if script is not prod ready.
-~ docu example; wknoll group with his customs.
++ add indicator to help dialog if script is not prod ready
+~ docu example; wknoll group with his customs
 o group desc. (displays readme DESC for group.) $updateos help group
 ~ group script calling another group? (nested groups)
-~ update to padss-4 hardening 
-o 
 ```
 
-* updateos 1.8.3
+= updateos 1.8.3
 ----------------
 ```
-+ pass command line vars through to sub script.
++ pass command line vars through to sub script
 + added "help" for sub scripts. (searches for HELP in script.)
-+ only download if md5 sums are different.
++ only download if md5 sums are different
 + work if no network. (via the scripts stored in /usr/bin/.updateos)
-+ streamline/cleanup code a bit. 
++ streamline/cleanup code a bit 
 ```
 
-* updateos-1.17.2
+= updateos-1.17.2
 -----------------
 ```
-- Initial Release.
+- initial release
 ```
 
 = Script Contrib Info 
 ---------------------
 ```
-- Exit 0 if success, non-0 is fail.
-- if test for already done and is, exit 0 success.
-- command line args 2-* are passed to sub script command line args.
-- #DESC in the script shows as the desc in $updateos help.
-- #HELP in the script shows those lines in $updateos script help.
-- Script must be able to run many times but only make changes once.
-- group scripts with no user interaction.
-- #PRDno in script triggers a warning before exec.
+- Exit 0 if success, non-0 is fail
+- if test for already done and is, exit 0 success
+- command line args 2-* are passed to sub script command line args
+- #DESC in the script shows as the desc in $updateos help
+- #HELP in the script shows those lines in $updateos script help
+- Script must be able to run many times but only make changes once
+- group scripts with no user interaction
+- #PRDno in script triggers a warning before exec
 ```
 
 = Repo Locations
@@ -83,16 +81,16 @@ http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 
 = Install Media / Staging
 -------------------------
-- Download the RTI RH8.x install media iso.  
+- Download the RTI RH8.x install media iso  
 
 http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 
-- Use rufus or other utility to burn the iso to a blank usb stick.  
-- Boot from usb stick.  
-- At the grub boot menu, select "Install RTI on RHEL8".  
-- After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login.  
-- If networking permits, kpugh and mgreen will get an email of the log file from the staging process.  
-- Run RTI.
+- Use rufus or other utility to burn the iso to a blank usb stick 
+- Boot from usb stick  
+- At the grub boot menu, select "Install RTI on RHEL8"  
+- After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login  
+- If networking permits, kpugh and mgreen will get an email of the log file from the staging process  
+- Run RTI
 
 ** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
 
