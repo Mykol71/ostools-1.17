@@ -117,29 +117,6 @@ installation and information
 - Logging for updateos is in /tmp/updateos.log.
 
 
-custom install media
---------------------
-- Download boot.iso from redhat, and mount it with
-```
- mount -o loop ./boot.iso /mnt .
-```
-- Copy the structure to a new folder.  Also make sure to get /mnt/.discinfo
-```
-cp -rp /mnt/. ./newiso/.
-```
-- Edit ./newiso/EFI/boot/grub.cfg and add the following to the first linux boot line
-```
-inst.ks=http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/RH8-RTI-silent.ks inst.stage2=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms net.ifnames=0
-```
-(Make any other edits you wish as well.)
-- Run
-```
-cd ./newiso/.
-sudo mkisofs -o /home/tfsupport/rh8-rti.iso -b isolinux/isolinux.bin -c isolinux/boot.cat --no-emul-boot --boot-load-size 4 --boot-info-table -J -R -V "Teleflora Linux POS" .
-```
-- The resulting 900ish meg iso file can be then burned to a usb stick with any utility. i.e. rufus.
-
-
 maintainer
 ----------
 mgreen@teleflora.com
