@@ -36,8 +36,8 @@ usage() {
     NC='\033[0m'
     echo -e "${BLUE}@${NC}  updateos - $VERSION"
     printf ''${LGGRN}')~ '${NC}''
-    echo "USAGE: sudo updateos (groupname|scriptname|help)"
-    echo "$GROUP"
+    echo "usage: sudo updateos (groupname|scriptname|help)"
+    echo "$GROUP                       p desc"
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
   for SCRIPT in $SCRIPT_LIST
     do
