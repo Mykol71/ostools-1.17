@@ -145,7 +145,7 @@ Walter uses unform to route printing through. Make sure the unform product is in
 ----> Wed Oct 30 10:59:14 CDT 2024 - Success.
 ```
 
-updateos-1.9.2
+= updateos-1.9.7
 --------------
 ```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
@@ -156,8 +156,8 @@ updateos-1.9.2
 o psdss4 group for pci rule related changes
 ```
 
-= updateos-1.8.3
-----------------
+updateos-1.8.3
+--------------
 ```
 + pass command line vars through to sub script
 + added "help" for sub scripts. (searches for HELP in script.)
@@ -175,17 +175,20 @@ updateos-1.17.2
 future
 ------
 ```
-- consider an agent
-  ? run now trigger
-  ? on-demand remote ssh access
 o training
   - general use
   - contrib
-- major feature ideas
+- feature ideas
   ? patches available
+   - cve info for available patches
   ? malware
-  ? scada compliance
-  ? backup status
+   - yara
+  ? openscap compliance
+   - pa-dss (payment card industry requirements)
+   - oval (security advisories from redhat)
+  ? backup info
+  ? dell tsr reports
+  ? summary report
 o logfile location, rotation, and retention
 ```
 
@@ -202,8 +205,8 @@ contrib info
 - #PRDno in script triggers a warning before exec
 ```
 
-ex script
----------
+script
+------
 ```
 #!/bin/bash
 
@@ -216,8 +219,8 @@ ex script
 exit ?
 ```
 
-ex staging group
-----------------
+group
+-----
 ```
 bash-4.2$ ls -ltr ./rh8/stage
 total 4
@@ -246,6 +249,25 @@ lrwxrwxrwx. 1 mgreen rti  14 Oct 15 10:11 77_uuid_switch -> ../uuid_switch
 - Use numbering at the front of the file or link name to force ordering of script exec.
 - Do not use any scripts that are flagged "PRDno". Staging should be a totally silent install.
 
+staging
+-------
+- Download the RTI RH8.x install media iso  
+```
+http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
+```
+- Use rufus or other utility to burn the iso to a blank usb stick 
+- Boot from usb stick  
+- At the grub boot menu, select "Install RTI on RHEL8"  
+- After the OS installs, the system will reboot. Then login as tfsupport with the default password. You will be forced to change the tfsupport password on first login  
+- Install a basis license
+- Run EM_PWD script to set the enterprise manager password.
+
+hosting
+-------
+- This updateos repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
+- Then, update the BACKEND= variable in updateos, as well as the url to the location in the kickstart file(s).
+- After that, use your altered updateos script to install on supported systems.
+
 repos
 -----
 ```
@@ -255,27 +277,6 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 ```
-
-rti staging
------------
-- Download the RTI RH8.x install media iso  
-```
-http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
-```
-- Use rufus or other utility to burn the iso to a blank usb stick 
-- Boot from usb stick  
-- At the grub boot menu, select "Install RTI on RHEL8"  
-- After the OS installs, the system will reboot. Then login as tfsupport - (normal daisy tfsupport password). You will be forced to change the tfsupport password on first login  
-- If networking permits, kpugh and mgreen will get an email of the log file from the staging process  
-- Run RTI
-
-** You will need to install a basis license, as well as run the EM_PWD script to set the enterprise manager password.**
-
-server-side info
-----------------
-- This updateos repo should be copied to a location accessible (and indexable) by httpd listing on port 80 to the outside world.
-- Then, update the BACKEND= variable in updateos, as well as the url to the location of the updateos script, in the kickstart file(s).
-- After that, use your altered updateos script for the install.
 
 maintainer
 ----------
