@@ -28,9 +28,9 @@ o Incomplete
 install
 -------
 ```
-wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos-1.19.7
-chmod +x ./updateos-1.19.7 
-cp ./updateos-1.19.7 /usr/bin/updateos
+wget http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos
+chmod +x ./updateos 
+cp ./updateos /usr/bin/updateos
 updateos help
 ```
 
@@ -192,8 +192,8 @@ o training
 o logfile location, rotation, and retention
 ```
 
-contrib info 
-------------
+contrib 
+-------
 ```
 - Exit 0 if success, non-0 is fail
 - if test for already done and is, exit 0 success
