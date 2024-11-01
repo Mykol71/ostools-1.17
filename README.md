@@ -39,7 +39,7 @@ help
 ```
 @  updateos - 1.19.7
 )~ USAGE: sudo updateos (groupname|scriptname|help)
-rh8
+rh8                       p desc
  blcheck                  ^ Check common blacklists for public IP.
  change_nics              ^ change nic namings from ethX to tfethX.
  check_compliance         ^ Must have already assigned this server to a compliance profile on the
@@ -145,15 +145,20 @@ Walter uses unform to route printing through. Make sure the unform product is in
 ----> Wed Oct 30 10:59:14 CDT 2024 - Success.
 ```
 
-= updateos-1.9.7
+updateos-2.1.3
 --------------
+```
+~ group desc. (displays readme DESC for group.) $updateos help group
+o psdss4 group for pci rule related changes
+```
+
+= updateos-1.9.7
+----------------
 ```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 + add indicator to help dialog if script is not prod ready
 + wknoll group with his customs
-~ group desc. (displays readme DESC for group.) $updateos help group
 + group script calling another group? (nested groups)
-o psdss4 group for pci rule related changes
 ```
 
 updateos-1.8.3
@@ -178,17 +183,7 @@ future
 o training
   - general use
   - contrib
-- feature ideas
-  ? patches available
-   - cve info for available patches
-  ? malware
-   - yara
-  ? openscap compliance
-   - pa-dss (payment card industry requirements)
-   - oval (security advisories from redhat)
-  ? backup info
-  ? dell tsr reports
-  ? summary report
+  ? pa-dss report via openscap
 o logfile location, rotation, and retention
 ```
 
