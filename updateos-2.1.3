@@ -38,6 +38,7 @@ usage() {
     printf ''${LGGRN}')~ '${NC}''
     echo "usage: sudo updateos (groupname|scriptname|help)"
     echo "$GROUP                       p desc"
+    echo "---                       - ----"
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
   for SCRIPT in $SCRIPT_LIST
     do
@@ -54,10 +55,13 @@ usage() {
     done
 #subgroup list
     [ "$NETUP" == "Y" ] && GROUP_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5 | grep -v nopub`
-    echo "groups"
+    echo "group                     p desc"
+    echo "-----                     - ----"
  for SUBGROUP in $GROUP_LIST
    do
-    echo " $SUBGROUP"
+    [ "`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#PRDno`" != "" ] && PRD="-" || PRD='^'
+    DESC="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#DESC | sed -e 's/^#DESC\ //g'`" 
+    echo " $SUBGROUP                   $PRD $DESC" 
    done
 exit 0
 }

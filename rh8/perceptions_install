@@ -20,7 +20,7 @@ yum -y openscap yara
 
 
 #pa-dss compliance openscap scans
-oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_pci-dss --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel${OSMAJORVERSION}-ds.xml
+oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_pci-dss --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel${OSMAJORVERSION}-xccdf.xml
 
 #redhat cve info OVAL repo scans
 
