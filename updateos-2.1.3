@@ -37,7 +37,7 @@ usage() {
     NC='\033[0m'
     echo -e "${BLUE}@${NC}  updateos - $VERSION"
     printf ''${LGGRN}')~ '${NC}''
-    echo "usage: sudo updateos (groupname|scriptname|help) [help]"
+    echo "usage: sudo updateos (groupname|scriptname|help) [dry]"
     echo "$GROUP                       p desc"
     echo "---                       - ----"
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
@@ -76,9 +76,8 @@ exit 0
 }
 
 run_subgroup() {
-  [ "$NETUP" != "Y" ] && log "Internet down. No subgroups without internet." && return 0
-echo $HELP
-    [ "`echo $HELP | grep -i help||dry`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
+    [ "$NETUP" != "Y" ] && log "Internet down. No subgroups without internet." && return 0
+    [ "`echo $HELP | grep -i dry`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
     for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md` 
   do
       log "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..."
@@ -123,5 +122,5 @@ download_script () {
     [ "`echo $CMDLINEVARS | grep -i help`" != "" ] && script_help
     [ "`echo $file | grep -v \/`" != "" ] && run_script
    done
-  log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [help]"
+  log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]"
 exit 0

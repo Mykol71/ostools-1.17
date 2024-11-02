@@ -39,7 +39,7 @@ help
 ----
 ```
 @  updateos - 2.1.3
-)~ usage: sudo updateos (groupname|scriptname|help) [help|dry]
+)~ usage: sudo updateos (groupname|scriptname|help) [dry]
 rh8                       p desc
 ---                       - ----
  blcheck                  ^ Check common blacklists for public IP.
@@ -99,6 +99,7 @@ group                     p desc
 - by default logging is in /tmp/updateos.log
 - if no network, no group installs
 - command line prompts given to updateos get passed on to a script exec
+- the "dry" command line option after script cats the script to stdout, after a group shows the #HELP info and supporting scripts.
 
 script exec
 -----------
@@ -156,8 +157,9 @@ updateos-2.1.3
 + group desc. (displays README.md #DESC for group.)
 ~ psdss4 group for pci rule related changes
 + group #PRDno flag support
-+ $updateos (groupname) help shows #HELP from the group README.md file as well as a list of the scripts in that group.
++ $updateos (groupname) dry shows #HELP from the group README.md file as well as a list of the scripts in that group.
 + $updateos (scriptname) dry echos the script to stdout instead of execing.
++ cosmetic changes
 ```
 
 = updateos-1.9.7
