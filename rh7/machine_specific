@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#DESC this script checks the system serial number then sees if there is a customs folder on the repo with scripts to run.
+#DESC This script checks the system serial number then sees if there is a customs folder on the repo with scripts to run.
 #PRDno
 
 BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
@@ -10,9 +10,7 @@ SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep 
 
 for file in $SCRIPT_LIST
   do
-    FILE="`echo $file | cut -d\/ -f1`"
-#    [ "$FILE" == "$SERIAL" ] && /usr/bin/updateos $SERIAL 
-    [ "$FILE" == "$SERIAL" ] && echo "match\!"
+    [ "`echo $file | grep "$SERIAL"`" != "" ] && /usr/bin/updateos "$SERIAL" 
   done
 
 exit $?

@@ -3,6 +3,7 @@
 #DESC Set hostname for specific system.
 #PRDno
 
-/usr/bin/updateos sethostname mikes-store
+echo successfully ran scripts specific to this machine.
+#/usr/bin/updateos sethostname mikes-store
 
 exit $?

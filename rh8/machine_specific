@@ -13,4 +13,4 @@ for file in $SCRIPT_LIST
     [ "`echo $file | grep "$SERIAL"`" != "" ] && /usr/bin/updateos "$SERIAL" 
   done
 
-exit 0
+exit $?

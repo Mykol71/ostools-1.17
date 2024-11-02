@@ -7,10 +7,10 @@ ID=$(/usr/bin/id -u)
 #Init
 VERSION="2.1.3"
 LOG_FILE="/tmp/updateos.log"
-BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
+export BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
-SCRIPT="$1"
-SUBGROUP="$1"
+export SCRIPT="$1"
+export SUBGROUP="$1"
 HELP="$2"
 n="${10:-25}"
 [ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
@@ -18,7 +18,7 @@ n="${10:-25}"
 #OS Check.
 for OSVERS in 7 8 9
   do
-    [ "`grep " release $OSVERS." /etc/redhat-release`" != "" ] && GROUP="rh$OSVERS"
+    [ "`grep " release $OSVERS." /etc/redhat-release`" != "" ] && export GROUP="rh$OSVERS"
   done
 
 #Internet check.
@@ -61,7 +61,7 @@ usage() {
     echo "-----                     - ----"
  for SUBGROUP in $GROUP_LIST
    do
-      [ "`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#PRDno`" != "" ] && PRD="-" || PRD='^'
+      [ "`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#PRDno`" == "" ] && PRD="^" || PRD='-'
       DESC="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#DESC | sed -e 's/^#DESC\ //g'`" 
       SUBGROUP="`echo $SUBGROUP | cut -d/ -f1`"
       SUBGROUP="$SUBGROUP$(printf '%*s' "$n" "")"        
