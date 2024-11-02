@@ -36,7 +36,7 @@ usage() {
     NC='\033[0m'
     echo -e "${BLUE}@${NC}  updateos - $VERSION"
     printf ''${LGGRN}')~ '${NC}''
-    echo "usage: sudo updateos (groupname|scriptname|help)"
+    echo "usage: sudo updateos (groupname|scriptname|help) [help]"
     echo "$GROUP                       p desc"
     echo "---                       - ----"
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
@@ -53,15 +53,23 @@ usage() {
       echo -n " "
       echo ${DESC:0:70}
     done
+
 #subgroup list
     [ "$NETUP" == "Y" ] && GROUP_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5 | grep -v nopub`
     echo "group                     p desc"
     echo "-----                     - ----"
  for SUBGROUP in $GROUP_LIST
    do
-    [ "`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#PRDno`" != "" ] && PRD="-" || PRD='^'
-    DESC="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#DESC | sed -e 's/^#DESC\ //g'`" 
-    echo " $SUBGROUP                   $PRD $DESC" 
+      [ "`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#PRDno`" != "" ] && PRD="-" || PRD='^'
+      DESC="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#DESC | sed -e 's/^#DESC\ //g'`" 
+      SUBGROUP="`echo $SUBGROUP | cut -d/ -f1`"
+      SUBGROUP="$SUBGROUP$(printf '%*s' "$n" "")"        
+      var="$(echo "${SUBGROUP}"|grep -Eo "^.{1,$n}")" 
+      echo -n " "
+      printf '%s' "${var}" 
+      echo -n ${PRD:0:58}
+      echo -n " "
+      echo ${DESC:0:70}
    done
 exit 0
 }
@@ -111,5 +119,5 @@ download_script () {
     [ "`echo $CMDLINEVARS | grep -i help`" != "" ] && script_help
     [ "`echo $file | grep -v \/`" != "" ] && run_script
    done
-  log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname)"
+  log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [help]"
 exit 0
