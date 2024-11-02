@@ -76,7 +76,7 @@ exit 0
 
 run_subgroup() {
   [ "$NETUP" != "Y" ] && log "Internet down. No subgroups without internet." && return 0
-    [ "$2" == "help" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
+    [ "`echo $2 | grep -i help`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
     for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md` 
   do
       log "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..."
