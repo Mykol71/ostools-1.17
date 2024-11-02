@@ -11,6 +11,7 @@ BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
 SCRIPT="$1"
 SUBGROUP="$1"
+HELP="$2"
 n="${10:-25}"
 [ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
 
@@ -76,7 +77,7 @@ exit 0
 
 run_subgroup() {
   [ "$NETUP" != "Y" ] && log "Internet down. No subgroups without internet." && return 0
-    [ "`echo $2 | grep -i help`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
+    [ "`echo $HELP | grep -i help`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
     for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md` 
   do
       log "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..."
