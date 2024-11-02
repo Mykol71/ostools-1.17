@@ -37,12 +37,12 @@ updateos help
 help
 ----
 ```
-@  updateos - 1.19.7
-)~ USAGE: sudo updateos (groupname|scriptname|help)
+@  updateos - 2.1.3
+)~ usage: sudo updateos (groupname|scriptname|help) [help]
 rh8                       p desc
+---                       - ----
  blcheck                  ^ Check common blacklists for public IP.
  change_nics              ^ change nic namings from ethX to tfethX.
- check_compliance         ^ Must have already assigned this server to a compliance profile on the
  conf_chrony              ^ Configures, starts, and enables chrony time sync.
  conf_firewall            ^ Configures iptables for use with linux POS systems.
  conf_platform            ^ Creates folders need by the POS installation.
@@ -66,6 +66,7 @@ rh8                       p desc
  install_ups              ^ Install the APC UPS Daemon.
  osupgrade                - Inplace OS upgrade from RH8 to RH9 - RTI.
  passport_check           ^ Checks external device name and updates backups.config if needed.
+ perceptions_install      - Collect "perceptive" data about the system.
  post_install             ^ Creates a systemd service that will run after first reboot only. (Afte
  post_install_rh9         ^ Creates a systemd service that will run after first reboot only. (Afte
  realtime_disable         - Disable RTI realtime.
@@ -85,15 +86,18 @@ rh8                       p desc
  update_bbj_21.pl         ^ Installs/Upgrades BBj and java.
  update_blm.pl            ^ Update Basis BLM for correct license address
  uuid_switch              ^ Changes drive references in /etc/fstab to uuids instead of device name
-groups
- padss4/
- stage/
- wknoll/
+group                     p desc
+-----                     - ----
+ padss4                   - Group for PA-DSS 4.x rules.
+ stage                    ^ RTI rhel8 staging.
+ wknoll                   ^ Walter Knoll custom.
 ```
 - only supporting scripts for the os version running are shown from the repo.
 - this help checks all local copies of scripts and updates them if they have changed.
 - the identifier before the description is the prod ready flag. ^=prod ready -=not.
 - by default logging is in /tmp/updateos.log
+- if no network, no group installs
+- command line prompts given to updateos get passed on to a script exec
 
 script exec
 -----------
