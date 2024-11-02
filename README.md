@@ -39,7 +39,7 @@ help
 ----
 ```
 @  updateos - 2.1.3
-)~ usage: sudo updateos (groupname|scriptname|help) [help]
+)~ usage: sudo updateos (groupname|scriptname|help) [help|dry]
 rh8                       p desc
 ---                       - ----
  blcheck                  ^ Check common blacklists for public IP.
@@ -157,6 +157,7 @@ updateos-2.1.3
 ~ psdss4 group for pci rule related changes
 + group #PRDno flag support
 + $updateos (groupname) help shows #HELP from the group README.md file as well as a list of the scripts in that group.
++ $updateos (scriptname) dry echos the script to stdout instead of execing.
 ```
 
 = updateos-1.9.7
