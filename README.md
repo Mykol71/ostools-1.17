@@ -153,9 +153,10 @@ Walter uses unform to route printing through. Make sure the unform product is in
 updateos-2.1.3
 --------------
 ```
-+ group desc. (displays readme.md #DESC for group.)
++ group desc. (displays README.md #DESC for group.)
 ~ psdss4 group for pci rule related changes
 + group #PRDno flag support
++ $updateos (groupname) help shows #HELP from the group README.md file as well as a list of the scripts in that group.
 ```
 
 = updateos-1.9.7
