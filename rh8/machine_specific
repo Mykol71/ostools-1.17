@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#DESC this script checks the system serial number then sees if there is a customs folder on the repo with scripts to run.
+#PRDno
+
+BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
+SERIAL="`dmidecode -s system-serial-number`"
+GROUP="rh8"
+SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v .md5`
+
+for file in $SCRIPT_LIST
+  do
+    [ "$file" == "$SERIAL" ] && /usr/bin/updateos $SERIAL 
+  done
+
+exit $?

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#DESC Set hostname for specific system.
+#PRDno
+
+echo success
+#/usr/bin/updateos sethostname mikes-store
+
+exit $?

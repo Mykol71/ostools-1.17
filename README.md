@@ -67,7 +67,6 @@ rh8                       p desc
  install_ups              ^ Install the APC UPS Daemon.
  osupgrade                - Inplace OS upgrade from RH8 to RH9 - RTI.
  passport_check           ^ Checks external device name and updates backups.config if needed.
- perceptions_install      - Collect "perceptive" data about the system.
  post_install             ^ Creates a systemd service that will run after first reboot only. (Afte
  post_install_rh9         ^ Creates a systemd service that will run after first reboot only. (Afte
  realtime_disable         - Disable RTI realtime.
@@ -193,8 +192,9 @@ future
 o training
   - general use
   - contrib
-  ? pa-dss report via openscap
+? pa-dss report via openscap
 o logfile location, rotation, and retention
+? check for customs via service tag
 ```
 
 contrib 
@@ -253,6 +253,7 @@ lrwxrwxrwx. 1 mgreen rti  14 Oct 15 10:11 77_uuid_switch -> ../uuid_switch
 - Only make copies of scripts if you plan to alter the one in the parent folder. Otherwise use a symlink.
 - Use numbering at the front of the file or link name to force ordering of script exec.
 - Do not use any scripts that are flagged "PRDno". Staging should be a totally silent install.
+- There is a hash hash_files script in the root dir of this repo to rebuild the md5 sums for the scripts. Do this prior to checkin. 
 
 staging
 -------
