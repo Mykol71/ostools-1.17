@@ -10,7 +10,7 @@ SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep 
 
 for file in $SCRIPT_LIST
   do
-    [ "$file" == "$SERIAL" ] && /usr/bin/updateos $SERIAL 
+    [ "echo $file | grep $SERIAL" != "" ] && /usr/bin/updateos $SERIAL 
   done
 
-exit $?
+exit 0
