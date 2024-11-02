@@ -49,7 +49,6 @@ rh8                       p desc
  conf_platform            ^ Creates folders need by the POS installation.
  conf_users               ^ Add POS system accounts.
  config_sendgrid          ^ Configures Sendgrid. Need API Key and email from add.
- create_media             - Creates baremetal recovery usb stick.
  dss4_harden              - Makes security related system changes based on openscap rules for PCI-
  email_results            ^ Email log file.
  gfree_rules              - Firewall rules added for gravity free.
@@ -57,7 +56,7 @@ rh8                       p desc
  inc_format               ^ Formats sdb with 7 partitions for nightly backups.
  insights_scan            ^ Run a full insights scan. Includes compliance and malware scans.
  install_cortex           ^ Installs Cortex for IT managed malware protection.
- install_flordir          ^ Install the POS Electronic Directory.
+ install_flordir          - Install the POS Electronic Directory.
  install_kaseya           ^ Install TF's kaseya agent.
  install_ostools-1.16     ^ Install legacy ostools.
  install_pbe              - Installs RTI Backup solution.
@@ -65,8 +64,10 @@ rh8                       p desc
  install_rti              ^ Installs RTI 16.3.8 and all deps.
  install_tcc              ^ Install TF's CC processing program. (Used by POS software)
  install_ups              ^ Install the APC UPS Daemon.
+ machine_specific         - This script checks the system serial number then sees if there is a cu
  osupgrade                - Inplace OS upgrade from RH8 to RH9 - RTI.
  passport_check           ^ Checks external device name and updates backups.config if needed.
+ perceptions_install      - Collect "perceptive" data about the system.
  post_install             ^ Creates a systemd service that will run after first reboot only. (Afte
  post_install_rh9         ^ Creates a systemd service that will run after first reboot only. (Afte
  realtime_disable         - Disable RTI realtime.
@@ -88,9 +89,10 @@ rh8                       p desc
  uuid_switch              ^ Changes drive references in /etc/fstab to uuids instead of device name
 group                     p desc
 -----                     - ----
- padss4                   - Group for PA-DSS 4.x rules.
+ CZW7RV1                  - Configs specific to this machine.
+ padss4                   - Group for making pci-dss4.0 changes.
  stage                    ^ RTI rhel8 staging.
- wknoll                   ^ Walter Knoll custom.
+ wknoll                   ^ Walter Knoll customs
 ```
 - only supporting scripts for the os version running are shown from the repo.
 - this help checks all local copies of scripts and updates them if they have changed.
@@ -267,6 +269,7 @@ http://rhel8repo.centralus.cloudapp.azure.com/support/rh8-rti.iso
 - After the OS installs, the system will reboot. Then login as tfsupport with the default password. You will be forced to change the tfsupport password on first login  
 - Install a basis license
 - Run EM_PWD script to set the enterprise manager password.
+- machine_specific; the last script ran during the stage folder exec, is a machine_specific script. That script, checks to see if there is a group name matching the current system serial number, and if it exists, execs the group.
 
 hosting
 -------
