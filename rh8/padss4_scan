@@ -19,8 +19,8 @@ yum -y openscap
 authselect select minimal --force
 
 #fix usr2 perms
-chmod -R root:root /usr2/basis
-/usr2/bbx/bin/rtiperms.pl
+chown -R root:root /usr2/basis
+/usr2/bbx/bin/rtiperms.pl /usr2/bbx
 
 #pa-dss compliance openscap scan
 cd /usr2/openscap
