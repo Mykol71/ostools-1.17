@@ -118,9 +118,9 @@ download_script () {
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v .md5 | grep -v nopub | grep $SCRIPT` || SCRIPT_LIST=`ls /usr/bin/.updateos/ | grep $SCRIPT`
   for file in $SCRIPT_LIST
    do
-    [ "`echo $file | grep \/`" != "" ] && run_subgroup
+    [ "`echo $file | grep \/`" != "" ] && [ "$2" == "" ] && run_subgroup
     [ "`echo $CMDLINEVARS | grep -i help`" != "" ] && script_help
-    [ "`echo $file | grep -v \/`" != "" ] && run_script
+    [ "`echo $file | grep -v \/`" != "" ] && [ "$2" == "" ] && run_script
    done
   log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]"
 exit 0
