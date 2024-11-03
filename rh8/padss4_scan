@@ -28,6 +28,10 @@ oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_pci-dss --result
 
 mv -f ./report.html /usr2/openscap/padss4_scan_results.html
 
+oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_ospp --results-arf arf.xml --report report.html --skip-rule xccdf_org.ssgproject.content_rule_accounts_password_last_change_is_in_past --skip-rule xccdf_org.ssgproject.content_rule_accounts_root_gid_zero --skip-rule xccdf_org.ssgproject.content_rule_rpm_verify_ownership --skip-rule xccdf_org.ssgproject.content_rule_sshd_limit_user_access --skip-rule xccdf_org.ssgproject.content_rule_sshd_use_approved_macs --skip-rule xccdf_org.ssgproject.content_rule_selinux_state --skip-rule xccdf_org.ssgproject.content_rule_package_firewalld_installed --skip-rule xccdf_org.ssgproject.content_rule_selinux_confinement_of_daemons --skip-rule xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_restricted --skip-rule xccdf_org.ssgproject.content_rule_firewalld_loopback_traffic_trusted --skip-rule xccdf_org.ssgproject.content_rule_sshd_use_approved_macs --skip-rule xccdf_org.ssgproject.content_rule_sudo_add_use_pty --skip-rule xccdf_org.ssgproject.content_rule_sshd_do_not_permit_user_env --remediate /usr/share/xml/scap/ssg/content/ssg-rhel${OSMAJORVERS}-ds.xml
+ 
+mv -f ./report.html /usr2/openscap/ospp_scan_results.html
+
 #add nightly scan if not already there.
 [ ! -f /etc/cron.d/padss_scan ] && echo "0 20 * * * /usr/bin/updateos padss4_scan" > /etc/cron.d/padss4_scan
 
