@@ -132,9 +132,55 @@ total 20
 - Right now, they do nothing but echo information. But that could be enough. Just check the log file after you run for instructions.
 - The person that stages the system would check $updateos help to see if a group for the customer exists, and if so, run that group. ($updateos wknoll). Then check the logs.
 
+script help
+-----------
+- Pulled from the #HELP lines in the script (blcheck).
 ```
-[tfsupport@RTIQA25 tmp]$ sudo updateos wknoll
-[sudo] password for tfsupport: 
+sudo updateos blcheck help
+blcheck -
+--------- 
+Takes public IP command line arg.
+If none, uses current public IP.
+Example: $sudo updateos blcheck 42.43.44.45
+```
+- Pulled from the #HELP lines in the script (blcheck).
+
+group dry
+---------
+- Displays #HELP info in readme.md, and a list of the supporting script names.
+
+```
+sudo updateos wknoll dry
+Walter Knoll custom information
+-------------------------------
+uses unform for printing.
+uses postfix instead of sendmail. And relays through an smtp relay he configured in AWS.
+
+20_email_setup
+30_printing
+```
+
+script dry
+----------
+- Displays script.
+
+```
+sudo updateos sethostname dry
+#!/bin/bash
+
+#DESC Set the server's hostname.
+[ -f /usr2/upgrade/hostname ] && NAME="`cat /usr2/upgrade/hostname`"
+[ "$NAME" == "" ] && echo -n "Enter Hostname: " && read NAME
+
+hostnamectl set-hostname "$NAME"
+
+IP="`hostname -I | cut -d" " -f1`"
+sed -i "/$IP/d" /etc/hosts
+echo "$IP       $NAME    $NAME.teleflora.com" >>/etc/hosts
+```
+
+```
+sudo updateos wknoll
 ----> Wed Oct 30 10:59:06 CDT 2024 - Running rh8 wknoll 20_email_setup...
 No match for argument: sendmail
 No packages marked for removal.
@@ -223,7 +269,7 @@ script
 
   echo "This will show in stout and the logfile."
 
-exit ?
+exit $?
 ```
 
 group
