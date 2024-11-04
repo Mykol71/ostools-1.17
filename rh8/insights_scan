@@ -8,16 +8,16 @@
 yum -y install yara
 sed -i "s/test_scan:\ true/test_scan:\ false/g" /etc/insights-client/malware-detection-config.yml
 
-insights-client --checkin
-insights-client --compliance
+#insights-client --checkin
+#insights-client --compliance
 #stashed commands for later
 #oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_pci-dss --results-arf arf.xml --report report_padss.html /usr/share/xml/scap/ssg/content/ssg-rhel${OSMAJORVERSION}-ds.xml
 #oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_ospp --results-arf arf.xml --report report_general.html /usr/share/xml/scap/ssg/content/ssg-rhel${OSMAJORVERSION}-ds.xml
-insights-client --collector malware-detection
+#insights-client --collector malware-detection
 
 #add cron item
 #[ ! -f /etc/cron.d/insights_scan ] && echo "30 20 * * * root (insights-client --compliance && insights-client --checkin && insights-client --collector malware-detection)" > /etc/cron.d/insights_scan
 echo "30 20 * * * root (insights-client --compliance && insights-client --checkin && insights-client --collector malware-detection)" > /etc/cron.d/insights_scan
-[ ! -f /etc/cron.d/compliance_check ] && rm -f /etc/cron.d/compliance_check
+[ -f /etc/cron.d/compliance_check ] && rm -f /etc/cron.d/compliance_check
 
 exit $?
