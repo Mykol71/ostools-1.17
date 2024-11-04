@@ -198,19 +198,28 @@ Walter uses unform to route printing through. Make sure the unform product is in
 ----> Wed Oct 30 10:59:14 CDT 2024 - Success.
 ```
 
-updateos-2.1.3
+updateos-2.2.6
 --------------
 ```
+- if $2 is not null, and not dry or help, echo help.
+-
+
+```
+
+= updateos-2.1.3
+----------------
+```
 + group desc. (displays README.md #DESC for group.)
-~ psdss4 group for pci rule related changes
 + group #PRDno flag support
 + $updateos (groupname) dry shows #HELP from the group README.md file as well as a list of the scripts in that group.
 + $updateos (scriptname) dry echos the script to stdout instead of execing.
 + cosmetic changes
++ pa-dss report via openscap
++ check for customs via service tag
 ```
 
-= updateos-1.9.7
-----------------
+updateos-1.9.7
+--------------
 ```
 + enable/disable script for prod use? (if not prod-ready prompt for exec.) (replace nopub)
 + add indicator to help dialog if script is not prod ready
@@ -240,9 +249,7 @@ future
 o training
   - general use
   - contrib
-? pa-dss report via openscap
 o logfile location, rotation, and retention
-? check for customs via service tag
 ```
 
 contrib 
