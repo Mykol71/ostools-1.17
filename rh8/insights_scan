@@ -16,7 +16,8 @@ insights-client --compliance
 insights-client --collector malware-detection
 
 #add cron item
-[ ! -f /etc/cron.d/insights_scan ] && echo "30 10 * * * root (insights-client --compliance && insights-client --checkin && insights-client --collector malware-detection)" > /etc/cron.d/insights_scan
+#[ ! -f /etc/cron.d/insights_scan ] && echo "30 20 * * * root (insights-client --compliance && insights-client --checkin && insights-client --collector malware-detection)" > /etc/cron.d/insights_scan
+echo "30 20 * * * root (insights-client --compliance && insights-client --checkin && insights-client --collector malware-detection)" > /etc/cron.d/insights_scan
 [ ! -f /etc/cron.d/compliance_check ] && rm -f /etc/cron.d/compliance_check
 
 exit $?
