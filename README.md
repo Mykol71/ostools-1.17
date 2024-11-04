@@ -3,6 +3,9 @@ updateos
 
 about
 -----
+updateos is a core script that polls a configured repository backend for its supporting available commands (other scripts).
+This core script handles logging, keeping the commands updated, etc. leaving the supporting scripts only needing the commands to do that task.
+
 This script/repo hopefully improve a few areas.
   - Convert to a much simpler to maintain bash env for config management.
   - Handle the repetative coding, like logging, allowing the supporting scripts to just make changes.
@@ -14,6 +17,16 @@ This script/repo hopefully improve a few areas.
   - Staging media doesnt have to change to make changes to the staging process.
   - Speed up the total time it takes to convert from major os version to version.
   - Simplify customer recovery in a DR situation.
+
+special srings
+--------------
+updateos looks for the following key strings in the supporting scripts, and if there, uses the lines per the table.
+
+```
+#DESC	- populates the "desc" field on the help outputs.
+#HELP   - populates the output when '$updateos command' help is ran.
+#PRDno  - if in script, will be warned that the script has not been tested before running. Also used to populate the "p" field on the help output.
+```
 
 ```
 Key
