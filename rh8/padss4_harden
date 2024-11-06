@@ -20581,4 +20581,7 @@ fi
 
 ) # END fix for 'xccdf_org.ssgproject.content_rule_auditd_name_format'
 
+#To support tfremote from CS server.
+update-crypto-policies --set LEGACY
+
 exit $?
