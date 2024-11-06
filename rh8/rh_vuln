@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #DESC auditing security vulnerabilitys for redhat. 
-#PRDno
 
 #init
 OS="`cat /etc/redhat-release | cut -d" " -f6 | cut -d. -f1`"

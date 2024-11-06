@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
 #DESC Harden system per pa-dss4.0 recommendations.
-#PRDno
 #HELP command to generate this file:
-#HELP oscap xccdf generate fix --profile pci-dss /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml > 
-padss4_harden
+#HELP oscap xccdf generate fix --profile pci-dss /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml > padss4_harden
 
 #install or update deps
 yum -y openscap

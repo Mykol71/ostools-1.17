@@ -214,7 +214,6 @@ Walter uses unform to route printing through. Make sure the unform product is in
 updateos-2.2.6
 --------------
 ```
-- if $2 is not null, and not dry or help, echo help.
 -
 
 ```
