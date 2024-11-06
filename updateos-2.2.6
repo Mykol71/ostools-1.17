@@ -26,7 +26,7 @@ ping -c 1 -W 1 8.8.8.8 >/dev/null 2>&1
 [ "$?" == "0" ] && NETUP=Y || NETUP=N
 
 log() {
-  echo "$@" && echo "$@" >> $LOG_FILE
+  echo "$@" | tee -a $LOG_FILE
   echo >> $LOG_FILE
 }
 
