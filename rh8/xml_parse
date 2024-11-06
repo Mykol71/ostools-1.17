@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#DESC xml parsing method.
+#PRDno
+#going to need this for a few reasons later.
+#HELP $cat example.xml | ./parse_xml 
+
+read_dom () {
+    local IFS=\>
+    read -d \< ENTITY CONTENT
+    local RET=$?
+    TAG_NAME=${ENTITY%% *}
+    ATTRIBUTES=${ENTITY#* }
+    return $RET
+}
+
+parse_dom () {
+    if [[ $TAG_NAME = "foo" ]] ; then
+        eval local $ATTRIBUTES
+        echo "foo size is: $size"
+    elif [[ $TAG_NAME = "bar" ]] ; then
+        eval local $ATTRIBUTES
+        echo "bar type is: $type"
+    fi
+}
+
+while read_dom; do
+    parse_dom
+done
+
+echo $?

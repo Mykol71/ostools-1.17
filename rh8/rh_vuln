@@ -1,0 +1,22 @@
+#!/bin/bash
+
+OS="`cat /etc/redhat-release | cut -d" " -f6 | cut -d. -f1`"
+
+yum install -y scap-security-guide 
+
+#DESC auditing security vulnerabilitys for redhat. 
+#PRDno
+
+#CVEs
+wget https://security.access.redhat.com/data/metrics/ds/v2/RHEL${OS}/rhel-${OS}.ds.xml.bz2
+bunzip2 ./rhel-${OS}.ds.xml.bz2
+oscap xccdf eval --results rh_vuln_scan.xml --report rh_vuln_scan.html ./rhel-${OS}.ds.xml 
+
+#pa-dss
+oscap xccdf eval \
+--results padss_scan.xml \
+--profile xccdf_org.ssgproject.content_profile_pci-dss \
+/usr/share/xml/scap/ssg/content/ssg-rhel${OS}-ds.xml
+#oscap xccdf generate report --output padss_scan.html padss_scan.xml
+
+exit $?
