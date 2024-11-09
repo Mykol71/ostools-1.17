@@ -23,6 +23,7 @@ sed -i 's/\authmethod=BASIC/authmethod=CERT/g' /etc/insights-client/insights-cli
 sed -i 's/\#authmethod=/authmethod=CERT/g' /etc/insights-client/insights-client.conf
 sed -i 's/\username=tfslinuxpos/username=/g' /etc/insights-client/insights-client.conf
 sed -i 's/\password=erpoithxciujhnbmxhgkvhasw/password=/g' /etc/insights-client/insights-client.conf
+#sed -i "s/test_scan:\ true/test_scan:\ false/g" /etc/insights-client/malware-detection-config.yml
 [ $? -ne 0 ] && echo "Could not update conf file." && exit 3
 
 # register.
@@ -34,7 +35,7 @@ insights-client --enable-schedule
 insights-client --checkin
 [ $? -ne 0 ] && echo "Error with registration." && exit 4
 
-# move off redhat.repo if exists.
-[ -f /etc/yum/repos.d/redhat.repo ] && mv /etc/yum.repos.d/redhat.repo ~
+#add cron item
+[ ! -f /etc/cron.d/insights_scan ] && echo "30 20 * * * root (insights-client --checkin && insights-client --compliance && insights-client --collector malware-detection)" > /etc/cron.d/insights_scan
 
 exit 0
