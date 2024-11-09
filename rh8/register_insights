@@ -4,7 +4,7 @@
 # TF POS Linux insights registration.
 
 yum -y install scap-security-guide*
-yum -y install yara
+yum -y install yara subscription-manager
 
 # verify root
 ID=`/usr/bin/id -u`
@@ -19,13 +19,14 @@ yum -y install insights-client
 [ $? -ne 0 ] && echo "Could not install insights client." && exit 2
 
 # make config changes to conf.
-sed -i 's/\#authmethod=BASIC/authmethod=BASIC/g' /etc/insights-client/insights-client.conf
-sed -i 's/\#username=/username=tflinuxpos/g' /etc/insights-client/insights-client.conf
-sed -i 's/\#password=/password=erpoithxciujhnbmxhgkvhasw/g' /etc/insights-client/insights-client.conf
+sed -i 's/\authmethod=BASIC/authmethod=CERT/g' /etc/insights-client/insights-client.conf
+sed -i 's/\#authmethod=/authmethod=CERT/g' /etc/insights-client/insights-client.conf
+sed -i 's/\username=tfslinuxpos/username=/g' /etc/insights-client/insights-client.conf
+sed -i 's/\password=erpoithxciujhnbmxhgkvhasw/password=/g' /etc/insights-client/insights-client.conf
 [ $? -ne 0 ] && echo "Could not update conf file." && exit 3
 
 # register.
-insights-client --unregister
+subscription-manager register --activationkey=TelefloraPOS --org=4508688
 insights-client --register
 insights-client --compliance
 insights-client --collector malware-detection
