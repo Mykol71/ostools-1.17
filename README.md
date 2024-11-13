@@ -18,16 +18,6 @@ This script/repo hopefully improve a few areas.
   - Speed up the total time it takes to convert from major os version to version.
   - Simplify customer recovery in a DR situation.
 
-special srings
---------------
-updateos looks for the following key strings in the supporting scripts, and if there, uses the lines per the table.
-
-```
-#DESC	- populates the "desc" field on the help outputs.
-#HELP   - populates the output when '$updateos command' help is ran.
-#PRDno  - if in script, will be warned that the script has not been tested before running. Also used to populate the "p" field on the help output.
-```
-
 ```
 Key
 ---
@@ -264,6 +254,7 @@ o training
 o logfile location, rotation, and retention
 ```
 
+-------
 contrib 
 -------
 ```
@@ -277,10 +268,21 @@ contrib
 - #PRDno in script triggers a warning before exec
 ```
 
-script
-------
+special strings
+---------------
+updateos looks for the following key strings in the supporting scripts, and if there, uses the lines per the table.
+
+```
+#DESC	- populates the "desc" field on the help outputs.
+#HELP   - populates the output when '$updateos command' help is ran.
+#PRDno  - if in script, will be warned that the script has not been tested before running. Also used to populate the "p" field on the help output.
+```
+
+script example
+--------------
 ```
 #!/bin/bash
+set -e
 
 #DESC Script that serves this purpose
 #PRDno To prompt before execing the script warning of non-prod use.
@@ -291,8 +293,8 @@ script
 exit $?
 ```
 
-group
------
+group example
+-------------
 ```
 bash-4.2$ ls -ltr ./rh8/stage
 total 4
