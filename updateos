@@ -1,1 +1,128 @@
-./updateos-2.1.3
+#!/bin/bash
+
+#Is root.
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
+
+#Init
+VERSION="2.1.3"
+LOG_FILE="/tmp/updateos.log"
+export REPOSERVER="media.myk.green"
+export BACKEND="http://${REPOSERVER}/ostools-1.17"
+[ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
+export SCRIPT="$1"
+export SUBGROUP="$1"
+HELP="$2"
+n="${10:-25}"
+[ ! -d /usr/bin/.updateos ] &&  mkdir /usr/bin/.updateos
+
+#OS Check.
+for OSVERS in 7 8 9
+  do
+    [ "`grep " release $OSVERS." /etc/redhat-release`" != "" ] && export GROUP="rh$OSVERS"
+  done
+
+#Internet check.
+ping -c 1 -W 1 8.8.8.8 >/dev/null 2>&1
+[ "$?" == "0" ] && NETUP=Y || NETUP=N
+
+log() {
+  echo "$@" && echo "$@" >> $LOG_FILE
+  echo >> $LOG_FILE
+}
+
+usage() {
+  SUBGROUP=""
+    LGGRN='\033[1;32m'
+    BLUE='\033[1;34m'
+    NC='\033[0m'
+    echo -e "${BLUE}@${NC}  updateos - $VERSION"
+    printf ''${LGGRN}')~ '${NC}''
+    echo "usage: sudo updateos (groupname|scriptname|help) [dry]"
+    echo "$GROUP                       p desc"
+    echo "---                       - ----"
+  [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v nopub` || SCRIPT_LIST=`ls /usr/bin/.updateos/`
+  for SCRIPT in $SCRIPT_LIST
+    do
+      download_script
+      DESC="`grep ^#DESC /usr/bin/.updateos/$SCRIPT | sed -e 's/^#DESC\ //g'`"
+      [ "`grep ^#PRDno /usr/bin/.updateos/${SCRIPT} 2>/dev/null`" != "" ] && PRD="-" || PRD='^'
+      SCRIPT="$SCRIPT$(printf '%*s' "$n" "")"        
+      var="$(echo "${SCRIPT}"|grep -Eo "^.{1,$n}")" 
+      echo -n " "
+      printf '%s' "${var}" 
+      echo -n ${PRD:0:58}
+      echo -n " "
+      echo ${DESC:0:70}
+    done
+
+#subgroup list
+    [ "$NETUP" == "Y" ] && GROUP_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep \/ | grep -v .md5 | grep -v nopub`
+    echo "group                     p desc"
+    echo "-----                     - ----"
+ for SUBGROUP in $GROUP_LIST
+   do
+      [ "`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#PRDno`" == "" ] && PRD="^" || PRD='-'
+      DESC="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#DESC | sed -e 's/^#DESC\ //g'`" 
+      SUBGROUP="`echo $SUBGROUP | cut -d/ -f1`"
+      SUBGROUP="$SUBGROUP$(printf '%*s' "$n" "")"        
+      var="$(echo "${SUBGROUP}"|grep -Eo "^.{1,$n}")" 
+      echo -n " "
+      printf '%s' "${var}" 
+      echo -n ${PRD:0:58}
+      echo -n " "
+      echo ${DESC:0:70}
+   done
+exit 0
+}
+
+run_subgroup() {
+    [ "$NETUP" != "Y" ] && log "Internet down. No subgroups without internet." && return 0
+    [ "`echo $HELP | grep -i dry`" != "" ] || [ "`echo $HELP | grep -i help`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
+    [ "`echo $HELP`" != "" ] && log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]" && exit 0 
+    for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md` 
+  do
+      log "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..."
+      download_script
+      /usr/bin/.updateos/${SCRIPT} 2>&1 | tee -a $LOG_FILE
+      EXIT="${PIPESTATUS[0]}"
+      [ "$EXIT" != "0" ] && log "Failed." && exit $EXIT
+      log "----> `date` - Success."
+    done
+exit $EXIT
+}
+
+run_script() {
+  SUBGROUP=""
+  download_script
+  [ "`echo $HELP | grep -i dry`" != "" ] && cat /usr/bin/.updateos/${SCRIPT} && exit $EXIT
+  log "----> `date` -  Running $SCRIPT ..."
+  [ "`grep ^#PRDno /usr/bin/.updateos/${SCRIPT}`" != "" ] && echo -n "Script not labelled as prod ready. Contine? y/n " && read YN && [ "$YN" != "y" ] && exit $EXIT
+  /usr/bin/.updateos/${SCRIPT} $CMDLINEVARS 2>&1 | tee -a $LOG_FILE
+  EXIT="${PIPESTATUS[0]}"
+  [ "$EXIT" != "0" ] && log "Failed." && exit $EXIT
+  log "----> `date` - Success." && exit $EXIT
+}
+
+script_help() {
+  echo "`cat /usr/bin/.updateos/$SCRIPT | grep ^#HELP /usr/bin/.updateos/$SCRIPT | sed -e 's/^#HELP\ //g'`"
+exit 0
+}
+
+download_script () {
+  [ "$NETUP" != "Y" ] && log "Internet not reachable." && return 0 
+  [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
+  [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && rm -f /usr/bin/.updateos/$SCRIPT && /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT && chmod +x /usr/bin/.updateos/$SCRIPT
+}
+
+# main
+  [ "$#" == "0" ] || [ "`echo $1 | grep -i help 2>/dev/null`" != "" ] && usage
+  [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v .md5 | grep -v nopub | grep $SCRIPT` || SCRIPT_LIST=`ls /usr/bin/.updateos/ | grep $SCRIPT`
+  for file in $SCRIPT_LIST
+   do
+    [ "`echo $file | grep \/`" != "" ] && run_subgroup
+    [ "`echo $CMDLINEVARS | grep -i help`" != "" ] && script_help
+    [ "`echo $file | grep -v \/`" != "" ] && run_script
+   done
+  log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]"
+exit 0

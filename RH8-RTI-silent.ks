@@ -4,8 +4,8 @@ authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
 bootloader --append="video=640x480 net.ifnames=0"
-repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
-repo --name="BaseOS" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+repo --name="AppStream" --baseurl=http://media.myk.green/rhel-8-for-x86_64-appstream-rpms
+repo --name="BaseOS" --baseurl=http://media.myk.green/rhel-8-for-x86_64-baseos-rpms
 
 %packages
 @^minimal-environment
@@ -61,7 +61,7 @@ lang en_US.UTF-8
 network  --bootproto=dhcp --device=eth0 --ipv6=no --activate
 network  --hostname=rhel8-rti.teleflora.com
 
-url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+url --url=http://media.myk.green/rhel-8-for-x86_64-baseos-rpms
 
 # Run the Setup Agent on first boot
 firstboot --disable
@@ -105,7 +105,7 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 update-crypto-policies --set LEGACY
 sed -i "s/enabled=1/enabled=0/g" /etc/yum/pluginconf.d/subscription-manager.conf
 cd /usr/bin
-curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
+curl -O http://media.myk.green/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
 systemctl start sendmail
 systemctl start smb
