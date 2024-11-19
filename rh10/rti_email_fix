@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#DESC add email fix for rh8 rti.
+
+cd /tmp
+[ ! -f email.cls ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/email.cls
+mv /usr2/bbx/gui/email.cls /usr2/bbx/gui/email.cls.bak
+cp /tmp/email.cls /usr2/bbx/gui/email.cls
+chmod --reference=/usr2/bbx/gui/email.cls.bak /usr2/bbx/gui/email.cls
+chown --reference=/usr2/bbx/gui/email.cls.bak /usr2/bbx/gui/email.cls
+chgrp --reference=/usr2/bbx/gui/email.cls.bak /usr2/bbx/gui/email.cls
+
+cp -p /usr2/basis/lib/mail-1.6.2.jar /usr2/bbx/jars/azure/mail-1.6.2.jar
+chmod --reference=/usr2/bbx/jars/azure/mail-1.4.7.jar /usr2/bbx/jars/azure/mail-1.6.2.jar
+chown --reference=/usr2/bbx/jars/azure/mail-1.4.7.jar /usr2/bbx/jars/azure/mail-1.6.2.jar
+chgrp --reference=/usr2/bbx/jars/azure/mail-1.4.7.jar /usr2/bbx/jars/azure/mail-1.6.2.jar
+
+cp -p /usr2/basis/cfg/BBj.properties /usr2/basis/cfg/BBj.properties.b4mailchg
+sed -e 's/mail\-1\.4\.7\.jar/mail\-1\.6\.2\.jar/' </usr2/basis/cfg/BBj.properties.b4mailchg >/tmp/BBj.properties
+cp /tmp/BBj.properties /usr2/basis/cfg/BBj.properties
+rm -f /tmp/BBj.properties

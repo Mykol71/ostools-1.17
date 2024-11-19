@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#DESC Changes drive references in /etc/fstab to uuids instead of device names.
+
+#HELP For every device that has a block id per $blkid, /etc/fstab is checked, and if the device is listed, replaces the drive with the uuid identifier.
+
+cd /tmp
+rm -f /tmp/blkidfile
+[ ! -d /usr2/upgrade ] && mkdir /usr2/upgrade
+cp /etc/fstab /usr2/upgrade/fstab.orig
+blkid>blkidfile
+
+DEV=sda
+[ "`grep sda blkidfile | wc -l`" != "3" ] && DEV=sdb
+
+uuid_fstab_line="`cat ./blkidfile | grep ${DEV}1 | cut -d" " -f2`"
+sed -i "s/\/dev\/sda1/$uuid_fstab_line/g" /etc/fstab
+
+uuid_fstab_line="`cat ./blkidfile | grep ${DEV}2 | cut -d" " -f2`"
+sed -i "s/\/dev\/sda2/$uuid_fstab_line/g" /etc/fstab
+
+uuid_fstab_line="`cat ./blkidfile | grep ${DEV}3 | cut -d" " -f2`"
+sed -i "s/\/dev\/sda3/$uuid_fstab_line/g" /etc/fstab
+
+systemctl daemon-reload
+mount -a
+[ "$?" == "0" ] && echo "Success." && exit 0
+
+cp -f /usr2/upgrade/fstab.orig /etc/fstab
+systemctl daemon-reload
+
+exit 1

@@ -1,0 +1,97 @@
+#!/bin/bash
+
+#DESC Inplace OS upgrade from RH9 to RH10 - RTI.
+#PRDno
+
+#Make sure tfethX naming.
+[ "`ifconfig | grep tfeth`" == "" ] && echo "Run change_nics first....." && exit 1
+
+echo "---> Upgrading OS to RHEL10 ..." | tee -a /tmp/updateos.log
+echo "" | tee -a /tmp/updateos.log
+
+# save current hostname and firewall rules
+rm -rf /usr2/upgrade
+mkdir /usr2/upgrade
+hostname > /usr2/upgrade/hostname
+cp /etc/sysconfig/iptables /usr2/upgrade/.
+
+# clear out repos and install current rh9 OS repos
+rm -f /etc/yum/repos.d/*
+updateos rockyrepo_install
+
+# save off ups conf file if there.
+[ -f /etc/apcupsd/apcupsd.conf ] && cp -f /etc/apcupsd/apcupsd.conf /usr2/upgrade/apcupsd.conf
+
+# add rh8 extras repo.
+#cat > /etc/yum.repos.d/tfrhel8extras.repo << EOF
+#[RH8extras]
+#name=RH8extras
+#baseurl=http://tfrhelrepo.centralus.cloudapp.azure.com/rhel-8-server-extras-rpms
+#enabled=1
+#gpgcheck=0
+#EOF
+
+# add leapp package
+yum -y install leapp-upgrade-el9toel10
+
+# add leapp repos
+cat > /etc/leapp/files/leapp_upgrade_repositories.repo << EOF
+[RockyRepoBaseOS]
+name=RTIRepoBaseOS
+enabled=1
+gpgcheck=1
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+baseurl=http://download.rockylinux.org/pub/rocky/9.3/BaseOS/x86_64/os/
+
+[RockyRepoAppStream]
+name=RTIRepoAppStream
+enabled=1
+gpgcheck=1
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+baseurl=http://download.rockylinux.org/pub/rocky/9.3/AppStream/x86_64/os/
+EOF
+
+#create leapp answer file
+cat > /var/log/leapp/answerfile << EOF
+[remove_pam_pkcs11_module_check]
+# Title:              None
+# Reason:             Confirmation
+# =================== remove_pam_pkcs11_module_check.confirm ==================
+# Label:              Disable pam_pkcs11 module in PAM configuration? If no, the upgrade process will be interrupted.
+# Description:        PAM module pam_pkcs11 is no longer available in RHEL-8 since it was replaced by SSSD.
+# Reason:             Leaving this module in PAM configuration may lock out the system.
+# Type:               bool
+# Default:            None
+# Available choices: True/False
+# Unanswered question. Uncomment the following line with your answer
+confirm = True
+EOF
+
+#add script to run after reboot.
+updateos post_install_rh10
+
+#remove unsupported pam.d modules.
+cp -rp /etc/pam.d /tmp
+sed -i '/pam_tally2/d' /etc/pam.d/*
+sed -i '/pam_pkcs11/d' /etc/pam.d/*
+
+#switch to uuid ids in /etc/fstab
+updateos uuid_switch
+
+#multipath fix
+yum -y install device-mapper-multipath
+/usr/sbin/mpathconf --enable
+
+yum -y remove firewalld
+yum -y install NetworkManager
+systemctl enable NetworkManager
+
+#updates ostools to 1.16
+updateos install_ostools-1.16
+
+updateos rti_email_fix
+
+# run leap upgrade
+leapp upgrade --no-rhsm 
+reboot
+exit 0

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#DESC Installs Cortex for IT managed malware protection.
+
+# Install deps.
+yum -y install policycoreutils-python-utils selinux-policy-devel 
+
+# Download rpm.
+[ ! -f ./cortext_rpm.tar.gz ] && wget http://rhel8repo.centralus.cloudapp.azure.com/support/cortext_rpm.tar.gz && tar xvfz ./cortext_rpm.tar.gz
+
+# Copy conf file.
+mkdir -p /etc/panw
+cp -f ./cortex.conf /etc/panw/
+chown root:root /etc/panw/cortex.conf
+
+# Install.
+yum -y localinstall ./cortex-7.7.2.66464.rpm
+
+# assign custom tag for the filter configured with IT.
+/opt/traps/bin/cytool endpoint_tags add rtilinux
+systemctl restart traps_pmd.service
+/opt/traps/bin/cytool checkin
+
+exit 0 

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#DESC Add POS system accounts.
+useradd tfsupport
+groupadd rtiadmin
+groupadd rti
+groupadd uucp
+useradd rti -g rti
+usermod tfsupport -g rtiadmin -G rti
+useradd odbc -G rti
+useradd delivery -G rti
+
+#creating smbusers file
+#echo "tfsupport = tfsupport" >>/etc/samba/smbusers
+#echo "rti = rti" >>/etc/samba/smbusers
+#echo "odbc = odbc" >>/etc/samba/smbusers
+
+cd /tmp 
+[ ! -f /tmp/tfsupport-authorized_keys ] && wget -q http://rtihardware.homelinux.com/t1800/tfsupport-authorized_keys
+[ ! -f /tmp/twofactor-20090723.tar ] && wget -q http://rtihardware.homelinux.com/t1800/twofactor-20090723.tar
+
+echo "Installing tfsupport authorized keys...."
+mkdir /home/tfsupport/.ssh
+chmod 700 /home/tfsupport/.ssh
+chown tfsupport:rti /home/tfsupport/.ssh
+tar xvf /tmp/twofactor-20090723.tar
+chmod +x /tmp/*.pl
+cp /tmp/tfsupport-authorized_keys /home/tfsupport/.ssh/authorized_keys
+chmod 700 /home/tfsupport/.ssh/authorized_keys
+chown tfsupport:root /home/tfsupport/.ssh/authorized_keys
+
+exit 0

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#DESC Installs RTI Backup solution.
+#PRDno
+ 
+#Solution uses Proxmox Enterprise Backups and Relax and Recover to provide for physical or virtual system-wide backups.
+
+echo "WIP....." && exit 0
+#Install Proxmox backup client.
+dnf -y copr enable derenderkeks/proxmox-backup-client
+dnf -y install proxmox-backup-client
+[ "$?" != "0" ] && echo "Could not install proxmox backup client." && exit 1
+
+#Install Relax and recover and integrate with proxmox.
+yum -y install rear
+[ "$?" != "0" ] && echo "Could not install rear." && exit 2
+[ "`grep OUTPUT=ISO /etc/rear/local.conf`" == "" ] && echo "OUTPUT=ISO" >> /etc/rear/local.conf 
+[ "`grep BACKUP=EXTERNAL /etc/rear/local.conf`" == "" ] && echo "BACKUP=EXTERNAL" >> /etc/rear/local.conf 
+
+#Vars.
+PBS_REPOSITORY=rti.myk.green:rti_servers
+SHOPCODE=12345678
+PBS_PASSWORD='2023Sadie!'
+
+#Create namespace for customer (shopcode) in datastore.
+proxmox-backup-client namespace create $SHOPCODE --repository=$PBS_REPOSITORY
+[ "$?" != "0" ] && echo "Could not create customer name space." && exit 3
+
+#Create scheduled jobs.
+[ ! -f /etc/cron.d/rti_pbe ] && cat > /etc/cron.d/rti_pbe <<EOF
+0 * * * * proxmox-backup-client backup root.pxar:/ usr2.pxar:/usr2 --repository $PBS_REPOSITORY --ns $SHOPCODE >>/usr2/bbx/log/pbe-backup-Day_$( date +%d ).log 2&>1
+EOF
+[ "$?" != "0" ] && echo "Could not create scheduled jobs file." && exit 4
+
+#Create recovery media.
+echo -n "Create recovery usb stick? "  && read ANSWER
+[ "$ANSWER" == "Y" ] && updateos create_media
+
+echo "Backups configured."
+exit 0
