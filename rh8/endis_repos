@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#DESC Enable/disable OS repos.
+
+[ ! -d /usr2/updateos_osrepos ] && mkdir /usr2/updateos_osrepos
+
+if [ "`ls /usr2/updateos_osrepos`" == "" ]; 
+then 
+  echo "Repos currently enabled, disabling..."
+  mv /etc/yum.repos.d/* /usr2/updateos_osrepos/.
+#If subscription manager managing repos, disable. (leave that way because we want to use our repos.)
+  subscription-manager config --rhsm.manage_repos=0 2>/dev/null
+else
+  echo "Repos currently disabled, enabling..."
+  mv /usr2/updateos_osrepos/* /etc/yum/repos.d/.
+fi
+yum repolist
+
+exit 0
