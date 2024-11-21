@@ -12,7 +12,7 @@ then
   subscription-manager config --rhsm.manage_repos=0 2>/dev/null
 else
   echo "Repos currently disabled, enabling..."
-  mv /usr2/updateos_osrepos/* /etc/yum/repos.d/.
+  mv /usr2/updateos_osrepos/* /etc/yum.repos.d/.
 fi
 yum repolist
 
