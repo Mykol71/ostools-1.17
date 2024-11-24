@@ -7,7 +7,7 @@ ID=$(/usr/bin/id -u)
 #Init
 VERSION="2.1.3"
 LOG_FILE="/tmp/updateos.log"
-export REPOSERVER="media.myk.green"
+export REPOSERVER="rhel8repo.centralus.cloudapp.azure.com"
 export BACKEND="http://${REPOSERVER}/ostools-1.17"
 [ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
 export SCRIPT="$1"
