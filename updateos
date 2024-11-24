@@ -7,8 +7,7 @@ ID=$(/usr/bin/id -u)
 #Init
 VERSION="2.1.3"
 LOG_FILE="/tmp/updateos.log"
-export REPOSERVER="rhel8repo.centralus.cloudapp.azure.com"
-export BACKEND="http://${REPOSERVER}/ostools-1.17"
+export BACKEND="http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17"
 [ "`echo $#`" -ge "2" ] && export CMDLINEVARS="`echo $@ | cut -d" " -f2-`" || export CMDLINEVARS=""
 export SCRIPT="$1"
 export SUBGROUP="$1"
@@ -80,7 +79,7 @@ run_subgroup() {
     [ "$NETUP" != "Y" ] && log "Internet down. No subgroups without internet." && return 0
     [ "`echo $HELP | grep -i dry`" != "" ] || [ "`echo $HELP | grep -i help`" != "" ] && HELP="`curl -s $BACKEND/$GROUP/$SUBGROUP/README.md | grep ^#HELP | sed -e 's/^#HELP\ //g'`" && echo "$HELP" && echo && /usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md && exit $EXIT
     [ "`echo $HELP`" != "" ] && log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]" && exit 0 
-    for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md | cut -d_ -f2-` 
+    for SCRIPT in `/usr/bin/curl -ls $BACKEND/$GROUP/$file | grep -v $file | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v \/ | grep -v .md5 | grep -v README.md` 
   do
       log "----> `date` - Running $GROUP $SUBGROUP $SCRIPT..."
       download_script
@@ -112,7 +111,7 @@ exit 0
 download_script () {
   [ "$NETUP" != "Y" ] && log "Internet not reachable." && return 0 
   [ ! -f /usr/bin/.updateos/$SCRIPT ] && touch /usr/bin/.updateos/$SCRIPT
-  [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && rm -f /usr/bin/.updateos/$SCRIPT && /usr/bin/curl -s $BACKEND/$GROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT && chmod +x /usr/bin/.updateos/$SCRIPT
+  [ "`curl -s $BACKEND/$GROUP/$SCRIPT.md5`" != "`md5sum /usr/bin/.updateos/$SCRIPT | cut -d" " -f1`" ] && rm -f /usr/bin/.updateos/$SCRIPT && /usr/bin/curl -s $BACKEND/$GROUP/$SUBGROUP/$SCRIPT -o /usr/bin/.updateos/$SCRIPT && chmod +x /usr/bin/.updateos/$SCRIPT
 }
 
 # main
