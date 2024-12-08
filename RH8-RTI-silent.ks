@@ -105,7 +105,7 @@ pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 update-crypto-policies --set LEGACY
 sed -i "s/enabled=1/enabled=0/g" /etc/yum/pluginconf.d/subscription-manager.conf
 cd /usr/bin
-curl -O http://rhel8.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
+curl -O http://rhel8repo.centralus.cloudapp.azure.com/ostools-1.17/updateos updateos
 chmod +x /usr/bin/updateos
 systemctl start sendmail
 systemctl start smb
