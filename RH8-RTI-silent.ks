@@ -61,7 +61,7 @@ lang en_US.UTF-8
 network  --bootproto=dhcp --device=eth0 --ipv6=no --activate
 network  --hostname=rhel8-rti.teleflora.com
 
-url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos/BaseOS
 
 # Run the Setup Agent on first boot
 firstboot --disable
