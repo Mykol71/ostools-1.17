@@ -4,8 +4,8 @@ authselect --passalgo=sha512 --useshadow
 selinux --permissive
 reboot
 bootloader --append="video=640x480 net.ifnames=0"
-repo --name="AppStream" --baseurl=http://rhel8.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
-repo --name="BaseOS" --baseurl=http://rhel8.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+repo --name="AppStream" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms
+repo --name="BaseOS" --baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
 %packages
 @^minimal-environment
@@ -61,7 +61,7 @@ lang en_US.UTF-8
 network  --bootproto=dhcp --device=eth0 --ipv6=no --activate
 network  --hostname=rhel8-rti.teleflora.com
 
-url --url=http://rhel8.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
+url --url=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms
 
 # Run the Setup Agent on first boot
 firstboot --disable
