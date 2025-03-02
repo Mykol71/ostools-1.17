@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#DESC Builds and maintains blacklisted ip info from community maintained lists. Also will add offending public ips that try excessively to access the server with no success.
+
+#HELP These scripts check against known trouble ips/networks and maintains a blacklist on the server. The blacklists are updated daily via cron. This will help with ssh attempts on customers with ssh open to world. Or any server that has any ssh or http(s) access from the outside world.
+
+#install git if not there.
+[ ! -f /usr/bin/git ] && yum install -y git
+
+#download scripts, and create the daily cron job.
+cd /tmp
+[ -d /tmp/blacklist-scripts ] && rm -f ./blacklist-scripts
+git clone https://github.com/kravietz/blacklist-scripts
+cd blacklist-scripts
+cp ./blacklist.sh /etc/cron.daily/blacklist
+
+#now remove git because its not wise to leave it installed given PCI considerations.
+#thats about as bad as leaving a compiler installed. snicker.
+yum remove -y git
+
+#add ossec portions for badips and ipset drops.
+mkdir -p /var/ossec
+cd /tmp/blacklist-scripts/ossec
+mkdir -p /var/ossec/active-response/bin
+mkdir -p /var/ossec/active-response/rules
+cp badips.sh /var/ossec/active-response/bin
+cp ipset-drop.sh /var/ossec/active-response/bin
+
+#run manually the first time to build db.
+/etc/cron.daily/blacklist
+
+ipset list | wc -l 
+
+exit 0
