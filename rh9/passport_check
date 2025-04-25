@@ -12,7 +12,8 @@
 [ "`df -h | grep sdb`" != "" ] && [ "`ls -l /dev | grep sda | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sdb/device=\/dev\/sda/g" /usr2/bbx/config/backups.config
 
 #add this script to run just before the backup.
-sed -i '/passport_check/d' /etc/cron.d/nightly-backup
-sed -i "s/\/usr2\/bbx\/bin\/rtibackup\.pl/updateos\ passport_check\ \&\&\ \/usr2\/bbx\/bin\/rtibackup\.pl/g" /etc/cron.d/nightly-backup
+#sed -i '/passport_check/d' /etc/cron.d/nightly-backup
+#sed -i "s/\/usr2\/bbx\/bin\/rtibackup\.pl/updateos\ passport_check\ \&\&\ \/usr2\/bbx\/bin\/rtibackup\.pl/g" /etc/cron.d/nightly-backup
+#
 
 exit 0
