@@ -6,9 +6,13 @@
 #HELP it will determine which device name the external drive is on and update /usr2/bbx/config/backups.config accordingly.
 
 #sdb
-[ "`df -h | grep sda3`" != "" ] && [ "`ls -l /dev | grep sdb | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sd?/device=\/dev\/sdb/g" /usr2/bbx/config/backups.config
+[ "`df -h | grep sda`" != "" ] && [ "`ls -l /dev | grep sdb | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sda/device=\/dev\/sdb/g" /usr2/bbx/config/backups.config
 
 #sda
-[ "`df -h | grep sdb3`" != "" ] && [ "`ls -l /dev | grep sda | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sd?/device=\/dev\/sda/g" /usr2/bbx/config/backups.config
+[ "`df -h | grep sdb`" != "" ] && [ "`ls -l /dev | grep sda | wc -l`" == "1" ] && sed -i "s/^device=\/dev\/sdb/device=\/dev\/sda/g" /usr2/bbx/config/backups.config
+
+#add this script to run just before the backup.
+sed -i '/passport_check/d' /etc/cron.d/nightly-backup
+sed -i "s/\/usr2\/bbx\/bin\/rtibackup\.pl/updateos\ passport_check\ \&\&\ \/usr2\/bbx\/bin\/rtibackup\.pl/g" /etc/cron.d/nightly-backup
 
 exit 0
