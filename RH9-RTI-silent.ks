@@ -51,6 +51,8 @@ crypto-policies-scripts
 mutt
 NetworkManager
 dos2unix
+nodejs
+usbutils
 %end
 
 # Keyboard layouts

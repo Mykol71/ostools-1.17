@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#DESC Script to put the rti backup lines into /etc/cron.d/nightly-backup
+
+#check if already there first
+[ "`grep --rti /etc/cron.d/nightly-backups`" != "" ] && echo "Already done....exiting." && exit 0
+
+#check if backup in /tmp
+[ -f /tmp/nightly-backup ] && cp -f /etc/cron.d/nightly-backup && echo "Backup file put back....." && exit 0
+
+#add backup line
+echo '30 01 * * * root (/usr/bin/test -e /usr2/bbx && . /etc/profile.d/rti.sh && /usr2/bbx/bin/rtibackup.pl --rti --configfile=/usr2/bbx/config/backups.config --format --backup=all --verify --console)' >> /etc/cron.d/nightly-backup
+echo "Edited nightly-backup file"
+
+exit 0
