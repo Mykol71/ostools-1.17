@@ -50,6 +50,7 @@ sendmail
 crypto-policies-scripts
 mutt
 NetworkManager
+dos2unix
 %end
 
 # Keyboard layouts
