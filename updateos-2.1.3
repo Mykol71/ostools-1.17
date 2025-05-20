@@ -22,7 +22,7 @@ for OSVERS in 7 8 9
   done
 
 #Internet check.
-ping -c 1 -W 1 8.8.8.8 >/dev/null 2>&1
+nc -zw1 8.8.8.8 443 >/dev/null 2>&1
 [ "$?" == "0" ] && NETUP=Y || NETUP=N
 
 log() {
@@ -118,10 +118,10 @@ download_script () {
   [ "$#" == "0" ] || [ "`echo $1 | grep -i help 2>/dev/null`" != "" ] && usage
   [ "$NETUP" == "Y" ] && SCRIPT_LIST=`/usr/bin/curl -ls $BACKEND/$GROUP/ | sed 's/<a\ href=/~/g'  | grep -v colspan | cut -d~ -f2 | cut -d\" -f2 | grep -v \< | grep -v \/\/ | grep -v \? | grep -v ^/ | grep -v .md5 | grep -v nopub | grep $SCRIPT` || SCRIPT_LIST=`ls /usr/bin/.updateos/ | grep $SCRIPT`
   for file in $SCRIPT_LIST
-   do
+  do
     [ "`echo $file | grep \/`" != "" ] && run_subgroup
     [ "`echo $CMDLINEVARS | grep -i help`" != "" ] && script_help
     [ "`echo $file | grep -v \/`" != "" ] && run_script
-   done
-  log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]"
+  done 
+     log "updateos - $VERSION - USAGE: sudo updateos (groupname|scriptname|help) [dry]"
 exit 0
