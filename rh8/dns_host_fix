@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#DESC check hostname. if it has a teleflora.com domain, remove the domain and replace with .tf, restart sendmail
+#DESC this should resolve the issue with the answering mx record for noexistenthost.teleflora.com by cloudflare causing sendmail to try over and over
+#HELP command line option 1 "revert" restores the original hostname
+
+if [ "$1" == "revert" ];
+then
+sed -i 's/.tf/.teleflora.com/g' /etc/hosts
+NEW_NAME="`echo $HOSTNAME | cut -d"." -f1`.teleflora.com"
+hostnamectl set-hostname $NEW_NAME
+systemctl restart sendmail
+echo "hostname change reverted...."
+exit 0
+else
+HOSTNAME="`hostname`"
+[ "`echo $HOSTNAME | grep .teleflora.com`" == "" ] && echo "No change needed." && exit 0
+sed -i 's/.teleflora.com/.tf/g' /etc/hosts
+NEW_NAME="`echo $HOSTNAME | cut -d"." -f1`.tf"
+hostnamectl set-hostname $NEW_NAME
+systemctl restart sendmail
+echo "Done....."
+exit 0
+fi
