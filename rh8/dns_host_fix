@@ -14,7 +14,6 @@ echo "hostname change reverted...."
 exit 0
 else
 HOSTNAME="`hostname`"
-[ "`echo $HOSTNAME | grep .teleflora.com`" == "" ] && echo "No change needed." && exit 0
 sed -i 's/.teleflora.com/.tf/g' /etc/hosts
 NEW_NAME="`echo $HOSTNAME | cut -d"." -f1`.tf"
 hostnamectl set-hostname $NEW_NAME
