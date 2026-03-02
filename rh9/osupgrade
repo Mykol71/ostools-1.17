@@ -32,7 +32,7 @@ updateos rockyrepo_install
 #EOF
 
 # add leapp package
-yum -y install leapp-upgrade-el9toel10
+yum -y install leapp leapp-upgrade-el9toel10
 
 # add leapp repos
 cat > /etc/leapp/files/leapp_upgrade_repositories.repo << EOF
@@ -41,14 +41,14 @@ name=RTIRepoBaseOS
 enabled=1
 gpgcheck=1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
-baseurl=http://download.rockylinux.org/pub/rocky/9.3/BaseOS/x86_64/os/
+baseurl=http://dl.rockylinux.org/vault/rocky/9.3/BaseOS/x86_64/os/
 
 [RockyRepoAppStream]
 name=RTIRepoAppStream
 enabled=1
 gpgcheck=1
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
-baseurl=http://download.rockylinux.org/pub/rocky/9.3/AppStream/x86_64/os/
+baseurl=http://dl.rockylinux.org/vault/rocky/9.3/AppStream/x86_64/os/
 EOF
 
 #create leapp answer file

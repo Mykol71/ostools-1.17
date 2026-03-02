@@ -53,6 +53,9 @@ NetworkManager
 dos2unix
 nodejs
 usbutils
+lsof
+#pm2
+#hyco-ws
 %end
 
 %addon org_fedora_oscap      
