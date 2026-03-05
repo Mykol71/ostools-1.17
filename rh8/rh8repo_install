@@ -20,14 +20,14 @@ cat > /etc/yum.repos.d/rtirepos.repo <<EOF
 [RTIRepoBaseOS]
 name=RTIRepoBaseOS
 enabled=1
-gpgcheck=1
+gpgcheck=0
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-baseos-rpms/
 
 [RTIRepoAppStream]
 name=RTIRepoAppStream
 enabled=1
-gpgcheck=1
+gpgcheck=0
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 baseurl=http://rhel8repo.centralus.cloudapp.azure.com/rhel-8-for-x86_64-appstream-rpms/
 EOF
